@@ -2,8 +2,8 @@
 
 Every block below is one message. On GitHub, hover a block and use the copy
 button. Order: 1 build, 2 safety setup (if not done during build), 3 safety
-routine, 4 live test, 5 publish, 6 system map for the demo, then everyday
-phrases. Nothing needs filling in: wherever the Bot needs something from you (your
+routine, 4 live test, 5 publish, 6 system map for the demo, 7 the big update
+for a Vidya that already exists, then everyday phrases. Nothing needs filling in: wherever the Bot needs something from you (your
 name, your school's LMS, your parents' emails), it asks you in the chat, one
 question at a time, and you answer there. Between messages there is a short
 note on what the app will ask you to do yourself.
@@ -22,7 +22,7 @@ You are going to assemble yourself from a public repository and then set yoursel
 
 2. Read ~/vidya/template/PROFILE.md. Set your own title to the Title line and your description to the quoted Description block, word for word. If you cannot edit your own profile, print both fields exactly as written so I can paste them into Edit Profile, and wait for me to say "done".
 
-3. For each file in ~/vidya/template/skills/ (there are seven: setup-playbook.md, read-course.md, nightly-syllabus-check.md, needs-review-triage.md, weekly-digest.md, safety-checkin.md, package-template.md), save a skill. The skill name is the H1 heading without the "Skill: " prefix (so "Setup playbook", "Read course", "Nightly syllabus check", "Needs-review triage", "Weekly digest", "Safety check-in", "Package template"). The skill instructions are the entire file body below the heading, verbatim. Make sure each skill is enabled for you. When done, list the seven skill names and confirm each is available.
+3. For each file in ~/vidya/template/skills/ (there are sixteen: setup-playbook.md, read-course.md, nightly-syllabus-check.md, needs-review-triage.md, weekly-digest.md, safety-checkin.md, lecture-notes.md, assignment-coach.md, opportunity-scout.md, resume-tailor.md, project-builder.md, club-scout.md, coffee-chat-scheduler.md, cold-outreach.md, calendar-concierge.md, package-template.md), save a skill. The skill name is the H1 heading without the "Skill: " prefix (so "Setup playbook", "Read course", "Nightly syllabus check", "Needs-review triage", "Weekly digest", "Safety check-in", "Lecture notes", "Assignment coach", "Opportunity scout", "Resume tailor", "Project builder", "Club scout", "Coffee chat scheduler", "Cold outreach", "Calendar concierge", "Package template"). The skill instructions are the entire file body below the heading, verbatim. Make sure each skill is enabled for you. When done, list the sixteen skill names and confirm each is available.
 
 4. Now ask me, one question at a time: (a) which time zone my calendar should use, offering the common US ones as options (America/New_York, America/Chicago, America/Denver, America/Los_Angeles) plus "other"; (b) which LMS my school uses, offering Canvas, Brightspace, Blackboard, Moodle, Google Classroom and "other / not sure" as options. If I pick "not sure", ask me for my school's course website address and work it out from the page. Repeat both answers back to me in one line and wait for me to confirm before continuing.
 
@@ -120,13 +120,13 @@ Confirmed, the settings match. Enable the Nightly syllabus check, Weekly digest 
 ## Message 5: package and publish the template
 
 ```text
-Run your "Package template" skill. Audit your memories, skills, routines and plugins out loud, one line each. Include the seven skills and the two routines (Nightly syllabus check and Weekly digest), not the Safety check-in routine. Exclude every memory that mentions my courses, my school, my professors, my contacts, my family, my calendar, or me. Then search everything you plan to include for email addresses, phone numbers, course ids, calendar ids, tokens, and my school's website hostname, and tell me each hit and what you did with it. Show me the final inclusion list with one line of justification per item, and do not publish until I say go.
+Run your "Package template" skill. Audit your memories, skills, routines and plugins out loud, one line each. Include the sixteen skills and the two routines (Nightly syllabus check and Weekly digest), not the Safety check-in routine or any recruiting routine. Exclude every memory that mentions my courses, my school, my professors, my contacts, my family, my calendar, or me. Then search everything you plan to include for email addresses, phone numbers, course ids, calendar ids, tokens, and my school's website hostname, and tell me each hit and what you did with it. Show me the final inclusion list with one line of justification per item, and do not publish until I say go.
 ```
 
 Read the list against `SCRUB_CHECKLIST.md`. If it is clean:
 
 ```text
-Go. Publish as a public template and give me the link. Then open the link yourself in a fresh browser window and confirm the preview loads and shows the seven skills and two routines.
+Go. Publish as a public template and give me the link. Then open the link yourself in a fresh browser window and confirm the preview loads and shows the sixteen skills and two routines.
 ```
 
 ---
@@ -154,6 +154,52 @@ If the image is too small to read when posted, send:
 
 ```text
 Re-render both images at 3600 pixels wide and post them again. Also save the Mermaid source you used as ~/vidya-state/system-map.mmd and ~/vidya-state/last-run-trace.mmd and paste the source of the trace here so I can keep it.
+```
+
+---
+
+## Message 7: the big update (for a Vidya that already exists)
+
+One message. Vidya pulls the new engine, installs the nine new skills, re-saves
+the ones that changed, then interviews you for each new module one question at
+a time. Skip anything by answering "skip". Nothing in it needs editing.
+
+```text
+Update yourself from the repository and then set up everything new for me. Do every step in order, report after each in one line, never summarize text you are told to save verbatim, and whenever you need something from me ask one clear question at a time and wait. If I answer "skip" to any module, leave it off and move on.
+
+1. Engine. On your computer: cd ~/vidya && git pull && python3 -m vidya.cli selftest && python3 -m vidya.cli --version. Expect ALL PASS. Then run vidya status with VIDYA_STATE=~/vidya-state and confirm my courses and state are intact. If anything fails, stop and show me.
+
+2. Skills. Re-save these existing skills from ~/vidya/template/skills/ because their text changed: "Setup playbook" (setup-playbook.md), "Safety check-in" (safety-checkin.md), "Package template" (package-template.md). Then save these nine new skills, name = the H1 heading without "Skill: ", instructions = the entire body verbatim: "Lecture notes" (lecture-notes.md), "Assignment coach" (assignment-coach.md), "Opportunity scout" (opportunity-scout.md), "Resume tailor" (resume-tailor.md), "Project builder" (project-builder.md), "Club scout" (club-scout.md), "Coffee chat scheduler" (coffee-chat-scheduler.md), "Cold outreach" (cold-outreach.md), "Calendar concierge" (calendar-concierge.md). Enable all of them for yourself. List all sixteen skill names and confirm each is available.
+
+3. Profile. Read ~/vidya/template/PROFILE.md and replace your title and description with the Title line and the quoted Description block, word for word. If you cannot edit your own profile, print both so I can paste them, and wait for "done".
+
+4. Receipts. Run vidya why on one of my items (pick the next upcoming exam from vidya status) and show me the output, so I can see the receipt format.
+
+5. Sources beyond courses. Ask me, one at a time, whether to watch each of these, and for each yes ask for the page address: my school's registrar or academic calendar (add/drop, withdrawal, grade deadlines); financial aid; housing; any club or program with an application deadline (offer to add several). For each, run vidya add-source <short-id> --name "<name>" --url "<url>" --kind <registrar|aid|housing|club|program>, then read it once with the "Read course" skill and show me what dated items you found before it joins the nightly check. If I am in high school, offer instead: the counseling office deadlines page (SAT/ACT, college applications, FAFSA), summer programs, and my school's Classroom/Schoology/PowerSchool pages.
+
+6. Location in safety alerts. If my safety check-in is on, ask me yes or no: should a missed-check-in alert include where I last was, using Google Maps location sharing? Explain in two sentences that I share my location from my phone with the Google account your browser uses, that you look only when an alert is about to go out, and that the place appears only inside that alert with how old it is. If yes: walk me through turning on sharing on my phone, wait for me to say "shared", confirm you can see it at google.com/maps in your browser, run vidya safety set-checkin --include-location, do one practice read with vidya safety location "<place>" --seen <time> --source google-maps-sharing, and show me vidya safety status. If my safety check-in is off, ask whether I want to set it up now and, if yes, run the "Safety check-in" skill's setup interview.
+
+7. Lecture notes. Ask whether I want lecture notes in Notion (yes / skip). If yes: ask me to connect the Notion plugin, create the "Vidya · Lecture notes" database exactly as the skill describes, then ask me to send you one lecture's material (slides, transcript, or my notes) and produce the first page so I can see the format. Ask which courses, if any, should get notes automatically when new slides appear.
+
+8. Assignment coach. Ask whether I want coaching offered automatically when a new assignment appears (yes / skip / only when I ask). Then ask me to name one current assignment and produce the coaching note for it so I can see the format.
+
+9. Resume and opportunities. Ask whether I want the recruiting modules (yes / skip). If yes, run the "Resume tailor" skill's setup: ask me to upload or paste my current resume, save it as the master resume, then interview me one question at a time for my profile (target roles, term and graduation year, degree level including high school, locations, sponsorship, companies to never apply to, and whether to prepare applications scored 4 and up automatically). Then produce my first gap report against 20 current postings. Then run the "Opportunity scout" skill once now: download the Simplify lists, show me the new postings that fit with scores, and prepare (do not submit) the top three so I can see a filled application stopped at the Submit button. Ask me whether to create a daily 7:00 AM "Opportunity scout" routine.
+
+10. Project builder. If the gap report found gaps, ask whether I want to start a project for the top gap now (yes / later). If yes, run the "Project builder" skill's scope step and stop after I pick an idea.
+
+11. Clubs. Ask whether I want the club scout (yes / skip). If yes: ask for my school's club directory address and my time budget in hours per week, build the directory, add every club with a deadline as a source, and show me the fit report for the top 15.
+
+12. Coffee chats and outreach. Ask whether I want these (yes / skip). If yes: ask for a two-sentence intro paragraph about me and one goal (a company, a team, a research area), then run "Cold outreach" once: a shortlist of up to 10 people with reasons and channels and drafted notes, and stop. Send nothing.
+
+13. Calendar concierge. Ask me for my working hours (earliest start, latest end) and protected times (sleep, practice, work shifts, anything I never want booked over), save them to the profile, then ask me for one calendar change in plain English and show me the operation list before applying it.
+
+14. Finish. Show me: skills (16), routines with next runs, sources watched with kinds, safety status, which modules are on and which I skipped, and everything that still needs me (sign-ins, plugin connections, approvals). Then re-run step 4 of your "Package template" skill only as a dry run: list what would go into the shared template and confirm nothing about my courses, contacts, resume, school or me is in it.
+```
+
+If it stalls on any module, send the module number to resume:
+
+```text
+Continue from step <N>. Skip nothing else.
 ```
 
 ---
@@ -190,4 +236,28 @@ Turn the safety check-in off
 
 ```text
 Add a safety contact
+```
+
+```text
+Why is Midterm 1 on the 16th?
+```
+
+```text
+Any new internships?
+```
+
+```text
+Submit all
+```
+
+```text
+Block Tuesday and Thursday mornings for the project until the midterm
+```
+
+```text
+Notes for today's CS 201 lecture (attached)
+```
+
+```text
+How should I approach Homework 3?
 ```
