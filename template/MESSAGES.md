@@ -1,7 +1,9 @@
 # Messages to send Vidya, in order
 
 Every block below is one message. On GitHub, hover a block and use the copy
-button. Nothing needs filling in: wherever the Bot needs something from you (your
+button. Order: 1 build, 2 safety setup (if not done during build), 3 safety
+routine, 4 live test, 5 publish, 6 system map for the demo, then everyday
+phrases. Nothing needs filling in: wherever the Bot needs something from you (your
 name, your school's LMS, your parents' emails), it asks you in the chat, one
 question at a time, and you answer there. Between messages there is a short
 note on what the app will ask you to do yourself.
@@ -125,6 +127,33 @@ Read the list against `SCRUB_CHECKLIST.md`. If it is clean:
 
 ```text
 Go. Publish as a public template and give me the link. Then open the link yourself in a fresh browser window and confirm the preview loads and shows the seven skills and two routines.
+```
+
+---
+
+## Message 6: draw the system map (for the demo)
+
+Produces an image of the whole architecture with live numbers, plus a trace of
+how last night's run actually fanned out. Run it after at least one nightly run.
+
+```text
+I want a picture of how you work, for a demo. Do this on your computer and show me the results here.
+
+1. Read ~/vidya/docs/SYSTEM_MAP.md. It contains a Mermaid diagram of the whole system: me, your routines, you as the supervisor, one reader subagent per course, the read-only sources, the Reading JSON handoff, the vidya engine stages (extract, normalize, resolve, diff with the destructive-write guard, review gate, calendar plan, record and commit, digest, graph, safety plan), the state on disk, the two write paths (Google Calendar and Gmail send), Graphiti, and my safety contacts.
+
+2. Before rendering, fill in the live numbers so the picture is about my setup, not a generic one: replace "course 1 / course 2 / course N" with the short ids of my actual courses (one reader box per course, read them from vidya status); put the real count of believed items under each course; put the number of skills and routines you actually have; put "N contacts" in the safety contacts box (the number only, never a name or address); and put the test count from running python3 -m pytest -q in the engine box. If safety check-ins are off, grey out the safety routine, the safety plan stage, the Gmail send box and the contacts box rather than removing them.
+
+3. Render the diagram to a PNG at least 2400 pixels wide with readable text. Try, in order: npx -y @mermaid-js/mermaid-cli -i map.mmd -o map.png -w 2400 -b white; if that is unavailable, open https://mermaid.live in your browser, paste the diagram, and export PNG; if both fail, render the diagram as HTML with the Mermaid CDN script and screenshot it at full size. Save the result as ~/vidya-state/system-map.png and post the image here.
+
+4. Then make a second, smaller picture: a trace of your most recent nightly run as a sequence diagram. Read the run from vidya show and the readings folder for that night, and draw: the routine firing, you launching one reader per course (name them by course id, note which ran in parallel and which were sequential, and roughly how long each took if you can tell from the read_at timestamps), each reader handing back a Reading JSON with its status (ok, empty, error), the engine's plan with the counts it printed (changes, pending removals, unreadable, needs review, approved and blocked operations), each calendar operation you applied and recorded, the commit, and the summary you posted to me. Render it the same way to ~/vidya-state/last-run-trace.png and post it here.
+
+5. Under the two images, write a narration I can read aloud in about 45 seconds: one sentence on what is an LLM (blue), one on what is code (dark), one on the only two places anything is written (red), one on what stops a reader (a login wall) and what happens then, and one on why the safety module uses the same shape. Use the real numbers from step 2. Do not add anything the pictures do not show.
+```
+
+If the image is too small to read when posted, send:
+
+```text
+Re-render both images at 3600 pixels wide and post them again. Also save the Mermaid source you used as ~/vidya-state/system-map.mmd and ~/vidya-state/last-run-trace.mmd and paste the source of the trace here so I can keep it.
 ```
 
 ---

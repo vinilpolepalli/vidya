@@ -122,7 +122,7 @@ vidya/            engine (stdlib only)
 tests/               pytest suite: T1-T6, email/iCal merge rules, digest, graph, safety
 template/            the Grok Bot template as text: profile, seven skills, routines, bootstrap message, scrub checklist
 submission/          written description, post draft, T8 claim audit, test log
-docs/                ARCHITECTURE.md, INTEGRATIONS.md, GRAPHITI.md
+docs/                ARCHITECTURE.md, SYSTEM_MAP.md (Mermaid), INTEGRATIONS.md, GRAPHITI.md
 fixtures/            where your real T0 captures go (git-ignored)
 ```
 
