@@ -14,7 +14,7 @@ Do the steps in this order. The first successful course read (step 5) comes befo
 
 1. **Install the engine.** In the terminal:
    ```
-   cd ~ && git clone <REPO_URL> vidya && cd ~/vidya
+   cd ~ && git clone https://github.com/vinilpolepalli/vidya vidya && cd ~/vidya
    python3 -m vidya.cli --version
    ```
    No pip install is needed; the engine is standard-library Python. Use `python3 -m vidya.cli` everywhere below (call it `vidya`). If you prefer the short command, `python3 -m pip install -e ~/vidya` also works.

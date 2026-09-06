@@ -26,7 +26,7 @@ The part I'm proudest of isn't the bot, it's the tests. LLM at the edges, code i
 Under the hood: Grok Bot routines and cloud computer, Google Calendar and Gmail plugins, browser automation, Canvas REST + iCal, a stdlib Python engine, and Graphiti (Zep's temporal graph) so I can ask "how many times has this professor moved a deadline" and get an answer with history.
 
 Template (public, setup playbook included, works on Brightspace and Canvas): <TEMPLATE_LINK>
-Code and fixture suite: <REPO_URL>
+Code and fixture suite: https://github.com/vinilpolepalli/vidya
 
 What is the one thing your LMS should tell you and doesn't?
 
@@ -37,7 +37,7 @@ What is the one thing your LMS should tell you and doesn't?
 ## First comment
 
 Template link again for the people who click here: <TEMPLATE_LINK>
-It installs the engine on the bot's own computer and self-tests before it touches your calendar. Repo with the fixture suite: <REPO_URL>
+It installs the engine on the bot's own computer and self-tests before it touches your calendar. Repo with the fixture suite: https://github.com/vinilpolepalli/vidya
 
 ## Direct sends (after posting)
 
@@ -46,6 +46,6 @@ BTE cohort, Cohort Leadership, science fair circuit. One line each, personal, wi
 ## Things to fill before posting
 
 - `<TEMPLATE_LINK>` from Publish → Public link
-- `<REPO_URL>` once the repository is public
+- Repo link is already `https://github.com/vinilpolepalli/vidya`; confirm it opens in a private window
 - Replace "Brightspace and Canvas" with what T6 actually showed (see CLAIM_AUDIT.md rule: "tested on Brightspace and Canvas" if the sandbox ran clean; "built to generalize, tested on Brightspace" if it needed code)
 - If the graph is running locally rather than wired to the bot, change the Graphiti sentence to: "Graphiti (Zep's temporal graph) runs alongside it today for schedule history; wiring it into the nightly routine is next."

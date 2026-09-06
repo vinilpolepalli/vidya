@@ -11,7 +11,7 @@ contain nothing about the owner.
    - Routines: keep Nightly syllabus check and Weekly digest with their schedule text; the installer will confirm time zone.
    - Plugins: keep Google Calendar. Gmail and Graphiti are optional and named as such in the playbook. Leave out anything else.
 2. **Check the playbook is complete.** Re-read `Setup playbook` and ask: could a person on Canvas at another university get to a first course read in ten minutes with only this text? If any step assumes something on this computer (a clone, a state dir, a login), the playbook must create or ask for it.
-3. **Scrub.** Search every field you are about to include for: course ids, `ou=`, `courses/<number>`, calendar ids, tokens, `CANVAS_TOKEN`, email addresses, names of professors, the owner's name, internal URLs. Remove or generalize each hit. Confirm `<REPO_URL>` is the public repository URL.
+3. **Scrub.** Search every field you are about to include for: course ids, `ou=`, `courses/<number>`, calendar ids, tokens, `CANVAS_TOKEN`, email addresses, names of professors, the owner's name, internal URLs. Remove or generalize each hit. Confirm the clone URL in Setup playbook is the public repository (`https://github.com/vinilpolepalli/vidya`).
 4. **Justify every inclusion** in one line each and show the list to the owner before publishing.
 5. Publish as a **Public link**. Say clearly to the owner that the link exposes everything included.
 

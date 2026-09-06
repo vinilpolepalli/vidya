@@ -49,9 +49,9 @@ belief, connects Google Calendar, and schedules the 11 PM routine. Ten minutes
 is the budget; the playbook's steps are ordered so the first course read
 happens before anything optional.
 
-## Replace before publishing
+## Before publishing
 
-`<REPO_URL>` appears in the skills. Replace it with the public URL of this
-repository. The bot's computer needs `git` and `python3` (present on the
-standard cloud computer); no pip install is required because the engine has no
-dependencies.
+The skills clone the public repository `https://github.com/vinilpolepalli/vidya`.
+If you fork it, change that URL in `skills/setup-playbook.md`. The bot's
+computer needs `git` and `python3` (present on the standard cloud computer); no
+pip install is required because the engine has no dependencies.

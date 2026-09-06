@@ -11,7 +11,7 @@ Search every included field for each pattern and remove or generalize it:
 - [ ] Tokens and keys: `CANVAS_TOKEN`, iCal feed URLs (they are tokenized), Graphiti server URLs or keys
 - [ ] The owner's name, time zone as a personal fact, schedule details
 - [ ] Any memory that came from a real conversation about a real course
-- [ ] `<REPO_URL>` replaced by the public repository URL in every skill
+- [ ] Every skill clones `https://github.com/vinilpolepalli/vidya` (the public repository) and nothing else
 
 Things that are fine to include: the six skills as written in `skills/`, the two
 routines, the profile text, generic preferences ("list unreadable courses

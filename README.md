@@ -113,7 +113,7 @@ fixtures/            where your real T0 captures go (git-ignored)
 
 - `template/README.md` explains how to assemble the Bot in the Grok Bot app from the text in `template/`; `template/skills/setup-playbook.md` is what a stranger's fresh Bot runs on its first message (T7).
 - `submission/DESCRIPTION.md` is requirement 1; `submission/POST_DRAFT.md` the post; `submission/CLAIM_AUDIT.md` is T8; `submission/TEST_LOG.md` records what ran here and what is still yours (real T0 captures, T7, T8, the video).
-- Replace `<REPO_URL>` in the skills and `<TEMPLATE_LINK>` in the post before publishing. Nothing in `template/` or `vidya/fixtures/` refers to a real school, course, or person.
+- Replace `<TEMPLATE_LINK>` in the post with the public link from Publish before posting. Nothing in `template/` or `vidya/fixtures/` refers to a real school, course, or person.
 
 ## Tests
 
