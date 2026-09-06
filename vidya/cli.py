@@ -76,11 +76,54 @@ def cmd_add_course(args) -> int:
     cfg = store.config
     courses = [c for c in cfg.get("courses", []) if c["id"] != args.id]
     courses.append({"id": args.id, "name": args.name or args.id, "platform": args.platform,
-                    "url": args.url or "", "timezone": args.timezone or store.timezone})
+                    "url": args.url or "", "timezone": args.timezone or store.timezone,
+                    "kind": args.kind or "course"})
     cfg["courses"] = courses
     store.save_config(cfg)
-    print(f"course {args.id} saved ({len(courses)} total)")
+    print(f"{args.kind or 'course'} {args.id} saved ({len(courses)} source(s) total)")
     return 0
+
+
+def cmd_why(args) -> int:
+    from .why import explain, explain_dict
+    store = _store(args)
+    query = " ".join(args.query)
+    if args.json:
+        _print_json(explain_dict(store, query))
+    else:
+        print(explain(store, query))
+    return 0
+
+
+def cmd_track(args) -> int:
+    from .track import Track
+    store = _store(args)
+    tr = Track(store)
+    try:
+        if args.track_cmd == "add":
+            new = tr.add(args.kind, args.key, note=args.note or "")
+            print(("tracked" if new else "already tracked") + f" {args.kind}: {args.key}")
+            return 0 if new else 1
+        if args.track_cmd == "has":
+            found = tr.has(args.kind, args.key)
+            print(("yes" if found else "no") + f" {args.kind}: {args.key}")
+            return 0 if found else 1
+        if args.track_cmd == "remove":
+            print(("removed" if tr.remove(args.kind, args.key) else "not tracked") + f" {args.kind}: {args.key}")
+            return 0
+        if args.track_cmd == "list":
+            kinds = [args.kind] if args.kind else tr.kinds()
+            for k in kinds:
+                entries = tr.entries(k)
+                print(f"{k}: {len(entries)}")
+                for key, v in sorted(entries.items(), key=lambda kv: kv[1]["added_at"]):
+                    print(f"  - {v['added_at'][:16]} {key}" + (f" — {v['note']}" if v.get("note") else ""))
+            if not kinds:
+                print("nothing tracked yet")
+            return 0
+    except ValueError as e:
+        sys.exit(str(e))
+    sys.exit(f"unknown track command {args.track_cmd}")
 
 
 def cmd_extract(args) -> int:
@@ -207,9 +250,12 @@ def cmd_status(args) -> int:
     belief = store.all_belief()
     names = store.course_names()
     print(f"state: {store.root}   timezone: {store.timezone}   calendar: {store.config.get('calendar_id')}")
+    kinds = {c["id"]: c.get("kind", "course") for c in store.courses}
     for cid in store.course_ids() or sorted(belief):
         evs = belief.get(cid, [])
-        print(f"- {names.get(cid, cid)} ({cid}): {len(evs)} believed item(s)")
+        kind = kinds.get(cid, "course")
+        tag = "" if kind == "course" else f" [{kind}]"
+        print(f"- {names.get(cid, cid)}{tag} ({cid}): {len(evs)} believed item(s)")
     missing = store.missing
     if missing:
         print(f"pending removals: {len(missing)}")
@@ -358,6 +404,11 @@ def cmd_safety(args) -> int:
         e = sf.checkin(at=_now(args.at), note=args.note or "", location=args.location or "")
         print(f"checked in at {e['at']}" + (f" ({e['note']})" if e["note"] else ""))
         return 0
+    if sub == "location":
+        e = sf.set_location(args.place, seen_at=_now(args.seen), source=args.source or "")
+        print(f"last known place: {e['place']} (seen {e['seen_at']}); used only inside a missed-check-in alert"
+              + ("" if cfg.get("include_location_in_alerts") else " — and location in alerts is currently OFF"))
+        return 0
     if sub == "say":
         try:
             m = sf.say(args.contact, args.text, at=_now(args.at))
@@ -393,6 +444,9 @@ def cmd_safety(args) -> int:
             print(f"  - {c['id']}: {c['name']} <{c['address']}> {c.get('relationship', '')}")
         last = sf.last_checkin()
         print(f"last check-in: {last[1]['at'] if last else 'never'}" + (f" ({last[1]['note']})" if last and last[1].get("note") else ""))
+        loc = sf.location
+        if loc:
+            print(f"last known place: {loc['place']} (seen {loc['seen_at']})")
         ob = sf.outbox
         if ob:
             print(f"queued owner messages: {len(ob)}")
@@ -431,13 +485,29 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--yes", action="store_true", help="confirm")
     s.set_defaults(fn=cmd_reset)
 
-    s = sub.add_parser("add-course", help="add or replace one course in config.json")
+    s = sub.add_parser("add-source", aliases=["add-course"],
+                       help="add or replace one watched source (a course, or any page with dates: registrar, aid, housing, club)")
     s.add_argument("id")
     s.add_argument("--name")
     s.add_argument("--url")
-    s.add_argument("--platform", default="other", choices=["brightspace", "canvas", "blackboard", "classroom", "moodle", "ical", "other"])
+    s.add_argument("--platform", default="other", choices=["brightspace", "canvas", "blackboard", "classroom", "schoology", "moodle", "ical", "other"])
+    s.add_argument("--kind", default="course", choices=["course", "registrar", "aid", "housing", "club", "program", "other"],
+                   help="what kind of source this is (default course)")
     s.add_argument("--timezone")
     s.set_defaults(fn=cmd_add_course)
+
+    s = sub.add_parser("why", help="the receipt for one item: page text, sources, assumptions, every move")
+    s.add_argument("query", nargs="+", help="a key like data-structures::midterm 1, or a title")
+    s.add_argument("--json", action="store_true")
+    s.set_defaults(fn=cmd_why)
+
+    s = sub.add_parser("track", help="dedupe ledger for actions in the world (applications, outreach, coffee chats)")
+    ts = s.add_subparsers(dest="track_cmd", required=True)
+    x = ts.add_parser("add", help="record one action; exit 1 if it was already recorded"); x.add_argument("kind"); x.add_argument("key"); x.add_argument("--note")
+    x = ts.add_parser("has", help="exit 0 if recorded, 1 if not"); x.add_argument("kind"); x.add_argument("key")
+    x = ts.add_parser("remove"); x.add_argument("kind"); x.add_argument("key")
+    x = ts.add_parser("list"); x.add_argument("kind", nargs="?")
+    s.set_defaults(fn=cmd_track)
 
     s = sub.add_parser("extract", help="turn a saved page / API JSON / iCal / email into a Reading JSON")
     s.add_argument("source", choices=["html", "canvas", "ical", "email"])
@@ -522,6 +592,8 @@ def build_parser() -> argparse.ArgumentParser:
     x.add_argument("--off", action="store_true")
     x = ss.add_parser("checkin", help="the owner checked in (anything they say counts)")
     x.add_argument("--note"); x.add_argument("--location", help="only if the owner shares it"); x.add_argument("--at", help="ISO timestamp (default now)")
+    x = ss.add_parser("location", help="record a last-known place the owner shares (not a check-in)")
+    x.add_argument("place"); x.add_argument("--seen", help="ISO timestamp it was observed (default now)"); x.add_argument("--source", help="e.g. google-maps-sharing")
     x = ss.add_parser("say", help="owner asks for a message to a contact")
     x.add_argument("contact"); x.add_argument("text"); x.add_argument("--at")
     x = ss.add_parser("plan", help="what may be sent right now (idempotent; safe to run every 30 minutes)")

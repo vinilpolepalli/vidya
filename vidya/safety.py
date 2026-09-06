@@ -154,6 +154,19 @@ class Safety:
             items = [(d, e) for d, e in items if d <= before.isoformat()]
         return items[-1] if items else None
 
+    def set_location(self, place: str, seen_at: Optional[datetime] = None, source: str = "") -> dict[str, Any]:
+        """Record a last-known place the owner shares (e.g. read from Google
+        Maps location sharing). Not a check-in: it never cancels an alert. Used
+        only inside a missed-check-in alert, and only when opted in."""
+        seen_at = seen_at or self.now()
+        entry = {"place": place, "seen_at": seen_at.isoformat(timespec="seconds"), "source": source}
+        self._write("location.json", entry)
+        return entry
+
+    @property
+    def location(self) -> Optional[dict[str, Any]]:
+        return self._read("location.json", None)
+
     def say(self, contact_id: str, text: str, at: Optional[datetime] = None) -> Message:
         """Queue an owner-requested message. Approved by `plan` because the
         owner is the source; still logged and idempotent."""
@@ -303,8 +316,7 @@ class Safety:
             last_line = f"last check-in {when}" + (f' ("{e["note"]}")' if e.get("note") else "")
         loc_line = ""
         if cfg.get("include_location_in_alerts"):
-            loc = (last or ("", {}))[1].get("location") if last else None
-            loc_line = f"\nLast known place shared by {name}: {loc or 'not available'}."
+            loc_line = f"\nLast known place shared by {name}: {self._location_text(last)}."
         body = (
             f"Hi {c['name']},\n\n"
             f"This is Vidya, {name}'s check-in assistant. {name} set up a nightly check-in with me and asked me "
@@ -320,6 +332,20 @@ class Safety:
         return Message(key=f"missed:{today}:{c['id']}", kind=KIND_MISSED_CHECKIN, to=c["id"], to_name=c["name"],
                        to_address=c["address"], subject=f"Check-in: could not reach {name} tonight",
                        body=body, reason=f"no check-in by {due.strftime('%H:%M')} + grace")
+
+    def _location_text(self, last_checkin: Optional[tuple[str, dict[str, Any]]]) -> str:
+        loc = self.location
+        if loc and loc.get("place"):
+            seen = datetime.fromisoformat(loc["seen_at"])
+            age = self.now() - seen if seen.tzinfo else None
+            if age is not None:
+                mins = int(age.total_seconds() // 60)
+                ago = "just now" if mins < 1 else f"{mins} min ago" if mins < 90 else f"{mins // 60} h ago" if mins < 48 * 60 else f"{mins // 1440} days ago"
+                return f"{loc['place']} (seen {seen.strftime('%a %-I:%M %p')}, {ago})"
+            return f"{loc['place']} (seen {seen.strftime('%a %-I:%M %p')})"
+        if last_checkin and last_checkin[1].get("location"):
+            return f"{last_checkin[1]['location']} (said at check-in {last_checkin[0]})"
+        return "not available"
 
     def _all_clear(self, c: dict[str, Any], today: date, entry: dict[str, Any], cfg: dict[str, Any]) -> Message:
         name = cfg.get("owner_name") or "your student"

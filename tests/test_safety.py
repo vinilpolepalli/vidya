@@ -181,3 +181,16 @@ def test_schedule_share_respects_quiet_hours(safety):
     safety.save_config(cfg)
     p = safety.plan(now=at("2026-09-13T23:45"))
     assert keys(p) == [] and any("quiet hours" in n for n in p.notes)
+
+
+def test_shared_location_appears_only_when_opted_in_and_is_not_a_checkin(safety):
+    safety.set_location("Butler Library", seen_at=at("2026-09-07T21:52"), source="google-maps-sharing")
+    # recording a place is not a check-in: the alert still fires
+    p = safety.plan(now=at("2026-09-07T22:31"))
+    assert [m.kind for m in p.approved] == [KIND_MISSED_CHECKIN, KIND_MISSED_CHECKIN]
+    assert "Butler" not in p.approved[0].body
+    cfg = safety.config
+    cfg["include_location_in_alerts"] = True
+    safety.save_config(cfg)
+    body = next(m for m in safety.plan(now=at("2026-09-07T22:31")).approved if m.to == "mom").body
+    assert "Butler Library (seen Mon 9:52 PM" in body
