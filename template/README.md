@@ -6,7 +6,13 @@ reviewed, scrubbed and versioned before it is pasted into the Grok Bot app.
 A template carries: identity, description, skills, routines, selected memories.
 It does **not** carry: browser logins, scripts on the computer, custom MCP
 servers, conversation history. So every file here assumes a fresh Bot on a fresh
-cloud computer that has to bootstrap from the first message alone.
+cloud computer that has to bootstrap from the first message alone. The engine
+itself is not in the template; the Setup playbook skill clones it from the
+public repository (`https://github.com/vinilpolepalli/vidya`) and proves it
+with `selftest` before anything else happens.
+
+Vidya is Sanskrit for knowledge; the name is the only thing about the Bot that
+is not literal.
 
 | File | Goes where in the app | Purpose |
 |---|---|---|
@@ -27,17 +33,28 @@ cloud computer that has to bootstrap from the first message alone.
 1. Create a new agent (New → Create new agent). Open **Edit Profile** and paste
    the four fields from `PROFILE.md`. The Label field is optional and separate
    from the name; use it for positioning ("Deadline watch").
-2. Create each skill from `skills/*.md`. Keep the file name as the skill name.
-   Skills are the only way instructions travel with a template, so the setup
-   playbook has to be a skill, not a chat message.
-3. Create the two routines from `routines/*.md`. Confirm owner, schedule, time
-   zone, inputs, expected result, approval boundary, and missing-source behavior
-   (the six things the docs say to confirm).
-4. Message the Bot: "Run the Setup playbook skill" and go through it yourself
-   once. Fix the playbook, not the bot, wherever you had to intervene (T7).
+2. Create each skill from `skills/*.md`. Use the heading as the skill name
+   ("Setup playbook", "Read course", "Nightly syllabus check", "Needs-review
+   triage", "Weekly digest", "Package template") and paste the body as the
+   instructions. The easiest way is to send the Bot the file contents with
+   "Save this as a skill called <name>, exactly as written." Then confirm each
+   skill is enabled for this Bot (Settings → Plugins → Yours) and appears when
+   you type `/`. Skills are the only way instructions travel with a template,
+   so the setup playbook has to be a skill, not a chat message.
+3. Create the two routines from `routines/*.md` by sending the quoted
+   paragraph to the Bot. Confirm owner, schedule, time zone, inputs, expected
+   result, approval boundary, and missing-source behavior (the six things the
+   docs say to confirm). Use **Test run** once before enabling.
+4. Message the Bot with `FIRST_RUN.md` and go through the playbook yourself
+   once on your own courses. Fix the playbook, not the bot, wherever you had to
+   intervene (T7).
 5. Run `skills/package-template.md`: ask the Bot to package itself and justify
    every inclusion. Then `SCRUB_CHECKLIST.md`.
-6. Publish → **Public link**. Team-only links cannot be opened by judges.
+6. Bot settings → **Share as template**. Review the draft it prepares (it
+   should list the profile, the six skills and the two routines, and no
+   memories about your courses), publish it as **public**, and copy the link.
+   Team-only links cannot be opened by judges. Open the link in a private
+   window to confirm it renders.
 
 ## What the installer experiences
 

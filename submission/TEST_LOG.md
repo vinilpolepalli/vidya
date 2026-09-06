@@ -1,7 +1,7 @@
 # Test log
 
 Honest record of what ran, where, and what is still on you. Statuses for the
-synthetic fixture set were produced in this repository (`python3 -m pytest`, 51
+synthetic fixture set were produced in this repository (`python3 -m pytest`, 52
 tests, and `vidya selftest`). Real-course rows need your captures.
 
 | Test | Status | Notes |
@@ -16,7 +16,7 @@ tests, and `vidya selftest`). Real-course rows need your captures.
 | Email merge | **PASS** | "moved from Oct 14 to Oct 16" beats a page still showing Oct 14 (old date matches → change wins, provenance says the page is stale); page failed + email → move applied, nothing removed, reported as `source_failed`; "the midterm" with two midterms → review; unknown item → review. Nothing sends mail. |
 | iCal feed | **PASS** | TZID, UTC, DATE ranges (exclusive→inclusive), folded lines, RRULE → review; summaries "Homework 1 - Due" / "Midterm 1 [CS 201]" normalize to the page titles so feed and page share keys. |
 | Digest / graph | **PASS** | Digest lists next-N-days by day, changes with sources, volatility ("most volatile: CS 201 (1 move)"), pending removals, review bucket. Graph export: one text episode per change, one JSON snapshot per course, deterministic UUIDs (re-export identical). Posting to a live Graphiti server: ☐ not run here (needs your instance + key). |
-| T7 template install | ☐ | Install your published template into a clean bot; time it; do not help. Success = first course read in under ten minutes from the playbook alone. Fix the playbook, not the bot. Better: send it to one friend at 2 PM. |
+| T7 template install | **scripted: PASS** / real bot: ☐ | Every command in `template/skills/setup-playbook.md`, `read-course.md` and `nightly-syllabus-check.md` was run verbatim on a fresh clone (clone, `--version`, `selftest`, `init`, `add-course`, `extract html`, `validate`, `plan --fake-apply`, `status`, `reset --yes`, real `plan`, `record` per op, `commit`, second night with a moved midterm, `digest`, `graph`). Still yours: install your published template into a clean bot; time it; do not help. Success = first course read in under ten minutes from the playbook alone. Fix the playbook, not the bot. Better: send it to one friend at 2 PM. |
 | T8 claim audit | ☐ | `submission/CLAIM_AUDIT.md`, immediately before publishing. |
 
 ## Changes from the plan, and why

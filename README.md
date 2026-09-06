@@ -63,7 +63,7 @@ vidya record <run-id> --key "data-structures::midterm 1" --op update --event-id 
 vidya commit <run-id>
 ```
 
-Dry run without a calendar: `vidya plan --readings tonight/ --fake-apply` applies to a JSON fake calendar under the state dir and commits.
+Dry run without a calendar: `vidya plan --readings tonight/ --fake-apply` applies to a JSON fake calendar under the state dir and commits. When you are done rehearsing, `vidya reset --yes` forgets the fake baseline (belief, ledger, runs, history) but keeps the course list, so the first real run starts clean.
 
 `vidya status` shows believed items per course, pending removals, the needs-review bucket, and the ledger. `vidya digest` writes the weekly digest. `vidya graph <run>` exports a run as Graphiti episodes.
 
