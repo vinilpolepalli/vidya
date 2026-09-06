@@ -1,0 +1,16 @@
+[
+  {
+    "id": 5001,
+    "title": "Guest lecture",
+    "message": "<p>We have a guest lecture on <b>Oct 22</b>; attendance counts toward participation.</p>",
+    "posted_at": "2026-09-04T14:02:11Z",
+    "html_url": "https://canvas.example.edu/courses/777/discussion_topics/5001"
+  },
+  {
+    "id": 5002,
+    "title": "Welcome",
+    "message": "<p>Welcome to the sandbox course. Read the syllabus.</p>",
+    "posted_at": "2026-09-01T12:00:00Z",
+    "html_url": "https://canvas.example.edu/courses/777/discussion_topics/5002"
+  }
+]

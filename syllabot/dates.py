@@ -260,25 +260,33 @@ def parse_date_text(
     # Inline change: "Oct 14 changed to Oct 16" -> keep the text after the last
     # change phrase; "Oct 16 instead of Oct 14" -> keep the text before it.
     segment = raw
+    old_segment = ""
     changed = False
     after_matches = list(CHANGE_AFTER_RE.finditer(raw))
     before_match = CHANGE_BEFORE_RE.search(raw)
     if after_matches:
         segment = raw[after_matches[-1].end():]
+        old_segment = raw[: after_matches[-1].end()]
         changed = True
     elif before_match:
         segment = raw[: before_match.start()]
+        old_segment = raw[before_match.end():]
         changed = True
     if changed:
         assumptions.append("inline change detected; using the newly stated date")
 
     dates, remainder = _find_dates(segment, ref)
+    superseded: Optional[str] = None
     if changed and not dates:
         # the change phrase had no date after it; it was ordinary prose
         dates, remainder = _find_dates(raw, ref)
         segment = raw
         changed = False
         assumptions = [a for a in assumptions if not a.startswith("inline change")]
+    elif changed:
+        old_dates, _ = _find_dates(old_segment, ref)
+        if old_dates:
+            superseded = old_dates[-1]["date"].isoformat()
 
     weekday_hits = WD_RE.findall(segment)
     if not dates and len(weekday_hits) >= 2:
@@ -356,7 +364,9 @@ def parse_date_text(
     if changed:
         base_conf -= 0.1
     confidence += base_conf
-    return _finish(start_d, end_d, remainder, tz, explicit_tz, confidence, assumptions, ref)
+    out = _finish(start_d, end_d, remainder, tz, explicit_tz, confidence, assumptions, ref)
+    out.superseded = superseded
+    return out
 
 
 def _finish(start_d: date, end_d: Optional[date], time_text: str, tz: str,

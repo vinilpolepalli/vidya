@@ -96,7 +96,9 @@ def cmd_extract(args) -> int:
     elif args.source == "email":
         from .extract.email import extract_email
         raw = Path(args.file).read_bytes() if args.file != "-" else sys.stdin.buffer.read()
-        reading = extract_email(raw, args.course, read_at=read_at, timezone=args.timezone)
+        store = Store(args.state)
+        known = [e.title for e in store.belief(args.course)] if store.exists() else []
+        reading = extract_email(raw, args.course, read_at=read_at, known_titles=known, timezone=args.timezone)
     else:
         sys.exit(f"unknown source {args.source}")
     out = json.dumps(reading.to_dict(), indent=2, ensure_ascii=False)

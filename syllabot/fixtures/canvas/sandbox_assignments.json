@@ -1,0 +1,25 @@
+[
+  {
+    "id": 9001,
+    "name": "Lab 1: Setup",
+    "due_at": "2026-09-20T03:59:00Z",
+    "html_url": "https://canvas.example.edu/courses/777/assignments/9001",
+    "published": true,
+    "points_possible": 10.0
+  },
+  {
+    "id": 9002,
+    "name": "Midterm Exam",
+    "due_at": "2026-10-16T15:00:00Z",
+    "html_url": "https://canvas.example.edu/courses/777/assignments/9002",
+    "published": true,
+    "points_possible": 100.0
+  },
+  {
+    "id": 9003,
+    "name": "Draft: Unpublished Thing",
+    "due_at": "2026-11-01T03:59:00Z",
+    "html_url": "https://canvas.example.edu/courses/777/assignments/9003",
+    "published": false
+  }
+]

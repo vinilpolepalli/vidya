@@ -11,7 +11,7 @@ from datetime import date, datetime, timedelta
 from typing import Any, Optional
 
 from .dates import NEEDS_REVIEW_BELOW
-from .model import OP_CREATE, OP_DELETE, OP_UPDATE, CalendarOp, DiffResult, ReviewResult
+from .model import OP_CREATE, OP_DELETE, OP_UPDATE, UNREADABLE, CalendarOp, DiffResult, ReviewResult
 
 MAX_DELETES_PER_COURSE = 2
 PAST_WINDOW_DAYS = 120
@@ -26,7 +26,7 @@ def review_plan(
 ) -> ReviewResult:
     today = today or date.today()
     result = ReviewResult()
-    unreadable = {c.course_id for c in diff.unreadable}
+    unreadable = {c.course_id for c in diff.unreadable if c.type == UNREADABLE}
     changed_by_key = {c.key: c for c in diff.changes}
     deletes_by_course: dict[str, int] = {}
     for op in ops:

@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+from datetime import date, datetime
+from zoneinfo import ZoneInfo
+
 from .dates import parse_date_text
-from .model import Event, Reading
+from .model import Event, ParsedDate, Reading
 from .normalize import clean_text, item_key
 
 
@@ -24,9 +27,12 @@ def resolve_reading(reading: Reading) -> tuple[list[Event], list[Event]]:
         title = clean_text(item.title)
         if not title:
             continue
-        parsed = parse_date_text(
-            item.date_text, reading.read_at, tz=reading.timezone, posted_at=item.posted_at
-        )
+        if item.start:
+            parsed = _exact(item, reading.timezone)
+        else:
+            parsed = parse_date_text(
+                item.date_text, reading.read_at, tz=reading.timezone, posted_at=item.posted_at
+            )
         ev = Event(
             key=item_key(reading.course_id, title),
             course_id=reading.course_id,
@@ -43,7 +49,11 @@ def resolve_reading(reading: Reading) -> tuple[list[Event], list[Event]]:
             review_reason=parsed.reason,
             assumptions=list(parsed.assumptions),
             detail=clean_text(item.detail)[:500],
+            superseded=parsed.superseded,
         )
+        if item.review_reason:
+            ev.needs_review = True
+            ev.review_reason = item.review_reason + (f" ({ev.review_reason})" if ev.review_reason else "")
         existing = by_key.get(ev.key)
         if existing is None:
             by_key[ev.key] = ev
@@ -58,6 +68,34 @@ def resolve_reading(reading: Reading) -> tuple[list[Event], list[Event]]:
     return events, review
 
 
+def _exact(item, tz: str) -> ParsedDate:
+    """An item that arrived with machine timestamps (API or iCal). Rendered in
+    the course timezone so it compares equal to the same deadline read from a page."""
+    zone = ZoneInfo(tz)
+    try:
+        if item.all_day or (len(item.start) == 10 and "T" not in item.start):
+            start_d = date.fromisoformat(item.start[:10])
+            end_d = date.fromisoformat((item.end or item.start)[:10])
+            return ParsedDate(start=start_d.isoformat(), end=end_d.isoformat(), all_day=True,
+                              confidence=0.98, needs_review=False,
+                              assumptions=["exact date from the source system"])
+        start = datetime.fromisoformat(item.start.replace("Z", "+00:00"))
+        if start.tzinfo is None:
+            start = start.replace(tzinfo=zone)
+        end = datetime.fromisoformat(item.end.replace("Z", "+00:00")) if item.end else start
+        if end.tzinfo is None:
+            end = end.replace(tzinfo=zone)
+        start, end = start.astimezone(zone), end.astimezone(zone)
+        if end < start:
+            end = start
+        return ParsedDate(start=start.isoformat(), end=end.isoformat(), all_day=False,
+                          confidence=0.98, needs_review=False,
+                          assumptions=["exact timestamp from the source system"])
+    except ValueError as e:
+        return ParsedDate(start=None, end=None, all_day=True, confidence=0.0, needs_review=True,
+                          reason=f"unparseable machine timestamp {item.start!r}: {e}")
+
+
 def _merge(a: Event, b: Event) -> Event:
     sources = list(dict.fromkeys(a.sources + b.sources))
     if a.needs_review and not b.needs_review:
@@ -69,6 +107,17 @@ def _merge(a: Event, b: Event) -> Event:
     else:
         same_day = (a.start or "")[:10] == (b.start or "")[:10]
         if not same_day:
+            # One source states a change whose OLD date is what the other source
+            # still shows ("moved from Oct 14 to Oct 16" vs a page saying Oct 14).
+            # That is an acknowledged update, not a disagreement: the change wins.
+            for newer, older in ((a, b), (b, a)):
+                if newer.superseded and older.start and newer.superseded == older.start[:10]:
+                    merged = Event(**{**newer.to_dict(), "sources": sources})
+                    merged.assumptions = list(dict.fromkeys(
+                        newer.assumptions + [f"supersedes '{older.date_text}' still shown at {older.sources[0]}"]))
+                    if older.detail and not merged.detail:
+                        merged.detail = older.detail
+                    return merged
             merged = Event(**{**a.to_dict(), "sources": sources})
             merged.needs_review = True
             merged.review_reason = (

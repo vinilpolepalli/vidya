@@ -17,7 +17,7 @@ from datetime import date, datetime
 from typing import Any, Optional
 
 from .model import (
-    ADDED, MOVED, PENDING_REMOVAL, REMOVED, REWORDED, STATUS_OK, UNREADABLE,
+    ADDED, MOVED, PENDING_REMOVAL, REMOVED, REWORDED, SOURCE_FAILED, STATUS_OK, UNREADABLE,
     Change, DiffResult, Event, Reading,
 )
 from .normalize import title_similarity
@@ -61,6 +61,9 @@ def diff_course(
 
     events, review = resolve_reading(reading)
     result.needs_review.extend(review)
+
+    if reading.partial:
+        return _diff_partial(course_id, previous, events, result, new_missing)
 
     if not events and previous:
         result.unreadable.append(Change(UNREADABLE, course_id, f"{course_id}::*", course_id,
@@ -138,6 +141,57 @@ def diff_course(
     return result, new_belief, new_missing
 
 
+def _diff_partial(course_id: str, previous: list[Event], events: list[Event], result: DiffResult,
+                  new_missing: dict[str, dict[str, Any]]) -> tuple[DiffResult, list[Event], dict[str, dict[str, Any]]]:
+    """A partial reading (email) can move or add items; it cannot remove anything."""
+    belief = {e.key: e for e in previous}
+    for ev in events:
+        prev = belief.get(ev.key)
+        if prev is None:
+            result.changes.append(Change(ADDED, course_id, ev.key, ev.title, after=ev, note=_fmt(ev) + " (from a partial source)"))
+            belief[ev.key] = ev
+        elif not prev.same_schedule(ev):
+            result.changes.append(Change(MOVED, course_id, ev.key, ev.title, before=prev, after=ev,
+                                         note=f"{_fmt(prev)} -> {_fmt(ev)} (from a partial source)"))
+            belief[ev.key] = ev
+    new_belief = sorted(belief.values(), key=lambda e: (e.start or "9999", e.title))
+    return result, new_belief, new_missing
+
+
+def merge_readings(readings: list[Reading]) -> tuple[Optional[Reading], list[Reading]]:
+    """Combine every reading of one course for one night.
+
+    Returns (merged, failed_full). A successful full reading (page, API, feed)
+    absorbs the items of every other successful reading, partial ones included.
+    If no full reading succeeded, the partial readings are merged on their own
+    and stay partial, and the failed full readings are returned so the course
+    can be reported unreadable.
+    """
+    if not readings:
+        return None, []
+    full = [r for r in readings if not r.partial]
+    parts = [r for r in readings if r.partial and r.ok]
+    ok_full = [r for r in full if r.ok]
+    failed_full = [r for r in full if not r.ok]
+    base_list = ok_full or parts
+    if not base_list:
+        return (failed_full[0] if failed_full else None), failed_full[1:]
+    base = base_list[0]
+    items = []
+    for r in (ok_full + parts) if ok_full else parts:
+        items.extend(r.items)
+    merged = Reading(
+        course_id=base.course_id,
+        source_url=base.source_url,
+        read_at=max(r.read_at for r in base_list + parts),
+        status=STATUS_OK,
+        items=items,
+        timezone=base.timezone,
+        partial=not ok_full,
+    )
+    return merged, failed_full
+
+
 def diff_all(
     belief: dict[str, list[Event]],
     readings: list[Reading],
@@ -146,7 +200,16 @@ def diff_all(
 ) -> DiffResult:
     """Diff every course. Courses configured but not read this run are left untouched."""
     total = DiffResult()
-    by_course = {r.course_id: r for r in readings}
+    grouped: dict[str, list[Reading]] = {}
+    for r in readings:
+        grouped.setdefault(r.course_id, []).append(r)
+    by_course: dict[str, Optional[Reading]] = {}
+    failed_notes: dict[str, list[Reading]] = {}
+    for cid, group in grouped.items():
+        merged, failed = merge_readings(group)
+        by_course[cid] = merged
+        if merged is not None and merged.ok and failed:
+            failed_notes[cid] = failed
     ids = list(course_ids or [])
     for cid in list(belief) + list(by_course):
         if cid not in ids:
@@ -154,6 +217,10 @@ def diff_all(
     for cid in ids:
         course_missing = {k: v for k, v in missing.items() if k.startswith(f"{cid}::")}
         res, new_belief, new_missing = diff_course(cid, belief.get(cid, []), by_course.get(cid), course_missing)
+        for failed in failed_notes.get(cid, []):
+            res.unreadable.append(Change(SOURCE_FAILED, cid, f"{cid}::*", cid,
+                                         note=f"{failed.source_url or 'a source'} failed ({failed.error or failed.status}); "
+                                              f"other sources for this course were used"))
         total.changes.extend(res.changes)
         total.pending_removals.extend(res.pending_removals)
         total.unreadable.extend(res.unreadable)

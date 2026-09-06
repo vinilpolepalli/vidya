@@ -36,6 +36,13 @@ class Item:
     section: str = ""  # syllabus | assignments | announcements | calendar | email
     posted_at: Optional[str] = None  # ISO date the text was posted (announcements, email)
     detail: str = ""
+    # Sources with exact timestamps (Canvas API, iCal) set these and skip text parsing.
+    start: Optional[str] = None
+    end: Optional[str] = None
+    all_day: Optional[bool] = None
+    # An extractor that cannot vouch for the item (ambiguous email mention) sets
+    # this; the item then goes to needs-review whatever its date parses to.
+    review_reason: Optional[str] = None
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -50,6 +57,10 @@ class Item:
             section=d.get("section") or "",
             posted_at=d.get("posted_at"),
             detail=d.get("detail") or "",
+            start=d.get("start"),
+            end=d.get("end"),
+            all_day=d.get("all_day"),
+            review_reason=d.get("review_reason"),
         )
 
 
@@ -64,6 +75,10 @@ class Reading:
     error: Optional[str] = None
     items: list[Item] = field(default_factory=list)
     timezone: str = DEFAULT_TZ
+    # A partial reading (an email) only speaks about the items it mentions. It
+    # can move or add items but its silence about everything else means nothing,
+    # so it never contributes to removals.
+    partial: bool = False
 
     @property
     def ok(self) -> bool:
@@ -84,6 +99,7 @@ class Reading:
             error=d.get("error"),
             items=[Item.from_dict(i) for i in d.get("items") or []],
             timezone=d.get("timezone") or DEFAULT_TZ,
+            partial=bool(d.get("partial", False)),
         )
 
 
@@ -98,6 +114,7 @@ class ParsedDate:
     needs_review: bool
     reason: str = ""
     assumptions: list[str] = field(default_factory=list)
+    superseded: Optional[str] = None  # old date named by an inline change ("moved from Oct 14 ...")
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -122,6 +139,7 @@ class Event:
     review_reason: str = ""
     assumptions: list[str] = field(default_factory=list)
     detail: str = ""
+    superseded: Optional[str] = None
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -129,6 +147,7 @@ class Event:
     @classmethod
     def from_dict(cls, d: dict[str, Any]) -> "Event":
         return cls(
+            superseded=d.get("superseded"),
             key=d["key"],
             course_id=d["course_id"],
             title=d["title"],
@@ -156,7 +175,8 @@ REMOVED = "removed"  # only emitted once confirmed by two successful reads on di
 MOVED = "moved"
 REWORDED = "reworded"
 PENDING_REMOVAL = "pending_removal"  # informational, never a calendar op
-UNREADABLE = "unreadable"  # informational, never a calendar op
+UNREADABLE = "unreadable"  # course could not be read at all; blocks every op for it
+SOURCE_FAILED = "source_failed"  # one source failed but another (e.g. email) was used
 
 
 @dataclass
