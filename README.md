@@ -116,11 +116,13 @@ vidya/            engine (stdlib only)
   digest.py          weekly digest (due soon, what moved, volatility)
   graph.py           Graphiti episodes (add_memory shape, deterministic uuids)
   safety.py          opt-in safety check-ins: who may be messaged, when, once (off by default)
+  why.py             the receipt for one item: page text, sources, assumptions, every move
+  track.py           dedupe ledger for skills that act in the world (applications, outreach)
   extract/           html, canvas (REST), ical, email -> Reading
   fixtures/          synthetic T0 set: six courses, two nights, five planted changes; canvas/ical/email samples
   selftest.py        T1-T5 without pytest
-tests/               pytest suite: T1-T6, email/iCal merge rules, digest, graph, safety
-template/            the Grok Bot template as text: profile, seven skills, routines, bootstrap message, scrub checklist
+tests/               pytest suite: T1-T6, email/iCal merge rules, digest, graph, safety, why, track
+template/            the Grok Bot template as text: profile, sixteen skills, routines, every message to send, scrub checklist
 submission/          written description, post draft, T8 claim audit, test log
 docs/                ARCHITECTURE.md, SYSTEM_MAP.md (Mermaid), INTEGRATIONS.md, GRAPHITI.md
 fixtures/            where your real T0 captures go (git-ignored)

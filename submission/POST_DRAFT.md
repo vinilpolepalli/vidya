@@ -6,28 +6,23 @@
 
 My professor moved a midterm at 11 PM. My calendar already knew by the time I woke up.
 
-I built a Grok Bot for the #GrokBotForStudents Student Build Challenge. It's called Vidya (Sanskrit for knowledge), and it does one job: every night it reads my course pages on its own cloud computer, compares them with last night, writes what changed to Google Calendar, and messages me what moved and where it saw it.
-
-What it does
-- Reads syllabus, assignments and announcements for every course at 11 PM (Grok Bot routine + browser; Canvas API or iCal feed where they exist)
-- Diffs against last night's snapshot on its filesystem
-- Writes confirmed changes to Google Calendar: classes in peacock, deadlines in tomato, source link in every event
-- Merges professor emails that move a date (Gmail, read-only)
-- Sends one summary, including what it refused to guess
+I built a Grok Bot for the #GrokBotForStudents Student Build Challenge. It's called Vidya (Sanskrit for knowledge). Every night it sends one reader to every page in my student life that has a date on it (my courses, the registrar, financial aid, clubs), compares what it finds with what it believed last night, and writes only the confirmed changes to Google Calendar, with a receipt inside every event: the source link, the exact words on the page, every assumption it made. I can ask "why is Midterm 1 on the 16th?" and get the receipt and every time it moved.
 
 What it won't do
-- Delete anything after a failed or empty page load. A deletion needs the item gone on two successful reads on different days.
-- Guess. "TBD", "week of Oct 12", "next Friday" go to a needs-review bucket, never onto the calendar.
+- Guess. "TBD", "week of Oct 12", "next Friday" go to a review list, never onto the calendar.
+- Delete anything after a failed page load. A removal needs the item gone on two successful reads on different days.
 - Duplicate. Re-running a night creates nothing twice, even after a crash mid-write.
 - Log in for me. When MFA shows up it stops and asks me to take over.
 
-Optional, and the part my parents liked: a nightly check-in. At 9 PM it asks if I'm good. If I don't answer within 90 minutes, my mom gets one email saying so (and that it usually means my phone died). When I reply, she gets one all-clear. Off by default, only to people I named who agreed, and the rules for who gets messaged and how often are code with tests, not a prompt. It can't see my phone; it's a check-in, not tracking.
+The part my parents liked: a nightly check-in. At 9 PM it asks if I'm good. If I don't answer within 90 minutes, my mom gets one email saying so (and that it usually means my phone died); when I reply, she gets the all-clear. Off by default, only to people I named who agreed. It can't see my phone. A check-in, not tracking.
 
-The part I'm proudest of isn't the bot, it's the tests. LLM at the edges, code in the middle: the model reads pages and applies calendar ops; the diff, the date parsing, the destructive-write guard and the ledger are plain Python on the bot's computer, with a fixture suite: six course pages across two nights with five planted changes, a known-answer diff, an idempotency test, a destructive-write guard, an adversarial date set, timezone checks, and a Canvas sandbox run through the same loop with zero code changes. `selftest` prints ALL PASS in a second on a clean machine.
+Then it does the rest of the job with one rule, it prepares and I decide: lecture notes into Notion with sources, coaching on how to approach an assignment (never the submission), a nightly scout of the Simplify internship list with applications filled and submitted only as a batch I approve, a resume tailored per posting where every line traces to my master resume, projects to close skill gaps that I drive, club fit reports, coffee chats and cold outreach drafted for me to send, and "block Tuesday mornings for the project" in plain English. A ledger on its computer means nothing happens twice.
 
-Under the hood: Grok Bot routines and cloud computer, Google Calendar and Gmail plugins, browser automation (Brightspace, Canvas, Blackboard, anything with a course page), Canvas REST + iCal, a stdlib Python engine, and Graphiti (Zep's temporal graph) so I can ask "how many times has this professor moved a deadline" and get an answer with history.
+The part I'm proudest of is the shape, not the bot. LLM at the edges, code in the middle: one supervisor Bot, one cheap reader subagent per page, and a standard-library Python engine with 74 tests deciding what changed, what's ambiguous, what may be written, who may be messaged. The model applies exactly what the code approved. `selftest` prints ALL PASS in a second on a clean machine.
 
-Template (public, setup playbook included, works on Brightspace and Canvas): <TEMPLATE_LINK>
+Under the hood: Grok Bot routines, subagents and cloud computer; Google Calendar, Gmail and Notion plugins; browser reads of Brightspace, Canvas, Blackboard, Schoology, anything with a course page; Canvas REST + iCal; the SimplifyJobs listings; Graphiti (Zep) for "how many times has this professor moved a deadline".
+
+Template (public; one message and it builds itself; college and high school): <TEMPLATE_LINK>
 Code and fixture suite: https://github.com/vinilpolepalli/vidya
 
 What is the one thing your LMS should tell you and doesn't?

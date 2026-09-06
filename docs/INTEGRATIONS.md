@@ -13,17 +13,30 @@ its own to write anywhere.
 | **Gmail plugin, read** | read | instructor emails that move a date are merged as a partial reading (can move/add, never remove) | owner connects Gmail | optional |
 | **Gmail plugin, send** | write | safety check-in messages only: missed-check-in notice, all-clear, owner-requested message, weekly schedule share; from the owner's mailbox to contacts the owner added | owner turns on `vidya safety` and adds consented contacts | optional, off by default |
 | **Carrier text gateway** (e.g. `number@vtext.com`) | write (via Gmail) | lets a safety contact receive the message as a text where the carrier still supports email-to-SMS | address entered as the contact's address | optional |
+| **Google Maps location sharing** | read (browser) | last-known place and its age, read only when a missed-check-in alert is about to go out, shown only inside that alert | owner shares location from their phone with the account the Bot's browser uses, and turns on `--include-location` | optional, off by default |
+| **Notion plugin** | write | lecture notes database ("Vidya · Lecture notes"), one page per lecture with sources | owner connects Notion | optional |
+| **SimplifyJobs listings** (`Summer2027-Internships`, `New-Grad-Positions`, `listings.json`) | read | nightly diff of new postings against the owner's profile; stable ids feed the dedupe ledger | nothing; public | optional |
+| **ATS sites** (Workday, Greenhouse, Lever, …) | write (browser) | applications filled from the profile and tailored resume, stopped at Submit, submitted as an owner-approved batch, logged in `vidya track applications` | owner's own accounts; sign-in via takeover | optional |
+| **GitHub** | write | repos for gap-closing projects, pushed only after the owner names the repo | owner's account; sign-in via takeover | optional |
+| **LinkedIn** (browser, human pace) | read | shortlists for outreach: at most 10 profiles per run, no automation, no scraping, no bulk actions | owner signs in via takeover | optional |
+| **Gmail plugin, send (approved messages)** | write | outreach, coffee-chat and club messages the owner has read and approved, logged in `vidya track outreach` | owner approves each message or a batch they read | optional |
 | **Graphiti** (Zep temporal graph) | write | run episodes for "how many times has this professor moved a deadline" | owner runs their own server and key; `vidya graph` exports episodes | optional |
 | **Grok Bot routines** | schedule | 11 PM nightly check, Sunday digest, evening safety window | owner confirms schedule and time zone | yes |
 | **Grok Bot cloud computer** | runtime | git, python3, browser, filesystem for state | nothing; present by default | yes |
 
 ## Not integrated, on purpose
 
-- **Location / GPS.** The Bot runs on a cloud computer and cannot see the
-  owner's phone. If the owner wants a place named in a missed-check-in alert,
-  they tell the Bot ("checking in from the library") or share a location page
-  the Bot's browser can read, and turn on `--include-location`. Nothing is
-  inferred, and the place appears only inside an alert.
+- **GPS / continuous location.** The Bot runs on a cloud computer and cannot
+  see the owner's phone. The only location path is the one above: Google Maps
+  sharing the owner turns on, read once, when an alert is about to go out,
+  shown only inside that alert with its age. Nothing is inferred and nothing is
+  logged as a trail.
+- **Unattended job applications.** Applications are prepared to the Submit
+  button and submitted as a batch the owner approved in the conversation. ATS
+  sites that forbid automated applications are skipped and handed to the owner.
+- **LinkedIn automation.** No scraping, no auto-connect, no auto-message, no
+  third-party extensions; at most ten profiles opened per run.
+- **Writing the owner's assignments.** Coaching, review and planning only.
 - **Attendance.** Same reason: no sensor, no claim.
 - **Auto-submitting anything to the LMS.** Read-only. The Bot never posts,
   submits, or replies on a course site.
@@ -44,6 +57,14 @@ usually means a phone on silent, and what the last check-in was. If the owner
 checks in later, each alerted contact gets one all-clear. A daily cap stops a
 misconfiguration from spamming anyone; the all-clear is exempt. Failed sends
 retry; successful ones never repeat. Tests: `tests/test_safety.py`.
+
+## The action ledger
+
+Skills that act in the world (applications, outreach, coffee chats, club
+applications) check `vidya track has <kind> <key>` before acting and
+`vidya track add` right after. A routine can run twice, a Bot can be restarted
+mid-task, and nothing is submitted or sent twice. `vidya track list` is the
+audit trail the weekly digest and the owner read.
 
 ## Adding another LMS
 

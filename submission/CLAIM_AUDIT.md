@@ -32,7 +32,15 @@ repo; **live** = something you did on the real bot and can show if asked.
 | 21 | Nightly check-in: asks me first, one email per contact after the grace period, one all-clear when I reply | test (+ frame if recorded) | `tests/test_safety.py::test_owner_is_reminded_first_and_only_once`, `::test_missed_checkin_alerts_each_contact_once`, `::test_late_checkin_after_alert_sends_one_all_clear`. Frame: the reminder in chat, then the email in a parent's inbox, then the all-clear. **If no frame:** "built in and tested; I have not run a real missed night yet" | ☐ |
 | 22 | Off by default, only to people I named who agreed | test | `::test_off_by_default_sends_nothing`; `add-contact` refuses without `--consented` (`cli.py`) | ☐ |
 | 23 | "It can't see my phone; a check-in, not tracking" | test | `::test_location_only_when_opted_in`: no place in any alert unless opted in, and then only what the owner supplied | ☐ |
-| 24 | Works with Brightspace, Canvas, Blackboard, anything with a course page | test + wording rule | Same rule as row 14. Brightspace fixtures + Canvas fixture are tested; Blackboard/Moodle/Classroom are the zero-code "Read course" path. Say "tested on <what you ran>; built to work with any course page" | ☐ |
+| 24 | Works with Brightspace, Canvas, Blackboard, anything with a course page | test + wording rule | Same rule as row 14. Brightspace fixtures + Canvas fixture are tested; Blackboard/Moodle/Classroom/Schoology are the zero-code "Read course" path. Say "tested on <what you ran>; built to work with any course page" | ☐ |
+| 25 | "A receipt inside every event" / "ask why and it shows every time it moved" | test + frame | `tests/test_why_and_track.py::test_why_explains_a_move_with_both_dates_and_the_source`; frame: `vidya why "Midterm 1"` output, and the event description in Google Calendar | ☐ |
+| 26 | Watches registrar / aid / housing / club pages, not just courses | test (kind is just a label) + frame | `add-source --kind`; the engine does not branch on kind. Frame: `vidya status` showing a `[registrar]` source. **Only claim what you actually added.** | ☐ |
+| 27 | Alert can say where I last was, via Google Maps sharing | test + live | `test_shared_location_appears_only_when_opted_in_and_is_not_a_checkin`. Live: do one Maps read yourself before claiming; otherwise say "can include a last-known place you share" | ☐ |
+| 28 | Applications "submitted only as a batch I approve", "nothing happens twice" | test + frame | `test_track_dedupes`; the Opportunity scout skill stops at Submit. Frame: the batch summary and one confirmation screenshot. **If you have not run a real application yet, say "built to" and cut the number.** | ☐ |
+| 29 | Resume: "every line traces to my master resume" | live | Open one `facts.md` next to the tailored PDF in the video, or soften to "designed so that" | ☐ |
+| 30 | Lecture notes into Notion, assignment coach, club fit report, coffee chats, cold outreach, calendar concierge | frame or cut | Each needs one frame (a Notion page, a coaching note, a fit report, a drafted note, an operation list). Cut any you did not record; the post already carries the deadline story | ☐ |
+| 31 | "74 tests" | test | `python3 -m pytest -q` output frame or the CI badge; update the number if it changes | ☐ |
+| 32 | "Works for high school" | wording | The engine is page-agnostic and the playbook names Schoology/Classroom/PowerSchool/counseling pages. Say "built for" unless a high school student ran it | ☐ |
 
 ## Claims to avoid unless you have the frame
 
@@ -41,6 +49,9 @@ repo; **live** = something you did on the real bot and can show if asked.
 - "Never wrong" about dates — say "never guesses; ambiguous dates go to review".
 - Location tracking, attendance, or auto-applying. The Bot has no sensor; the safety check-in is the honest version (the owner checks in, or contacts are told they did not). Never write "knows where I am".
 - "Texts my parents" — say "emails" unless you verified the carrier gateway delivered as a text on your parent's phone.
+- "Auto-applies to jobs" — say "prepares applications I approve as a batch". Unattended submission is not what it does and would not be a feature.
+- "Builds projects for my resume" — say "helps me build" / "pair-programs". The README labels AI-assisted work and so should you.
+- "Knows where I am" — never. "Can tell my mom where I last was, if I share my location and only when I've gone quiet" is the true sentence.
 
 ## Sign-off
 
