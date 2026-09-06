@@ -17,7 +17,7 @@ from datetime import date, datetime
 from typing import Any, Optional
 
 from .model import (
-    ADDED, MOVED, PENDING_REMOVAL, REMOVED, REWORDED, SOURCE_FAILED, STATUS_OK, UNREADABLE,
+    ADDED, MOVED, NOT_READ, PENDING_REMOVAL, REMOVED, REWORDED, SOURCE_FAILED, STATUS_OK, UNREADABLE,
     Change, DiffResult, Event, Reading,
 )
 from .normalize import title_similarity
@@ -50,7 +50,7 @@ def diff_course(
     new_missing = {k: dict(v) for k, v in missing.items()}
 
     if reading is None:
-        result.unreadable.append(Change(UNREADABLE, course_id, f"{course_id}::*", course_id,
+        result.unreadable.append(Change(NOT_READ, course_id, f"{course_id}::*", course_id,
                                         note="no reading produced this run; belief unchanged"))
         return result, list(previous), new_missing
 

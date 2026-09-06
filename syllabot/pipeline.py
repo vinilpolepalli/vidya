@@ -18,7 +18,7 @@ from .calendar_plan import apply_results_to_ledger, build_plan
 from .diff import diff_all
 from .fake_calendar import FakeCalendar
 from .model import (
-    ADDED, MOVED, OP_CREATE, OP_DELETE, OP_UPDATE, REMOVED, REWORDED,
+    ADDED, MOVED, NOT_READ, OP_CREATE, OP_DELETE, OP_UPDATE, REMOVED, REWORDED,
     CalendarOp, Change, DiffResult, Event, Reading, ReviewResult,
 )
 from .review import review_plan
@@ -42,6 +42,8 @@ def plan_run(
     review = review_plan(ops, diff, counts, today=today)
     seen_at = max((r.read_at for r in readings), default=datetime.now(timezone.utc).isoformat())
     store.record_needs_review(diff.needs_review, seen_at)
+    open_keys = store.open_review_keys()
+    diff.needs_review = [e for e in diff.needs_review if e.key in open_keys]
     summary = summarize(run_id, diff, review, store.course_names(), seen_at)
     if recovered:
         summary += "\n".join(["## Recovery", *[f"- committed interrupted run {r['run_id']} from its partial results "
@@ -117,10 +119,13 @@ def fake_apply(store: Store, run_id: str) -> list[dict[str, Any]]:
 
 def summarize(run_id: str, diff: DiffResult, review: ReviewResult, names: dict[str, str], as_of: str) -> str:
     n = lambda cid: names.get(cid, cid)
+    not_read = [c for c in diff.unreadable if c.type == NOT_READ]
+    unreadable = [c for c in diff.unreadable if c.type != NOT_READ]
     lines = [f"# Nightly syllabus check ({run_id})", "", f"As of {as_of}.", ""]
     lines.append(
         f"**{len(diff.changes)} change(s)**, {len(diff.pending_removals)} pending removal(s), "
-        f"{len(diff.unreadable)} course(s) unreadable, {len(diff.needs_review)} item(s) need review."
+        f"{len(unreadable)} course(s) unreadable, {len(diff.needs_review)} item(s) need review."
+        + (f" {len(not_read)} course(s) not read this run." if not_read else "")
     )
     lines.append("")
     if diff.changes:
@@ -136,10 +141,13 @@ def summarize(run_id: str, diff: DiffResult, review: ReviewResult, names: dict[s
         for c in diff.pending_removals:
             lines.append(f"- {n(c.course_id)}: {c.title} — {c.note}")
         lines.append("")
-    if diff.unreadable:
+    if unreadable:
         lines.append("## Unreadable this run (belief left untouched)")
-        for c in diff.unreadable:
+        for c in unreadable:
             lines.append(f"- {n(c.course_id)}: {c.note}")
+        lines.append("")
+    if not_read:
+        lines.append("Not read this run (belief unchanged): " + ", ".join(n(c.course_id) for c in not_read))
         lines.append("")
     if diff.needs_review:
         lines.append("## Needs review (not written to the calendar)")

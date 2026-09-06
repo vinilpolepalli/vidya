@@ -177,6 +177,7 @@ REWORDED = "reworded"
 PENDING_REMOVAL = "pending_removal"  # informational, never a calendar op
 UNREADABLE = "unreadable"  # course could not be read at all; blocks every op for it
 SOURCE_FAILED = "source_failed"  # one source failed but another (e.g. email) was used
+NOT_READ = "not_read"  # no reading was produced for this course in this run (targeted run)
 
 
 @dataclass

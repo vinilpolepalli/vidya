@@ -184,6 +184,14 @@ def cmd_commit(args) -> int:
     return 0
 
 
+def cmd_resolve_review(args) -> int:
+    store = _store(args)
+    if store.resolve_review(args.key, args.note or "resolved by owner", _now_iso()):
+        print(f"resolved {args.key}; it stays out of summaries until its source text changes")
+        return 0
+    sys.exit(f"no review item with key {args.key!r}; see `syllabot status`")
+
+
 def cmd_status(args) -> int:
     store = _store(args)
     belief = store.all_belief()
@@ -197,11 +205,13 @@ def cmd_status(args) -> int:
         print(f"pending removals: {len(missing)}")
         for k, v in missing.items():
             print(f"  - {k}: missing since {v['first_missing']} ({v['count']}/2)")
-    nr = store.needs_review
-    if nr:
-        print(f"needs review: {len(nr)}")
+    nr = {k: v for k, v in store.needs_review.items() if not v.get("resolved")}
+    resolved = len(store.needs_review) - len(nr)
+    if nr or resolved:
+        print(f"needs review: {len(nr)}" + (f" ({resolved} resolved by owner)" if resolved else ""))
         for k, v in nr.items():
-            print(f"  - {v.get('title')!r} ({v.get('course_id')}): \"{v.get('date_text')}\" — {v.get('reason')}")
+            cand = f" candidate {v['candidate']}" if v.get("candidate") else ""
+            print(f"  - {k}\n      {v.get('title')!r} ({v.get('course_id')}): \"{v.get('date_text')}\" — {v.get('reason')}{cand}")
     print(f"ledger: {len(store.ledger)} calendar event(s) tracked")
     unc = store.uncommitted_runs()
     if unc:
@@ -322,6 +332,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     s = sub.add_parser("status", help="belief counts, pending removals, needs-review, ledger")
     s.set_defaults(fn=cmd_status)
+
+    s = sub.add_parser("resolve-review", help="mark a needs-review item as handled by the owner")
+    s.add_argument("key")
+    s.add_argument("--note")
+    s.set_defaults(fn=cmd_resolve_review)
 
     s = sub.add_parser("show", help="print a run's summary")
     s.add_argument("run_id", nargs="?")

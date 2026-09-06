@@ -112,15 +112,32 @@ class Store:
         self._write(self.root / "needs_review.json", nr)
 
     def record_needs_review(self, events: list[Event], seen_at: str) -> dict[str, dict[str, Any]]:
+        """Track review items across runs. An item the owner resolved stays
+        resolved while its source text is unchanged; new wording reopens it."""
         nr = self.needs_review
         for e in events:
             cur = nr.get(e.key) or {"first_seen": seen_at}
+            if cur.get("resolved") and cur.get("date_text") != e.date_text:
+                cur.pop("resolved", None)
+                cur.pop("resolution", None)
+                cur["reopened_at"] = seen_at
             cur.update({"last_seen": seen_at, "course_id": e.course_id, "title": e.title,
                         "date_text": e.date_text, "reason": e.review_reason,
                         "candidate": e.start, "sources": e.sources})
             nr[e.key] = cur
         self.save_needs_review(nr)
         return nr
+
+    def resolve_review(self, key: str, note: str, at: str) -> bool:
+        nr = self.needs_review
+        if key not in nr:
+            return False
+        nr[key].update({"resolved": True, "resolution": note, "resolved_at": at})
+        self.save_needs_review(nr)
+        return True
+
+    def open_review_keys(self) -> set[str]:
+        return {k for k, v in self.needs_review.items() if not v.get("resolved")}
 
     # ---- runs -------------------------------------------------------------
     def new_run_id(self, now: Optional[datetime] = None) -> str:

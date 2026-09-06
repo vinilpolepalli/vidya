@@ -44,8 +44,9 @@ def review_plan(
         result.notes.append(f"{len(result.blocked)} operation(s) blocked; see blocked[].reason")
     if diff.pending_removals:
         result.notes.append(f"{len(diff.pending_removals)} item(s) missing once; no deletion until confirmed on a later day")
-    if diff.unreadable:
-        result.notes.append(f"{len(diff.unreadable)} course(s) unreadable; their beliefs were left untouched")
+    n_unreadable = sum(1 for c in diff.unreadable if c.type == UNREADABLE)
+    if n_unreadable:
+        result.notes.append(f"{n_unreadable} course(s) unreadable; their beliefs were left untouched")
     if diff.needs_review:
         result.notes.append(f"{len(diff.needs_review)} item(s) need review and were not written")
     return result
