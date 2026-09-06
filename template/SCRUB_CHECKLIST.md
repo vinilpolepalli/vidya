@@ -10,11 +10,12 @@ Search every included field for each pattern and remove or generalize it:
 - [ ] Calendar ids, event ids, anything from `ledger.json`
 - [ ] Tokens and keys: `CANVAS_TOKEN`, iCal feed URLs (they are tokenized), Graphiti server URLs or keys
 - [ ] The owner's name, time zone as a personal fact, schedule details
+- [ ] Safety contacts: names, relationships, email addresses, phone numbers, carrier gateway addresses, check-in times, anything from `~/vidya-state/safety/`
 - [ ] Any memory that came from a real conversation about a real course
 - [ ] Every skill clones `https://github.com/vinilpolepalli/vidya` (the public repository) and nothing else
 
-Things that are fine to include: the six skills as written in `skills/`, the two
-routines, the profile text, generic preferences ("list unreadable courses
+Things that are fine to include: the seven skills as written in `skills/`, the two
+routines (`nightly-2300`, `weekly-digest`), the profile text, generic preferences ("list unreadable courses
 first").
 
 Prompt to make the Bot do the audit for you (from the plan, section 7):

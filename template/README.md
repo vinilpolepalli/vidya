@@ -22,9 +22,11 @@ is not literal.
 | `skills/nightly-syllabus-check.md` | Skill | the supervisor loop: gather, launch, review, merge, report |
 | `skills/needs-review-triage.md` | Skill | how the owner resolves the needs-review bucket |
 | `skills/weekly-digest.md` | Skill | the Sunday digest |
+| `skills/safety-checkin.md` | Skill | optional nightly check-in with named contacts; off until the owner turns it on |
 | `skills/package-template.md` | Skill | how the Bot audits and packages itself (section 7 of the plan) |
 | `routines/nightly-2300.md` | Routine | 11 PM every day, owner-local time |
 | `routines/weekly-digest.md` | Routine | Sunday 6 PM |
+| `routines/safety-checkin.md` | Routine (optional) | every 30 min in the evening window; created only if the owner enabled check-ins |
 | `FIRST_RUN.md` | The installer's first message | what to send the Bot after adding the template |
 | `BOOTSTRAP.md` | Your first message when building the Bot | one paste: the Bot clones the repo and assembles itself from these files |
 | `SCRUB_CHECKLIST.md` | Before Publish → Public link | what must not be in the template |
@@ -33,7 +35,7 @@ is not literal.
 
 **Fast path:** create a new agent, name it Vidya, and paste the message in
 `BOOTSTRAP.md`. The Bot clones this repository onto its own computer and
-creates its profile text, the six skills and the two routines from the files
+creates its profile text, the seven skills and the two routines from the files
 here, then runs the Setup playbook. You only sign in, connect Google Calendar,
 and confirm. The manual steps below are the same thing done by hand.
 
@@ -42,14 +44,15 @@ and confirm. The manual steps below are the same thing done by hand.
    from the name; use it for positioning ("Deadline watch").
 2. Create each skill from `skills/*.md`. Use the heading as the skill name
    ("Setup playbook", "Read course", "Nightly syllabus check", "Needs-review
-   triage", "Weekly digest", "Package template") and paste the body as the
+   triage", "Weekly digest", "Safety check-in", "Package template") and paste the body as the
    instructions. The easiest way is to send the Bot the file contents with
    "Save this as a skill called <name>, exactly as written." Then confirm each
    skill is enabled for this Bot (Settings → Plugins → Yours) and appears when
    you type `/`. Skills are the only way instructions travel with a template,
    so the setup playbook has to be a skill, not a chat message.
-3. Create the two routines from `routines/*.md` by sending the quoted
-   paragraph to the Bot. Confirm owner, schedule, time zone, inputs, expected
+3. Create the two routines `nightly-2300.md` and `weekly-digest.md` by sending
+   the quoted paragraph to the Bot (`safety-checkin.md` is created later, only
+   if the owner turns check-ins on). Confirm owner, schedule, time zone, inputs, expected
    result, approval boundary, and missing-source behavior (the six things the
    docs say to confirm). Use **Test run** once before enabling.
 4. Message the Bot with `FIRST_RUN.md` and go through the playbook yourself
@@ -58,8 +61,8 @@ and confirm. The manual steps below are the same thing done by hand.
 5. Run `skills/package-template.md`: ask the Bot to package itself and justify
    every inclusion. Then `SCRUB_CHECKLIST.md`.
 6. Bot settings → **Share as template**. Review the draft it prepares (it
-   should list the profile, the six skills and the two routines, and no
-   memories about your courses), publish it as **public**, and copy the link.
+   should list the profile, the seven skills and the two routines, and no
+   memories about your courses or your contacts), publish it as **public**, and copy the link.
    Team-only links cannot be opened by judges. Open the link in a private
    window to confirm it renders.
 

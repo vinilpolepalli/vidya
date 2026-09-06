@@ -7,11 +7,11 @@ contain nothing about the owner.
 ## Sequence
 1. **Audit out loud.** Read your memories, skills, routines and plugins and say what each one is:
    - Memories: keep only durable, generic working preferences (e.g. "summaries list unreadable courses first"). Leave out every course name, URL, professor, calendar id, and anything about the owner's schedule.
-   - Skills: keep Setup playbook, Read course, Nightly syllabus check, Needs-review triage, Weekly digest, Package template. Leave out one-off skills.
-   - Routines: keep Nightly syllabus check and Weekly digest with their schedule text; the installer will confirm time zone.
+   - Skills: keep Setup playbook, Read course, Nightly syllabus check, Needs-review triage, Weekly digest, Safety check-in, Package template. Leave out one-off skills.
+   - Routines: keep Nightly syllabus check and Weekly digest with their schedule text; the installer will confirm time zone. Leave out the Safety check-in routine (it is created per owner, after they opt in) and any routine that mentions a real contact.
    - Plugins: keep Google Calendar. Gmail and Graphiti are optional and named as such in the playbook. Leave out anything else.
 2. **Check the playbook is complete.** Re-read `Setup playbook` and ask: could a person on Canvas at another university get to a first course read in ten minutes with only this text? If any step assumes something on this computer (a clone, a state dir, a login), the playbook must create or ask for it.
-3. **Scrub.** Search every field you are about to include for: course ids, `ou=`, `courses/<number>`, calendar ids, tokens, `CANVAS_TOKEN`, email addresses, names of professors, the owner's name, internal URLs. Remove or generalize each hit. Confirm the clone URL in Setup playbook is the public repository (`https://github.com/vinilpolepalli/vidya`).
+3. **Scrub.** Search every field you are about to include for: course ids, `ou=`, `courses/<number>`, calendar ids, tokens, `CANVAS_TOKEN`, email addresses, phone numbers, names of professors, names of safety contacts or family, the owner's name, internal URLs. Remove or generalize each hit. Confirm the clone URL in Setup playbook is the public repository (`https://github.com/vinilpolepalli/vidya`).
 4. **Justify every inclusion** in one line each and show the list to the owner before publishing.
 5. Publish as a **Public link**. Say clearly to the owner that the link exposes everything included.
 

@@ -4,7 +4,7 @@
 First message on a fresh computer, or whenever `~/vidya-state/config.json` is missing. Also when the owner says "set up", "start over", or "add a course".
 
 ## Required inputs and access
-- The owner's LMS name (Brightspace, Canvas, Google Classroom, Moodle, other) and calendar time zone (IANA name, e.g. `America/New_York`).
+- The owner's LMS name (Brightspace, Canvas, Blackboard, Google Classroom, Moodle, other; anything with a course page works, see "Read course") and calendar time zone (IANA name, e.g. `America/New_York`).
 - Terminal on this computer with `git` and `python3` (3.10+).
 - Browser on this computer for LMS sign-in (owner does the login; see step 4).
 - Google Calendar plugin, connected by the owner when asked (step 7).
@@ -24,7 +24,7 @@ Do the steps in this order. The first successful course read (step 5) comes befo
 3. **Create state.** `export VIDYA_STATE=~/vidya-state` and `vidya init --timezone <tz>`. Remember: every later command needs `VIDYA_STATE` set (or pass `--state ~/vidya-state`).
 
 4. **Course list.** Ask the owner for the courses, or open the LMS home in the browser. If a login page appears: stop, mark nothing, tell the owner "Please take over the computer and sign in to <platform>; I'll continue when you hand control back." Never type credentials, never attempt MFA, never retry a CAPTCHA. Once in, read the course list and confirm it with the owner before saving. For each course:
-   `vidya add-course <id> --name "<name>" --url "<course home URL>" --platform <brightspace|canvas|classroom|moodle|other>`
+   `vidya add-course <id> --name "<name>" --url "<course home URL>" --platform <brightspace|canvas|blackboard|classroom|moodle|other>`
    Use short ids (`data-structures`), never the LMS numeric id alone.
    - **Canvas**: ask whether the owner wants the API path. If yes, they create a token at Account → Settings → New Access Token and paste it into the terminal as `export CANVAS_TOKEN=...` themselves (do not ask them to paste it in chat). Readings then come from `vidya extract canvas --base-url https://<school>.instructure.com --canvas-course <numeric id> --course <id>`.
    - **Any LMS with an iCal feed** (Brightspace: Calendar → Subscribe; Canvas: Calendar → Calendar Feed): prefer the feed for dates. `vidya extract ical "<feed url>" --course <id>`. A tokenized feed needs no login and survives redesigns.
@@ -44,7 +44,9 @@ Do the steps in this order. The first successful course read (step 5) comes befo
 
 9. **Optional: email.** If the owner connects Gmail (read-only), the nightly skill will look for instructor emails that move a date. Explain: I will never send mail.
 
-10. **Optional: temporal graph.** Graphiti is not required. If the owner runs their own Graphiti MCP server (their own LLM key), add it as a plugin and the nightly skill will post episodes. See `docs/GRAPHITI.md` in the repo. Do not point at anyone else's server.
+10. **Optional: safety check-in.** Offer it in one sentence: "I can also do a nightly check-in: at a time you pick I ask if you're good, and if I don't hear back within a grace period I email people you name, once, then send them an all-clear when you reply. Want that?" If yes, run the "Safety check-in" skill's setup. If no, say nothing more about it; it stays off.
+
+11. **Optional: temporal graph.** Graphiti is not required. If the owner runs their own Graphiti MCP server (their own LLM key), add it as a plugin and the nightly skill will post episodes. See `docs/GRAPHITI.md` in the repo. Do not point at anyone else's server.
 
 ## How to validate
 - `selftest` said ALL PASS.
