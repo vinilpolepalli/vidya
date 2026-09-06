@@ -53,3 +53,25 @@ def test_ledger_matches_calendar_after_rewording(store, fixtures):
     assert set(store.ledger) == set(cal.by_key())
     assert "writing-seminar::essay 1 draft" not in store.ledger
     assert "writing-seminar::essay 1 first draft" in store.ledger
+
+
+def test_reset_forgets_dry_run_but_keeps_courses(store, fixtures):
+    """Setup playbook step 7: dry run on the fake calendar, `vidya reset`, then
+    the first real plan must recreate everything and the run history must not
+    contain the fake baseline."""
+    boot = plan_run(store, load_readings("day0", fixtures))
+    fake_apply(store, boot["run_id"])
+    assert store.fake_calendar_path.exists()
+    assert store.ledger
+    courses_before = store.courses
+
+    removed = store.reset()
+
+    assert "ledger.json" in removed and "fake_calendar.json" in removed
+    assert store.courses == courses_before
+    assert store.ledger == {} and store.all_belief() == {}
+    assert store.latest_run_id() is None
+    assert not store.fake_calendar_path.exists()
+    real = plan_run(store, load_readings("day0", fixtures))
+    assert all(op.op == OP_CREATE for op in real["review"].approved)
+    assert len(real["review"].approved) == len(boot["review"].approved)

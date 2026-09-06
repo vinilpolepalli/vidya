@@ -61,6 +61,16 @@ def cmd_init(args) -> int:
     return 0
 
 
+def cmd_reset(args) -> int:
+    store = _store(args)
+    if not args.yes:
+        sys.exit("reset forgets belief, ledger, runs, history and the review bucket (courses are kept); "
+                 "re-run with --yes to confirm")
+    removed = store.reset()
+    print(f"reset {store.root}: cleared {', '.join(removed) or 'nothing'}; kept config.json ({len(store.courses)} course(s)) and readings/")
+    return 0
+
+
 def cmd_add_course(args) -> int:
     store = _store(args)
     cfg = store.config
@@ -280,6 +290,10 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--courses", help="JSON file with the course list")
     s.add_argument("--calendar-id", help="Google Calendar id (default primary)")
     s.set_defaults(fn=cmd_init)
+
+    s = sub.add_parser("reset", help="forget belief/ledger/runs/history but keep the course list (dry run -> real calendar)")
+    s.add_argument("--yes", action="store_true", help="confirm")
+    s.set_defaults(fn=cmd_reset)
 
     s = sub.add_parser("add-course", help="add or replace one course in config.json")
     s.add_argument("id")

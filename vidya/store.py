@@ -53,6 +53,30 @@ class Store:
     def exists(self) -> bool:
         return self.config_path.exists()
 
+    def reset(self) -> list[str]:
+        """Forget everything learned (belief, ledger, runs, history, review
+        bucket, fake calendar) but keep config.json and the readings folder.
+        Used once, between the dry run and the first real calendar write, so the
+        real baseline is not diffed against the fake one."""
+        import shutil
+        removed: list[str] = []
+        for sub in ("belief", "runs", "history"):
+            p = self.root / sub
+            if p.exists():
+                shutil.rmtree(p)
+                removed.append(sub + "/")
+            p.mkdir(parents=True, exist_ok=True)
+        for name in ("missing.json", "ledger.json", "needs_review.json"):
+            p = self.root / name
+            if p.exists():
+                removed.append(name)
+            self._write(p, {})
+        fake = self.root / "fake_calendar.json"
+        if fake.exists():
+            fake.unlink()
+            removed.append(fake.name)
+        return removed
+
     # ---- config -----------------------------------------------------------
     @property
     def config(self) -> dict[str, Any]:
