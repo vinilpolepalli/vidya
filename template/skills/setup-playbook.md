@@ -23,8 +23,8 @@ Do the steps in this order. The first successful course read (step 5) comes befo
 
 3. **Create state.** `export VIDYA_STATE=~/vidya-state` and `vidya init --timezone <tz>`. Remember: every later command needs `VIDYA_STATE` set (or pass `--state ~/vidya-state`).
 
-4. **Course list.** Ask the owner for the courses, or open the LMS home in the browser. If a login page appears: stop, mark nothing, tell the owner "Please take over the computer and sign in to <platform>; I'll continue when you hand control back." Never type credentials, never attempt MFA, never retry a CAPTCHA. Once in, read the course list and confirm it with the owner before saving. For each course:
-   `vidya add-course <id> --name "<name>" --url "<course home URL>" --platform <brightspace|canvas|blackboard|classroom|moodle|other>`
+4. **Sources.** A source is any page with dates on it. Start with the courses, then offer the others: the registrar's academic calendar (add/drop, withdrawal, grade deadlines), financial aid, housing, and clubs or programs with application deadlines. High school owners: the school's Google Classroom, Schoology or PowerSchool pages, the counseling office's deadlines page (SAT/ACT, college applications, FAFSA), and summer programs. Each one is `vidya add-source <id> --name "<name>" --url "<url>" --kind <course|registrar|aid|housing|club|program>`; the engine treats them identically. For the course list, ask the owner for the courses, or open the LMS home in the browser. If a login page appears: stop, mark nothing, tell the owner "Please take over the computer and sign in to <platform>; I'll continue when you hand control back." Never type credentials, never attempt MFA, never retry a CAPTCHA. Once in, read the course list and confirm it with the owner before saving. For each course:
+   `vidya add-source <id> --name "<name>" --url "<course home URL>" --platform <brightspace|canvas|blackboard|classroom|schoology|moodle|other>`
    Use short ids (`data-structures`), never the LMS numeric id alone.
    - **Canvas**: ask whether the owner wants the API path. If yes, they create a token at Account → Settings → New Access Token and paste it into the terminal as `export CANVAS_TOKEN=...` themselves (do not ask them to paste it in chat). Readings then come from `vidya extract canvas --base-url https://<school>.instructure.com --canvas-course <numeric id> --course <id>`.
    - **Any LMS with an iCal feed** (Brightspace: Calendar → Subscribe; Canvas: Calendar → Calendar Feed): prefer the feed for dates. `vidya extract ical "<feed url>" --course <id>`. A tokenized feed needs no login and survives redesigns.
@@ -46,10 +46,13 @@ Do the steps in this order. The first successful course read (step 5) comes befo
 
 10. **Optional: safety check-in.** Offer it in one sentence: "I can also do a nightly check-in: at a time you pick I ask if you're good, and if I don't hear back within a grace period I email people you name, once, then send them an all-clear when you reply. Want that?" If yes, run the "Safety check-in" skill's setup. If no, say nothing more about it; it stays off.
 
-11. **Optional: temporal graph.** Graphiti is not required. If the owner runs their own Graphiti MCP server (their own LLM key), add it as a plugin and the nightly skill will post episodes. See `docs/GRAPHITI.md` in the repo. Do not point at anyone else's server.
+11. **Optional: the rest of student life.** Offer these in one message, as a list the owner can pick from; set up only what they pick, each with its own skill's setup: **Lecture notes** (connect Notion), **Assignment coach**, **Opportunity scout + Resume tailor** (upload a master resume; internships or new-grad; high school owners: summer programs and first internships), **Project builder**, **Club scout**, **Coffee chats + Cold outreach**, **Calendar concierge** (working hours and protected times). Explain in one sentence that all of them prepare and the owner decides: nothing is submitted or sent without approval, and `vidya track` stops anything from happening twice.
+
+12. **Optional: temporal graph.** Graphiti is not required. If the owner runs their own Graphiti MCP server (their own LLM key), add it as a plugin and the nightly skill will post episodes. See `docs/GRAPHITI.md` in the repo. Do not point at anyone else's server.
 
 ## How to validate
 - `selftest` said ALL PASS.
+- `vidya why "<any item>"` shows a receipt with a source and the page text.
 - `vidya status` lists every course with a believed item count > 0 (or the owner has confirmed a course genuinely has no dated items).
 - The owner's calendar shows the baseline events with source links in descriptions.
 - The Test run of the nightly routine reported zero changes.

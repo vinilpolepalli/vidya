@@ -22,7 +22,16 @@ is not literal.
 | `skills/nightly-syllabus-check.md` | Skill | the supervisor loop: gather, launch, review, merge, report |
 | `skills/needs-review-triage.md` | Skill | how the owner resolves the needs-review bucket |
 | `skills/weekly-digest.md` | Skill | the Sunday digest |
-| `skills/safety-checkin.md` | Skill | optional nightly check-in with named contacts; off until the owner turns it on |
+| `skills/safety-checkin.md` | Skill | optional nightly check-in with named contacts; off until the owner turns it on; last-known place via Google Maps sharing only inside an alert |
+| `skills/lecture-notes.md` | Skill | structured lecture notes into the owner's Notion, sources listed, exam questions guessed and marked |
+| `skills/assignment-coach.md` | Skill | how to approach an assignment: rubric decoded, plan, traps; never the submission |
+| `skills/opportunity-scout.md` | Skill | nightly diff of the Simplify internship / new-grad lists; applications prepared, submitted as an approved batch, deduped by `vidya track` |
+| `skills/resume-tailor.md` | Skill | one-page resume per posting, every line traced to the master resume; weekly gap report |
+| `skills/project-builder.md` | Skill | closes a skill gap with a project the owner drives and can explain; AI-assisted commits labelled |
+| `skills/club-scout.md` | Skill | club directory, fit / stretch / not-now report, deadlines watched as sources, applications drafted |
+| `skills/coffee-chat-scheduler.md` | Skill | first note drafted, owner sends; after a yes, slots, Meet link, event, prep questions |
+| `skills/cold-outreach.md` | Skill | shortlist by what people actually work on, human-pace LinkedIn, drafts only, nobody twice |
+| `skills/calendar-concierge.md` | Skill | natural-language changes to the owner's own calendar, shown before applied; never touches managed events |
 | `skills/package-template.md` | Skill | how the Bot audits and packages itself (section 7 of the plan) |
 | `routines/nightly-2300.md` | Routine | 11 PM every day, owner-local time |
 | `routines/weekly-digest.md` | Routine | Sunday 6 PM |
@@ -45,7 +54,10 @@ and confirm. The manual steps below are the same thing done by hand.
    from the name; use it for positioning ("Deadline watch").
 2. Create each skill from `skills/*.md`. Use the heading as the skill name
    ("Setup playbook", "Read course", "Nightly syllabus check", "Needs-review
-   triage", "Weekly digest", "Safety check-in", "Package template") and paste the body as the
+   triage", "Weekly digest", "Safety check-in", "Lecture notes", "Assignment
+   coach", "Opportunity scout", "Resume tailor", "Project builder", "Club
+   scout", "Coffee chat scheduler", "Cold outreach", "Calendar concierge",
+   "Package template"; sixteen in all) and paste the body as the
    instructions. The easiest way is to send the Bot the file contents with
    "Save this as a skill called <name>, exactly as written." Then confirm each
    skill is enabled for this Bot (Settings → Plugins → Yours) and appears when

@@ -29,13 +29,13 @@ inferred.
 2. For each contact that has agreed: `vidya safety add-contact <id> --name "<name>" --address <address> --relationship <parent|guardian|sibling|friend> --consented`. Refuse to add anyone the owner has not confirmed agreed.
 3. `vidya safety set-checkin --due <HH:MM> --grace <minutes> --days <mon,...>`. Then `vidya safety enable --owner-name "<first name>"`.
 4. Optional: `vidya safety set-share --contacts <ids> --day sun --time 18:00` sends chosen contacts one email a week with the next seven days of exams and deadlines. Only if the owner asks.
-5. Optional: `vidya safety set-checkin --include-location`. Only if the owner asks, and explain: the only place I can name is one the owner tells me or shares with me; it appears only inside a missed-check-in alert.
+5. Optional: `vidya safety set-checkin --include-location`. Only if the owner asks, and explain: the only place I can name is one the owner tells me or shares with me; it appears only inside a missed-check-in alert. If the owner wants it automatic, walk them through **Google Maps location sharing**: on their phone, Google Maps → profile → Location sharing → share with the Google account this computer's browser is signed into, "until you turn this off". Then, only when an alert is about to go out (step 3 below approves a `missed_checkin`), open https://www.google.com/maps and the Location sharing panel in the browser, read the owner's last place and how long ago it was updated, and record it before sending: `vidya safety location "<place as shown>" --seen <ISO time it was updated> --source google-maps-sharing`. Then run `vidya safety plan` again so the alert body includes it. Never look at the location at any other time, never record it as a check-in, never put it anywhere but the alert.
 6. Show `vidya safety status` and read it back. Send one test message to the owner's own address and confirm it arrived, so the Gmail path is proven before a real night.
 
 ## Sequence (every routine run, and whenever the owner speaks)
 1. If the owner just said something that counts as a check-in: `vidya safety checkin --note "<their words, short>"`. Tell them it is logged in one line. If an alert already went out tonight, the plan below will produce the all-clear.
 2. If the owner asked to pass a message: `vidya safety say <contact-id> "<exact text>"`. Do not rewrite it.
-3. `vidya safety plan`. It prints notes and, if anything may be sent, the approved messages as JSON with `key`, `kind`, `to_address`, `subject`, `body`.
+3. `vidya safety plan`. It prints notes and, if anything may be sent, the approved messages as JSON with `key`, `kind`, `to_address`, `subject`, `body`. If it approves a `missed_checkin` and location in alerts is on, do the Maps read from setup step 5 first, then run `plan` again and use that output.
 4. For each approved message, in order:
    - `kind: owner_reminder` → post `body` in this conversation (the owner's phone gets the notification). Do not email it.
    - any other kind → send one email through Gmail: to `to_address`, subject `subject`, body `body`, verbatim. No additions, no signature beyond what is in the body.
