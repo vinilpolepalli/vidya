@@ -29,6 +29,7 @@ is not literal.
 | `routines/safety-checkin.md` | Routine (optional) | every 30 min in the evening window; created only if the owner enabled check-ins |
 | `FIRST_RUN.md` | The installer's first message | what to send the Bot after adding the template |
 | `BOOTSTRAP.md` | Your first message when building the Bot | one paste: the Bot clones the repo and assembles itself from these files |
+| `MESSAGES.md` | Every message you send, in order | copy-paste blocks: build, safety setup, routine, live test, publish, everyday |
 | `SCRUB_CHECKLIST.md` | Before Publish → Public link | what must not be in the template |
 
 ## Assembling the template in the app
