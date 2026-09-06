@@ -67,6 +67,22 @@ Dry run without a calendar: `vidya plan --readings tonight/ --fake-apply` applie
 
 `vidya status` shows believed items per course, pending removals, the needs-review bucket, and the ledger. `vidya digest` writes the weekly digest. `vidya graph <run>` exports a run as Graphiti episodes.
 
+## Optional: safety check-in
+
+Off by default. A nightly "are you good?" with a dead-man's switch, for students whose family wants to know they got home. The Bot cannot see your phone; this is a check-in, not tracking.
+
+```bash
+vidya safety add-contact mom --name Mom --address mom@example.com --relationship parent --consented
+vidya safety set-checkin --due 21:00 --grace 90 --days mon,tue,wed,thu,fri,sat,sun
+vidya safety enable --owner-name Sam
+vidya safety plan            # what may be sent right now; idempotent, run it every 30 minutes
+vidya safety checkin --note "home"
+vidya safety say mom "Made it back, talk tomorrow"
+vidya safety set-share --contacts mom --day sun --time 18:00   # weekly exams-and-deadlines email
+```
+
+Rules, each with a test in `tests/test_safety.py`: the owner is reminded first, in their own conversation; contacts get one message per missed night, after the grace period; a late check-in sends one all-clear to whoever was alerted; failed sends retry, successful ones never repeat; a daily cap applies to everything but the all-clear; a place is named only if you opt in and only inside an alert. The Bot sends through Gmail from your own mailbox and records each message. See `docs/INTEGRATIONS.md`.
+
 ## Reading JSON
 
 Extractors produce it; the bot can also write it directly after reading a page itself.
@@ -99,13 +115,14 @@ vidya/            engine (stdlib only)
   pipeline.py        plan / record / commit, crash recovery, owner summary
   digest.py          weekly digest (due soon, what moved, volatility)
   graph.py           Graphiti episodes (add_memory shape, deterministic uuids)
+  safety.py          opt-in safety check-ins: who may be messaged, when, once (off by default)
   extract/           html, canvas (REST), ical, email -> Reading
   fixtures/          synthetic T0 set: six courses, two nights, five planted changes; canvas/ical/email samples
   selftest.py        T1-T5 without pytest
-tests/               pytest suite: T1-T6, email/iCal merge rules, digest, graph
-template/            the Grok Bot template as text: profile, six skills, two routines, first-run message, scrub checklist
+tests/               pytest suite: T1-T6, email/iCal merge rules, digest, graph, safety
+template/            the Grok Bot template as text: profile, seven skills, routines, bootstrap message, scrub checklist
 submission/          written description, post draft, T8 claim audit, test log
-docs/                ARCHITECTURE.md, GRAPHITI.md
+docs/                ARCHITECTURE.md, INTEGRATIONS.md, GRAPHITI.md
 fixtures/            where your real T0 captures go (git-ignored)
 ```
 

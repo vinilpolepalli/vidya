@@ -85,6 +85,24 @@ uncommitted run with recorded writes and commits it first, so the ledger knows
 those event ids before anything new is planned. A run with no recorded writes
 is left alone: nothing was written, its changes are simply proposed again.
 
+## The one outbound channel: safety check-ins
+
+The calendar loop never messages anyone but the owner. The safety module
+(`safety.py`) is the single exception and follows the same shape as the
+calendar: the model asks the owner and relays messages, the code decides. Config
+holds the contacts (each recorded as consented), the due time, grace, days and
+caps. `vidya safety plan` is a pure function of config, the check-in log, the
+sent log and the clock: it approves a reminder to the owner at the due time, one
+alert per contact after grace, one all-clear per alerted contact after a late
+check-in, any owner-requested message, and the weekly share when its slot comes
+round. Every message has an idempotency key (`missed:<date>:<contact>`,
+`clear:<date>:<contact>`, `say:<date>:<contact>:<hash>`, `share:<isoweek>:<contact>`)
+and is logged by `record`, so a routine that runs every thirty minutes can never
+send twice, and a plugin failure is retried rather than lost. The Bot cannot
+observe the owner; the only fact the module has is whether the owner spoke.
+Off by default, and `add-contact` refuses anyone the owner has not confirmed
+agreed. See `docs/INTEGRATIONS.md` for the full table.
+
 ## What travels in the template
 
 Identity, description, skills, routines, memories. Not: logins, files on the

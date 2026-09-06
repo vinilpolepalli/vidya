@@ -21,9 +21,11 @@ What it won't do
 - Duplicate. Re-running a night creates nothing twice, even after a crash mid-write.
 - Log in for me. When MFA shows up it stops and asks me to take over.
 
+Optional, and the part my parents liked: a nightly check-in. At 9 PM it asks if I'm good. If I don't answer within 90 minutes, my mom gets one email saying so (and that it usually means my phone died). When I reply, she gets one all-clear. Off by default, only to people I named who agreed, and the rules for who gets messaged and how often are code with tests, not a prompt. It can't see my phone; it's a check-in, not tracking.
+
 The part I'm proudest of isn't the bot, it's the tests. LLM at the edges, code in the middle: the model reads pages and applies calendar ops; the diff, the date parsing, the destructive-write guard and the ledger are plain Python on the bot's computer, with a fixture suite: six course pages across two nights with five planted changes, a known-answer diff, an idempotency test, a destructive-write guard, an adversarial date set, timezone checks, and a Canvas sandbox run through the same loop with zero code changes. `selftest` prints ALL PASS in a second on a clean machine.
 
-Under the hood: Grok Bot routines and cloud computer, Google Calendar and Gmail plugins, browser automation, Canvas REST + iCal, a stdlib Python engine, and Graphiti (Zep's temporal graph) so I can ask "how many times has this professor moved a deadline" and get an answer with history.
+Under the hood: Grok Bot routines and cloud computer, Google Calendar and Gmail plugins, browser automation (Brightspace, Canvas, Blackboard, anything with a course page), Canvas REST + iCal, a stdlib Python engine, and Graphiti (Zep's temporal graph) so I can ask "how many times has this professor moved a deadline" and get an answer with history.
 
 Template (public, setup playbook included, works on Brightspace and Canvas): <TEMPLATE_LINK>
 Code and fixture suite: https://github.com/vinilpolepalli/vidya

@@ -29,13 +29,18 @@ repo; **live** = something you did on the real bot and can show if asked.
 | 18 | Works on Brightspace | frame | Segments 1–2 are Brightspace | ☐ |
 | 19 | "Group chat of course bots reporting back" (only if you say it) | frame | Segment 3, or cut the claim and describe sequential reads | ☐ |
 | 20 | Standard-library Python engine | test | `pyproject.toml` has `dependencies = []`; `selftest` runs without pip | ☐ |
+| 21 | Nightly check-in: asks me first, one email per contact after the grace period, one all-clear when I reply | test (+ frame if recorded) | `tests/test_safety.py::test_owner_is_reminded_first_and_only_once`, `::test_missed_checkin_alerts_each_contact_once`, `::test_late_checkin_after_alert_sends_one_all_clear`. Frame: the reminder in chat, then the email in a parent's inbox, then the all-clear. **If no frame:** "built in and tested; I have not run a real missed night yet" | ☐ |
+| 22 | Off by default, only to people I named who agreed | test | `::test_off_by_default_sends_nothing`; `add-contact` refuses without `--consented` (`cli.py`) | ☐ |
+| 23 | "It can't see my phone; a check-in, not tracking" | test | `::test_location_only_when_opted_in`: no place in any alert unless opted in, and then only what the owner supplied | ☐ |
+| 24 | Works with Brightspace, Canvas, Blackboard, anything with a course page | test + wording rule | Same rule as row 14. Brightspace fixtures + Canvas fixture are tested; Blackboard/Moodle/Classroom are the zero-code "Read course" path. Say "tested on <what you ran>; built to work with any course page" | ☐ |
 
 ## Claims to avoid unless you have the frame
 
 - "24/7" or "always" — say "every night at 11 PM".
 - "Works with any LMS" — say "built to generalize; tested on <what you tested>".
 - "Never wrong" about dates — say "never guesses; ambiguous dates go to review".
-- Anything about location, attendance, or auto-applying. Cut from the plan for a reason.
+- Location tracking, attendance, or auto-applying. The Bot has no sensor; the safety check-in is the honest version (the owner checks in, or contacts are told they did not). Never write "knows where I am".
+- "Texts my parents" — say "emails" unless you verified the carrier gateway delivered as a text on your parent's phone.
 
 ## Sign-off
 

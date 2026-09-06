@@ -1,7 +1,7 @@
 # Test log
 
 Honest record of what ran, where, and what is still on you. Statuses for the
-synthetic fixture set were produced in this repository (`python3 -m pytest`, 52
+synthetic fixture set were produced in this repository (`python3 -m pytest`, 67
 tests, and `vidya selftest`). Real-course rows need your captures.
 
 | Test | Status | Notes |
@@ -15,6 +15,7 @@ tests, and `vidya selftest`). Real-course rows need your captures.
 | T6 multi-LMS | **PASS (fixture)** / real sandbox: ☐ | Canvas sandbox JSON with three known items → all three found; UTC `due_at` lands in Eastern; unpublished and dateless items ignored; Brightspace fixtures and the Canvas sandbox run through one `plan` with no platform branch; a Canvas due date moving by a day is detected as MOVED. Wording rule in `CLAIM_AUDIT.md` row 14. |
 | Email merge | **PASS** | "moved from Oct 14 to Oct 16" beats a page still showing Oct 14 (old date matches → change wins, provenance says the page is stale); page failed + email → move applied, nothing removed, reported as `source_failed`; "the midterm" with two midterms → review; unknown item → review. Nothing sends mail. |
 | iCal feed | **PASS** | TZID, UTC, DATE ranges (exclusive→inclusive), folded lines, RRULE → review; summaries "Homework 1 - Due" / "Midterm 1 [CS 201]" normalize to the page titles so feed and page share keys. |
+| Safety check-in | **PASS (rules)** / real night: ☐ | 15 tests: off by default; nothing before due; owner reminded once, contacts not told during grace; check-in cancels; one alert per contact per night, failed send retried, success never repeated; late check-in → one all-clear per alerted contact only; next day clean; day filter; owner message approved and idempotent; unknown contact refused; daily cap blocks alerts but never the all-clear; place named only when opted in; weekly share once per week from belief, exams/assignments only, quiet hours hold. Scripted night run by hand through the CLI (reminder → alert → bounced gateway retried → late check-in → all-clear → owner message). Still yours: a real evening with your own address as the only contact, then a parent. |
 | Digest / graph | **PASS** | Digest lists next-N-days by day, changes with sources, volatility ("most volatile: CS 201 (1 move)"), pending removals, review bucket. Graph export: one text episode per change, one JSON snapshot per course, deterministic UUIDs (re-export identical). Posting to a live Graphiti server: ☐ not run here (needs your instance + key). |
 | T7 template install | **scripted: PASS** / real bot: ☐ | Every command in `template/skills/setup-playbook.md`, `read-course.md` and `nightly-syllabus-check.md` was run verbatim on a fresh clone (clone, `--version`, `selftest`, `init`, `add-course`, `extract html`, `validate`, `plan --fake-apply`, `status`, `reset --yes`, real `plan`, `record` per op, `commit`, second night with a moved midterm, `digest`, `graph`). Still yours: install your published template into a clean bot; time it; do not help. Success = first course read in under ten minutes from the playbook alone. Fix the playbook, not the bot. Better: send it to one friend at 2 PM. |
 | T8 claim audit | ☐ | `submission/CLAIM_AUDIT.md`, immediately before publishing. |
@@ -27,4 +28,5 @@ tests, and `vidya selftest`). Real-course rows need your captures.
 - **Change statements beat stale pages.** When one source says "moved from X to Y" and the other still shows X, the change wins and the provenance records the stale page. Any other disagreement goes to review.
 - **Not-read vs unreadable.** A course with no reading in a targeted run (owner resolving one item) is listed in one line as "not read", not as unreadable.
 - **Zero-install path.** The engine has no dependencies so the playbook uses `git clone` + `python3 -m vidya.cli`; pip is optional. Removes a failure mode from T7.
+- **Safety check-in instead of location.** The original plan had location and attendance; they were cut because the Bot has no sensor and the claims could not be proven. The owner asked for a way to reassure family. The honest version is a dead-man's switch: the owner checks in, or named contacts are told once that they did not, and once more when they do. Off by default; every send is approved by code and logged.
 - **Bot name.** "Vidya" (Sanskrit: knowledge) is the Bot name and the engine name; the repository is `vinilpolepalli/vidya`. Earlier drafts used "Syllabus".
