@@ -92,19 +92,28 @@ Extractors produce it; the bot can also write it directly after reading a page i
 ```
 syllabot/            engine (stdlib only)
   dates.py           date parsing, confidence, needs-review, timezone
-  resolve.py         items -> events, cross-source dedup
-  diff.py            belief vs reading; destructive-write guard
+  resolve.py         items -> events, cross-source dedup, change-statement precedence
+  diff.py            belief vs reading; destructive-write guard; partial (email) semantics
   review.py          the gate every op passes before the bot may apply it
   calendar_plan.py   ops with idempotency keys and provenance
-  pipeline.py        plan / record / commit, crash recovery
-  extract/           html, canvas, ical, email -> Reading
-  fixtures/          synthetic T0 set: six courses, two nights, five planted changes
+  pipeline.py        plan / record / commit, crash recovery, owner summary
+  digest.py          weekly digest (due soon, what moved, volatility)
+  graph.py           Graphiti episodes (add_memory shape, deterministic uuids)
+  extract/           html, canvas (REST), ical, email -> Reading
+  fixtures/          synthetic T0 set: six courses, two nights, five planted changes; canvas/ical/email samples
   selftest.py        T1-T5 without pytest
-tests/               pytest suite (same checks, more edge cases)
-template/            Grok Bot template text: profile, skills, routines, setup playbook
-submission/          description, post draft, claim audit, test log
-docs/                architecture, Graphiti
+tests/               pytest suite: T1-T6, email/iCal merge rules, digest, graph
+template/            the Grok Bot template as text: profile, six skills, two routines, first-run message, scrub checklist
+submission/          written description, post draft, T8 claim audit, test log
+docs/                ARCHITECTURE.md, GRAPHITI.md
+fixtures/            where your real T0 captures go (git-ignored)
 ```
+
+## For the challenge
+
+- `template/README.md` explains how to assemble the Bot in the Grok Bot app from the text in `template/`; `template/skills/setup-playbook.md` is what a stranger's fresh Bot runs on its first message (T7).
+- `submission/DESCRIPTION.md` is requirement 1; `submission/POST_DRAFT.md` the post; `submission/CLAIM_AUDIT.md` is T8; `submission/TEST_LOG.md` records what ran here and what is still yours (real T0 captures, T7, T8, the video).
+- Replace `<REPO_URL>` in the skills and `<TEMPLATE_LINK>` in the post before publishing. Nothing in `template/` or `syllabot/fixtures/` refers to a real school, course, or person.
 
 ## Tests
 
