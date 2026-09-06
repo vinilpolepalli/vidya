@@ -26,9 +26,16 @@ is not literal.
 | `routines/nightly-2300.md` | Routine | 11 PM every day, owner-local time |
 | `routines/weekly-digest.md` | Routine | Sunday 6 PM |
 | `FIRST_RUN.md` | The installer's first message | what to send the Bot after adding the template |
+| `BOOTSTRAP.md` | Your first message when building the Bot | one paste: the Bot clones the repo and assembles itself from these files |
 | `SCRUB_CHECKLIST.md` | Before Publish → Public link | what must not be in the template |
 
 ## Assembling the template in the app
+
+**Fast path:** create a new agent, name it Vidya, and paste the message in
+`BOOTSTRAP.md`. The Bot clones this repository onto its own computer and
+creates its profile text, the six skills and the two routines from the files
+here, then runs the Setup playbook. You only sign in, connect Google Calendar,
+and confirm. The manual steps below are the same thing done by hand.
 
 1. Create a new agent (New → Create new agent). Open **Edit Profile** and paste
    the four fields from `PROFILE.md`. The Label field is optional and separate
