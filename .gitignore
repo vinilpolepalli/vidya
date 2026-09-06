@@ -1,0 +1,24 @@
+# scratch from research tooling, never part of the project
+agent-tools/
+
+# python
+__pycache__/
+*.pyc
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.venv/
+venv/
+
+# runtime state created by `syllabot init` (never commit a real state dir:
+# it holds course URLs, calendar event ids and the belief snapshots)
+state/
+*.local.json
+
+# real course pages captured with the T0 procedure stay on your machine
+fixtures/real/
+
+# secrets
+.env
+*.token

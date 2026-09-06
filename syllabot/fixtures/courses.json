@@ -1,0 +1,44 @@
+[
+  {
+    "id": "data-structures",
+    "name": "CS 201 Data Structures",
+    "platform": "brightspace",
+    "url": "https://lms.example.edu/d2l/home/41001",
+    "timezone": "America/New_York"
+  },
+  {
+    "id": "linear-algebra",
+    "name": "MATH 240 Linear Algebra",
+    "platform": "brightspace",
+    "url": "https://lms.example.edu/d2l/home/41002",
+    "timezone": "America/New_York"
+  },
+  {
+    "id": "physics-1",
+    "name": "PHYS 110 Physics I",
+    "platform": "brightspace",
+    "url": "https://lms.example.edu/d2l/home/41003",
+    "timezone": "America/New_York"
+  },
+  {
+    "id": "writing-seminar",
+    "name": "WRIT 100 Writing Seminar",
+    "platform": "brightspace",
+    "url": "https://lms.example.edu/d2l/home/41004",
+    "timezone": "America/New_York"
+  },
+  {
+    "id": "microeconomics",
+    "name": "ECON 150 Microeconomics",
+    "platform": "brightspace",
+    "url": "https://lms.example.edu/d2l/home/41005",
+    "timezone": "America/New_York"
+  },
+  {
+    "id": "modern-history",
+    "name": "HIST 120 Modern History",
+    "platform": "brightspace",
+    "url": "https://lms.example.edu/d2l/home/41006",
+    "timezone": "America/New_York"
+  }
+]

@@ -1,0 +1,39 @@
+{
+  "read_at": {
+    "day0": "2026-09-05T23:00:00-04:00",
+    "day1": "2026-09-06T23:00:00-04:00"
+  },
+  "changes": [
+    {
+      "type": "moved",
+      "course_id": "data-structures",
+      "title": "Midterm 1",
+      "detail": "Oct 14, 11:00 AM -> Oct 16, 11:00 AM"
+    },
+    {
+      "type": "added",
+      "course_id": "linear-algebra",
+      "title": "Problem Set 5",
+      "detail": "Due Nov 6 by 11:59 PM"
+    },
+    {
+      "type": "reworded",
+      "course_id": "writing-seminar",
+      "title": "Essay 1: first draft",
+      "detail": "was 'Essay 1 draft', same due date"
+    }
+  ],
+  "pending_removals": [
+    {
+      "course_id": "physics-1",
+      "title": "Lab Report 2",
+      "detail": "Due Oct 9 by 5:00 PM disappears"
+    }
+  ],
+  "unreadable": [
+    {
+      "course_id": "microeconomics",
+      "detail": "page replaced with an empty file"
+    }
+  ]
+}

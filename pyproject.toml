@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "syllabot"
+version = "0.1.0"
+description = "Deterministic engine for a Grok Bot that watches course pages for deadline changes and keeps a calendar honest: normalize, diff, guard, review, plan."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+# Runtime is standard library only on purpose: the bot's cloud computer must be
+# able to install this in seconds during a template's first run (test T7).
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+# Temporal knowledge graph layer (Graphiti by Zep). Optional; needs a running
+# FalkorDB/Neo4j and an LLM API key. See docs/GRAPHITI.md.
+graph = ["graphiti-core>=0.10"]
+
+[project.scripts]
+syllabot = "syllabot.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["syllabot*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
