@@ -269,6 +269,142 @@ def cmd_graph(args) -> int:
     return 0
 
 
+def cmd_safety(args) -> int:
+    from .safety import DAYS, Safety
+    store = _store(args)
+    sf = Safety(store)
+    cfg = sf.config
+    sub = args.safety_cmd
+
+    def _now(s: Optional[str]) -> Optional[datetime]:
+        if not s:
+            return None
+        dt = datetime.fromisoformat(s)
+        return dt if dt.tzinfo else dt.replace(tzinfo=sf.tz)
+
+    if sub == "enable":
+        cfg["enabled"] = True
+        if args.owner_name:
+            cfg["owner_name"] = args.owner_name
+        sf.save_config(cfg)
+        print(f"safety check-ins ON for {cfg.get('owner_name') or '(owner name not set: --owner-name)'}; "
+              f"{len(cfg['contacts'])} contact(s); check-in {cfg['checkin']['due']} + {cfg['checkin']['grace_minutes']} min grace")
+        if not cfg["contacts"]:
+            print("add a contact: vidya safety add-contact mom --name Mom --address mom@example.com --consented")
+        return 0
+    if sub == "disable":
+        cfg["enabled"] = False
+        sf.save_config(cfg)
+        print("safety check-ins OFF; nothing will be sent")
+        return 0
+    if sub == "add-contact":
+        if not args.consented:
+            sys.exit("a contact must have agreed to receive messages; re-run with --consented after asking them")
+        contacts = [c for c in cfg["contacts"] if c["id"] != args.id]
+        contacts.append({"id": args.id, "name": args.name or args.id, "address": args.address,
+                         "relationship": args.relationship or "", "added_at": _now_iso(), "consented": True})
+        cfg["contacts"] = contacts
+        sf.save_config(cfg)
+        print(f"contact {args.id} ({args.address}) saved; {len(contacts)} total")
+        return 0
+    if sub == "remove-contact":
+        cfg["contacts"] = [c for c in cfg["contacts"] if c["id"] != args.id]
+        cfg["schedule_share"]["contacts"] = [c for c in cfg["schedule_share"].get("contacts", []) if c != args.id]
+        sf.save_config(cfg)
+        print(f"contact {args.id} removed")
+        return 0
+    if sub == "set-checkin":
+        ci = cfg["checkin"]
+        if args.due:
+            ci["due"] = args.due
+        if args.grace is not None:
+            ci["grace_minutes"] = args.grace
+        if args.days:
+            days = [d.strip().lower()[:3] for d in args.days.split(",")]
+            bad = [d for d in days if d not in DAYS]
+            if bad:
+                sys.exit(f"unknown day(s): {bad}; use mon,tue,...")
+            ci["days"] = days
+        if args.off:
+            ci["enabled"] = False
+        if args.on:
+            ci["enabled"] = True
+        if args.include_location is not None:
+            cfg["include_location_in_alerts"] = args.include_location
+        sf.save_config(cfg)
+        print(f"check-in {'on' if ci['enabled'] else 'off'}: due {ci['due']}, grace {ci['grace_minutes']} min, "
+              f"days {','.join(ci['days'])}; location in alerts: {cfg['include_location_in_alerts']}")
+        return 0
+    if sub == "set-share":
+        sh = cfg["schedule_share"]
+        if args.off:
+            sh["enabled"] = False
+        else:
+            sh["enabled"] = True
+            if args.contacts:
+                ids = [c.strip() for c in args.contacts.split(",")]
+                unknown = [c for c in ids if not sf.contact(c)]
+                if unknown:
+                    sys.exit(f"unknown contact(s): {unknown}")
+                sh["contacts"] = ids
+            if args.day:
+                sh["day"] = args.day.lower()[:3]
+            if args.time:
+                sh["time"] = args.time
+        sf.save_config(cfg)
+        print(f"weekly schedule share {'on' if sh['enabled'] else 'off'}: {sh['day']} {sh['time']} to {sh.get('contacts')}")
+        return 0
+    if sub == "checkin":
+        e = sf.checkin(at=_now(args.at), note=args.note or "", location=args.location or "")
+        print(f"checked in at {e['at']}" + (f" ({e['note']})" if e["note"] else ""))
+        return 0
+    if sub == "say":
+        try:
+            m = sf.say(args.contact, args.text, at=_now(args.at))
+        except KeyError:
+            sys.exit(f"unknown contact {args.contact!r}; see `vidya safety status`")
+        print(f"queued {m.key}; it will appear in `vidya safety plan` until recorded as sent")
+        return 0
+    if sub == "plan":
+        plan = sf.plan(now=_now(args.now))
+        for n in plan.notes:
+            print(f"note: {n}")
+        if not plan.approved and not plan.blocked:
+            print("nothing to send")
+        for m in plan.blocked:
+            print(f"blocked: {m.key} -> {m.to_name}: {m.blocked}")
+        if plan.approved:
+            print(f"\nApproved messages ({len(plan.approved)}); send each, then `vidya safety record <key>`:")
+            _print_json([m.to_dict() for m in plan.approved])
+        return 0
+    if sub == "record":
+        e = sf.record(args.key, status=args.status, error=args.error or "", at=_now(args.at))
+        print(f"recorded {args.key} ({e['status']})")
+        return 0
+    if sub == "status":
+        print(f"safety: {'ON' if cfg.get('enabled') else 'OFF'}   owner: {cfg.get('owner_name') or '-'}   tz: {store.timezone}")
+        ci = cfg["checkin"]
+        print(f"check-in: {'on' if ci['enabled'] else 'off'} at {ci['due']} + {ci['grace_minutes']} min grace on {','.join(ci['days'])}")
+        sh = cfg["schedule_share"]
+        print(f"schedule share: {'on' if sh.get('enabled') else 'off'} ({sh.get('day')} {sh.get('time')} to {sh.get('contacts') or []})")
+        print(f"location in alerts: {cfg.get('include_location_in_alerts')}   cap: {cfg.get('max_messages_per_contact_per_day')}/contact/day")
+        print(f"contacts: {len(cfg['contacts'])}")
+        for c in cfg["contacts"]:
+            print(f"  - {c['id']}: {c['name']} <{c['address']}> {c.get('relationship', '')}")
+        last = sf.last_checkin()
+        print(f"last check-in: {last[1]['at'] if last else 'never'}" + (f" ({last[1]['note']})" if last and last[1].get("note") else ""))
+        ob = sf.outbox
+        if ob:
+            print(f"queued owner messages: {len(ob)}")
+        sent = sf.sent
+        if sent:
+            print(f"sent log: {len(sent)} message(s)")
+            for k, v in sorted(sent.items())[-5:]:
+                print(f"  - {v['at']} {k} ({v['status']})")
+        return 0
+    sys.exit(f"unknown safety command {sub}")
+
+
 def cmd_selftest(args) -> int:
     from .selftest import run_selftest
     ok, report = run_selftest(Path(args.fixtures) if args.fixtures else None,
@@ -299,7 +435,7 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("id")
     s.add_argument("--name")
     s.add_argument("--url")
-    s.add_argument("--platform", default="other", choices=["brightspace", "canvas", "classroom", "moodle", "ical", "other"])
+    s.add_argument("--platform", default="other", choices=["brightspace", "canvas", "blackboard", "classroom", "moodle", "ical", "other"])
     s.add_argument("--timezone")
     s.set_defaults(fn=cmd_add_course)
 
@@ -366,6 +502,34 @@ def build_parser() -> argparse.ArgumentParser:
     s.add_argument("--group-id", default="vidya")
     s.add_argument("--out")
     s.set_defaults(fn=cmd_graph)
+
+    s = sub.add_parser("safety", help="opt-in safety check-ins and messages to contacts the owner named")
+    ss = s.add_subparsers(dest="safety_cmd", required=True)
+    x = ss.add_parser("enable", help="turn safety check-ins on"); x.add_argument("--owner-name")
+    ss.add_parser("disable", help="turn everything off")
+    x = ss.add_parser("add-contact", help="add a person who agreed to receive messages")
+    x.add_argument("id"); x.add_argument("--name"); x.add_argument("--address", required=True, help="email, or a carrier SMS gateway address")
+    x.add_argument("--relationship"); x.add_argument("--consented", action="store_true", help="they agreed to be a contact")
+    x = ss.add_parser("remove-contact"); x.add_argument("id")
+    x = ss.add_parser("set-checkin", help="when the nightly check-in is due")
+    x.add_argument("--due", help="HH:MM in the owner's time zone"); x.add_argument("--grace", type=int, help="minutes before contacts are told")
+    x.add_argument("--days", help="comma list, e.g. mon,tue,wed,thu,fri,sat,sun")
+    x.add_argument("--on", action="store_true"); x.add_argument("--off", action="store_true")
+    x.add_argument("--include-location", dest="include_location", action="store_true", default=None, help="put the owner's shared last-known place in alerts")
+    x.add_argument("--no-location", dest="include_location", action="store_false")
+    x = ss.add_parser("set-share", help="weekly exams-and-deadlines email to chosen contacts")
+    x.add_argument("--contacts", help="comma list of contact ids"); x.add_argument("--day", help="mon..sun"); x.add_argument("--time", help="HH:MM")
+    x.add_argument("--off", action="store_true")
+    x = ss.add_parser("checkin", help="the owner checked in (anything they say counts)")
+    x.add_argument("--note"); x.add_argument("--location", help="only if the owner shares it"); x.add_argument("--at", help="ISO timestamp (default now)")
+    x = ss.add_parser("say", help="owner asks for a message to a contact")
+    x.add_argument("contact"); x.add_argument("text"); x.add_argument("--at")
+    x = ss.add_parser("plan", help="what may be sent right now (idempotent; safe to run every 30 minutes)")
+    x.add_argument("--now", help="ISO timestamp to evaluate at (tests)")
+    x = ss.add_parser("record", help="log one sent message right after the plugin call")
+    x.add_argument("key"); x.add_argument("--status", default="ok", choices=["ok", "failed"]); x.add_argument("--error"); x.add_argument("--at")
+    ss.add_parser("status")
+    s.set_defaults(fn=cmd_safety)
 
     s = sub.add_parser("selftest", help="run the fixture suite T1-T5")
     s.add_argument("--fixtures", help="fixture folder (default: the synthetic set shipped in the package)")
