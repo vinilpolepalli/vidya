@@ -9,16 +9,16 @@ cloud computer, and that middle is what the fixture suite tests.
 ## The loop (gather, launch, review, merge)
 
 ```
- 11 PM routine ─► syllabot status ─► course list
+ 11 PM routine ─► vidya status ─► course list
         │
         ├─► one "Read course" job per course (sequential, or reader Bots in parallel)
-        │      saved HTML ──► syllabot extract html ──► Reading JSON
-        │      Canvas API ──► syllabot extract canvas ─► Reading JSON
-        │      iCal feed  ──► syllabot extract ical ───► Reading JSON
-        │      email      ──► syllabot extract email ──► Reading JSON (partial)
+        │      saved HTML ──► vidya extract html ──► Reading JSON
+        │      Canvas API ──► vidya extract canvas ─► Reading JSON
+        │      iCal feed  ──► vidya extract ical ───► Reading JSON
+        │      email      ──► vidya extract email ──► Reading JSON (partial)
         │      page read by the model ─────────────────► Reading JSON (schema)
         │
-        ├─► syllabot plan --readings <night>/
+        ├─► vidya plan --readings <night>/
         │      resolve   items -> events (dates, confidence, dedup, supersedes)
         │      diff      belief vs events (added / moved / reworded / pending / removed)
         │      guard     failed or empty read -> nothing; removal needs 2 reads on 2 days
@@ -27,9 +27,9 @@ cloud computer, and that middle is what the fixture suite tests.
         │      write     runs/<id>/{readings,diff,plan,review,summary}
         │
         ├─► Bot applies approved ops via Google Calendar plugin
-        │      after each call: syllabot record <run> --key --op --event-id --status
+        │      after each call: vidya record <run> --key --op --event-id --status
         │
-        ├─► syllabot commit <run>     belief + missing + ledger advance
+        ├─► vidya commit <run>     belief + missing + ledger advance
         │
         └─► one message to the owner (the summary), optional graph episodes
 ```
@@ -89,7 +89,7 @@ is left alone: nothing was written, its changes are simply proposed again.
 
 Identity, description, skills, routines, memories. Not: logins, files on the
 computer, MCP servers, history. So the Setup playbook skill clones this repo
-onto the fresh computer (`git clone` + `python3 -m syllabot.cli`; no pip
+onto the fresh computer (`git clone` + `python3 -m vidya.cli`; no pip
 needed), runs `selftest`, and only then asks about courses and logins. The
 installer's own logins live on their own computer; nothing about the author's
 courses is in the template.

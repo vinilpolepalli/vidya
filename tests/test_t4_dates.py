@@ -2,8 +2,8 @@
 
 import pytest
 
-from syllabot.dates import parse_date_text, resolve_year
-from syllabot.selftest import ADVERSARIAL, t4_date_parsing
+from vidya.dates import parse_date_text, resolve_year
+from vidya.selftest import ADVERSARIAL, t4_date_parsing
 
 REF = "2026-09-05T23:00:00-04:00"
 

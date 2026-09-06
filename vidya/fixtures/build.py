@@ -14,7 +14,7 @@ Every page also carries noise that changes between nights and must never show
 up in a diff: a generated-at footer timestamp, session ids in nav links,
 "posted N hours ago" meta spans, and a "last visited" banner.
 
-Run:  python -m syllabot.fixtures.build
+Run:  python -m vidya.fixtures.build
 """
 
 from __future__ import annotations

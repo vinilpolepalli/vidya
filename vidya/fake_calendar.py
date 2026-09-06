@@ -1,6 +1,6 @@
 """A JSON-backed stand-in for Google Calendar.
 
-Used by the test suite, by `syllabot selftest`, and by an installer who wants
+Used by the test suite, by `vidya selftest`, and by an installer who wants
 to watch the loop run end to end before connecting a real calendar. It applies
 the same operations the bot would apply through its calendar plugin and
 returns the same shape of results.

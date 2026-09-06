@@ -65,7 +65,7 @@ def change_episode(run_id: str, ch: Change, names: dict[str, str], group_id: str
         "name": f"{ch.type}: {ch.title} ({ch.course_id})",
         "episode_body": body,
         "source": "text",
-        "source_description": f"syllabot nightly diff, run {run_id}",
+        "source_description": f"vidya nightly diff, run {run_id}",
         "reference_time": reference_time,
         "group_id": group_id,
     }
@@ -87,13 +87,13 @@ def snapshot_episode(run_id: str, course_id: str, events: list[Event], names: di
         "name": f"snapshot: {names.get(course_id, course_id)} on {reference_time[:10]}",
         "episode_body": json.dumps(payload, ensure_ascii=False),
         "source": "json",
-        "source_description": f"syllabot belief snapshot, run {run_id}",
+        "source_description": f"vidya belief snapshot, run {run_id}",
         "reference_time": reference_time,
         "group_id": group_id,
     }
 
 
-def export_episodes(store: Store, run_id: str, group_id: str = "syllabot", include_snapshots: bool = True) -> list[dict[str, Any]]:
+def export_episodes(store: Store, run_id: str, group_id: str = "vidya", include_snapshots: bool = True) -> list[dict[str, Any]]:
     run = store.read_run(run_id)
     names = store.course_names()
     diff = run["diff"]
@@ -118,7 +118,7 @@ def export_episodes(store: Store, run_id: str, group_id: str = "syllabot", inclu
 
 def push_with_graphiti_core(episodes: list[dict[str, Any]], uri: str, user: str = "", password: str = "") -> int:
     """Optional: post episodes straight to a Graphiti instance with graphiti-core.
-    Requires `pip install syllabot[graph]`, a running FalkorDB/Neo4j and an LLM
+    Requires `pip install vidya[graph]`, a running FalkorDB/Neo4j and an LLM
     key in the environment (Graphiti extracts entities with an LLM on ingest)."""
     import asyncio
 

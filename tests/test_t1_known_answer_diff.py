@@ -1,10 +1,10 @@
 """T1. Run the diff from day0 to day1. Expected output is exactly the planted
 changes. Anything extra is noise, anything missing is a bug."""
 
-from syllabot.fixtures import load_expected, load_readings
-from syllabot.model import ADDED, MOVED, REWORDED
-from syllabot.pipeline import fake_apply, plan_run
-from syllabot.selftest import expected_summary, summarize_diff, t1_known_answer_diff
+from vidya.fixtures import load_expected, load_readings
+from vidya.model import ADDED, MOVED, REWORDED
+from vidya.pipeline import fake_apply, plan_run
+from vidya.selftest import expected_summary, summarize_diff, t1_known_answer_diff
 
 
 def test_selftest_t1(fixtures, tmp_path):

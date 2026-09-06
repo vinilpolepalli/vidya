@@ -3,12 +3,12 @@ an email merges with a page read in the nightly diff."""
 
 from pathlib import Path
 
-from syllabot.extract.email import extract_email
-from syllabot.extract.ical import clean_summary, extract_ical
-from syllabot.fixtures import fixture_dir, load_readings
-from syllabot.model import MOVED, SOURCE_FAILED, STATUS_ERROR, UNREADABLE, Reading
-from syllabot.pipeline import fake_apply, plan_run
-from syllabot.resolve import resolve_reading
+from vidya.extract.email import extract_email
+from vidya.extract.ical import clean_summary, extract_ical
+from vidya.fixtures import fixture_dir, load_readings
+from vidya.model import MOVED, SOURCE_FAILED, STATUS_ERROR, UNREADABLE, Reading
+from vidya.pipeline import fake_apply, plan_run
+from vidya.resolve import resolve_reading
 
 FX = fixture_dir()
 READ_AT = "2026-09-06T23:00:00-04:00"

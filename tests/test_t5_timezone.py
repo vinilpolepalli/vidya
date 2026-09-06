@@ -4,11 +4,11 @@ Eastern. Not 11:59 AM, not UTC, not the following day."""
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 
-from syllabot.calendar_plan import build_plan
-from syllabot.dates import parse_date_text
-from syllabot.fixtures import load_readings
-from syllabot.pipeline import plan_run
-from syllabot.selftest import t5_timezone
+from vidya.calendar_plan import build_plan
+from vidya.dates import parse_date_text
+from vidya.fixtures import load_readings
+from vidya.pipeline import plan_run
+from vidya.selftest import t5_timezone
 
 
 def test_selftest_t5(fixtures, tmp_path):

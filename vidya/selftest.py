@@ -1,4 +1,4 @@
-"""Built-in fixture suite. `syllabot selftest` runs it without pytest.
+"""Built-in fixture suite. `vidya selftest` runs it without pytest.
 
 Checks mirror tests/ so an installer can prove the loop on a clean machine:
 
@@ -213,8 +213,8 @@ CHECKS = [t1_known_answer_diff, t2_idempotency, t3_destructive_write_guard, t4_d
 
 def run_selftest(fixtures: Path | None = None, keep: Path | None = None) -> tuple[bool, str]:
     fixtures = fixtures or fixture_dir()
-    tmp = Path(keep) if keep else Path(tempfile.mkdtemp(prefix="syllabot-selftest-"))
-    lines = [f"syllabot selftest  fixtures={fixtures}"]
+    tmp = Path(keep) if keep else Path(tempfile.mkdtemp(prefix="vidya-selftest-"))
+    lines = [f"vidya selftest  fixtures={fixtures}"]
     all_ok = True
     try:
         for fn in CHECKS:

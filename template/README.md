@@ -1,4 +1,4 @@
-# Grok Bot template: Syllabus
+# Grok Bot template: Vidya
 
 Everything that goes into the shared Bot template, as text files, so it can be
 reviewed, scrubbed and versioned before it is pasted into the Grok Bot app.
@@ -41,7 +41,7 @@ cloud computer that has to bootstrap from the first message alone.
 
 ## What the installer experiences
 
-Add to Grok Bot → fresh Bot named Syllabus → they send the first message in
+Add to Grok Bot → fresh Bot named Vidya → they send the first message in
 `FIRST_RUN.md` → the Bot clones the engine onto its computer, runs the fixture
 suite, asks which LMS and which courses, asks them to sign in through the
 computer when a login wall appears, reads each course once, shows the first

@@ -12,7 +12,7 @@ repo; **live** = something you did on the real bot and can show if asked.
 | 1 | Reads course pages every night on its own cloud computer at 11 PM | frame | Segment 1: the overnight summary message that arrived while you slept; routine visible in the app | ☐ |
 | 2 | Compares against last night and writes confirmed changes to Google Calendar | frame + test | Segment 2: moved deadline on the calendar; `tests/test_t1_known_answer_diff.py` | ☐ |
 | 3 | Classes in peacock, deadlines in tomato | frame + test | Segment 2; `calendar_plan.py` color ids 7/11, `test_t5_timezone.py::test_calendar_ops_carry_timezone…` | ☐ |
-| 4 | Source link in every event | frame + test | Segment 2 (open one event's description); `calendar_plan.description_for` includes `Source:` and `syllabot-key:` | ☐ |
+| 4 | Source link in every event | frame + test | Segment 2 (open one event's description); `calendar_plan.description_for` includes `Source:` and `vidya-key:` | ☐ |
 | 5 | Sends one summary including what it refused to guess | frame | Segment 1 (summary shows "Needs review" section) | ☐ |
 | 6 | Merges professor emails that move a date (Gmail, read-only) | frame + test | Gmail segment if recorded; `tests/test_ical_and_email.py::test_email_change_supersedes_stale_page` | ☐ soften to "built to merge…" if no Gmail frame |
 | 7 | A failed or empty page read never deletes anything | test | `test_t3_destructive_write_guard.py::test_empty_page_changes_nothing`, `selftest` T3 | ☐ |
@@ -20,7 +20,7 @@ repo; **live** = something you did on the real bot and can show if asked.
 | 9 | "TBD", "week of", "next Friday" go to needs-review, never the calendar | test | `test_t4_dates.py` adversarial set; `review.py` blocks `needs_review` events | ☐ |
 | 10 | Re-running a night creates nothing twice, even after a crash mid-write | test | `test_t2_idempotency.py::test_crash_between_apply_and_commit_creates_nothing_twice` | ☐ |
 | 11 | Stops and asks on MFA / login instead of logging in | frame or live | Segment showing the "please take over the computer" message, or the skill text in the template | ☐ soften to template text if no frame |
-| 12 | Six course pages, two nights, five planted changes | test | `syllabot/fixtures/expected.json`, `selftest` T1 line "5 planted changes detected, 0 noise" | ☐ |
+| 12 | Six course pages, two nights, five planted changes | test | `vidya/fixtures/expected.json`, `selftest` T1 line "5 planted changes detected, 0 noise" | ☐ |
 | 13 | Known-answer diff, idempotency, destructive-write guard, adversarial dates, timezone | test | `selftest` output frame (optional) + `tests/` | ☐ |
 | 14 | Canvas sandbox through the same loop with zero code changes | test (+ frame if recorded) | `tests/test_t6_multi_lms.py`; the loop has no platform branch. **Wording rule:** "tested on Brightspace and Canvas" only if you also ran it against a real Canvas sandbox; otherwise "built to generalize; Canvas path covered by the fixture suite" | ☐ |
 | 15 | `selftest` prints ALL PASS in a second on a clean machine | frame or live | Run it during T7 on the fresh bot; record if convenient | ☐ |

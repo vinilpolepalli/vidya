@@ -1,9 +1,9 @@
 import json
 
-from syllabot.digest import build_digest
-from syllabot.fixtures import load_readings
-from syllabot.graph import episode_uuid, export_episodes
-from syllabot.pipeline import fake_apply, plan_run
+from vidya.digest import build_digest
+from vidya.fixtures import load_readings
+from vidya.graph import episode_uuid, export_episodes
+from vidya.pipeline import fake_apply, plan_run
 
 
 def two_nights(store, fixtures):

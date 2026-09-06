@@ -4,11 +4,11 @@ Readings; only the extractor knows what Canvas is."""
 
 from pathlib import Path
 
-from syllabot.extract.canvas import extract_canvas_files, items_from_canvas
-from syllabot.fixtures import fixture_dir, load_readings
-from syllabot.model import OP_CREATE
-from syllabot.pipeline import fake_apply, plan_run
-from syllabot.store import Store
+from vidya.extract.canvas import extract_canvas_files, items_from_canvas
+from vidya.fixtures import fixture_dir, load_readings
+from vidya.model import OP_CREATE
+from vidya.pipeline import fake_apply, plan_run
+from vidya.store import Store
 
 CANVAS = fixture_dir() / "canvas"
 READ_AT = "2026-09-06T23:00:00-04:00"
@@ -48,7 +48,7 @@ def test_unpublished_and_dateless_are_ignored():
 
 def test_same_loop_mixes_brightspace_and_canvas_in_one_run(tmp_path, fixtures):
     """One store, two platforms, one nightly diff. No platform-specific branch anywhere."""
-    from syllabot.fixtures import load_courses
+    from vidya.fixtures import load_courses
     store = Store(tmp_path / "s")
     courses = load_courses(fixtures) + [{"id": "sandbox", "name": "Canvas Sandbox", "platform": "canvas",
                                          "url": "https://canvas.example.edu/courses/777"}]

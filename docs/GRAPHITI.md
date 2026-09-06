@@ -6,19 +6,19 @@ is Oct 16. Graphiti stores that as an edge with history instead of overwriting
 it, which is what turns "the diff" into "how many times has this professor moved
 a deadline" and "which course has the most volatile schedule".
 
-The engine does not need Graphiti. `syllabot digest` answers the volatility
+The engine does not need Graphiti. `vidya digest` answers the volatility
 question from local run history. Graphiti is the enhancement: cross-course
 temporal queries, and a shared graph if several readers write to one place.
 
-## What syllabot produces
+## What vidya produces
 
-`syllabot graph <run-id> --out episodes.jsonl` writes one JSON object per line:
+`vidya graph <run-id> --out episodes.jsonl` writes one JSON object per line:
 
 ```json
 {"uuid": "…", "name": "moved: Midterm 1 (data-structures)",
  "episode_body": "In the course CS 201 Data Structures (data-structures), the exam 'Midterm 1' was scheduled for 2026-10-14T11:00:00-04:00 and is now scheduled for 2026-10-16T11:00:00-04:00. Observed on 2026-09-06. Source: https://…",
- "source": "text", "source_description": "syllabot nightly diff, run 20260906-230412",
- "reference_time": "2026-09-06T23:04:12-04:00", "group_id": "syllabot"}
+ "source": "text", "source_description": "vidya nightly diff, run 20260906-230412",
+ "reference_time": "2026-09-06T23:04:12-04:00", "group_id": "vidya"}
 ```
 
 - One `text` episode per change (moved / added / removed / reworded).
@@ -49,7 +49,7 @@ https://<your-host>/mcp/" (or Settings → Plugins → custom server), and the
 nightly skill can post each JSONL line with `add_memory`.
 
 Without hosting: run the MCP server locally with `--transport stdio`, or use
-`push_with_graphiti_core` from `syllabot/graph.py` (`pip install "syllabot[graph]"`)
+`push_with_graphiti_core` from `vidya/graph.py` (`pip install "vidya[graph]"`)
 against a local FalkorDB, ingest the episodes, and query. That is a legitimate
 component for the demo as long as the post says the graph runs alongside the
 bot today and the hosted wiring is next.
@@ -73,5 +73,5 @@ bot today and the hosted wiring is next.
 - Volatility: count `now scheduled for` facts per course.
 - Cross-course week view: facts whose scheduled date falls in a window.
 
-`syllabot digest` produces the first two from local state as a fallback so the
+`vidya digest` produces the first two from local state as a fallback so the
 weekly message never depends on the graph being up.

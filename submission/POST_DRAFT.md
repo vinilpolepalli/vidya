@@ -6,7 +6,7 @@
 
 My professor moved a midterm at 11 PM. My calendar already knew by the time I woke up.
 
-I built a Grok Bot for the #GrokBotForStudents Student Build Challenge. It's called Syllabus, and it does one job: every night it reads my course pages on its own cloud computer, compares them with last night, writes what changed to Google Calendar, and messages me what moved and where it saw it.
+I built a Grok Bot for the #GrokBotForStudents Student Build Challenge. It's called Vidya (Sanskrit for knowledge), and it does one job: every night it reads my course pages on its own cloud computer, compares them with last night, writes what changed to Google Calendar, and messages me what moved and where it saw it.
 
 What it does
 - Reads syllabus, assignments and announcements for every course at 11 PM (Grok Bot routine + browser; Canvas API or iCal feed where they exist)

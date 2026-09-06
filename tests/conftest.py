@@ -1,7 +1,7 @@
 import pytest
 
-from syllabot.fixtures import fixture_dir, load_courses
-from syllabot.store import Store
+from vidya.fixtures import fixture_dir, load_courses
+from vidya.store import Store
 
 
 @pytest.fixture

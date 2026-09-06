@@ -2,13 +2,13 @@
 change nothing. A deletion requires the item to be absent on two consecutive
 successful reads on different days; an error read is not a successful read."""
 
-from syllabot.diff import diff_course
-from syllabot.fake_calendar import FakeCalendar
-from syllabot.fixtures import load_readings
-from syllabot.model import OP_DELETE, REMOVED, STATUS_ERROR, Reading
-from syllabot.pipeline import fake_apply, plan_run
-from syllabot.resolve import resolve_reading
-from syllabot.selftest import t3_destructive_write_guard
+from vidya.diff import diff_course
+from vidya.fake_calendar import FakeCalendar
+from vidya.fixtures import load_readings
+from vidya.model import OP_DELETE, REMOVED, STATUS_ERROR, Reading
+from vidya.pipeline import fake_apply, plan_run
+from vidya.resolve import resolve_reading
+from vidya.selftest import t3_destructive_write_guard
 
 
 def test_selftest_t3(fixtures, tmp_path):

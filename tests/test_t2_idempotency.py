@@ -2,11 +2,11 @@
 must produce zero changes and zero new events. A crash between applying and
 committing must not produce duplicates either."""
 
-from syllabot.fake_calendar import FakeCalendar
-from syllabot.fixtures import load_readings
-from syllabot.model import OP_CREATE
-from syllabot.pipeline import fake_apply, plan_run
-from syllabot.selftest import t2_idempotency
+from vidya.fake_calendar import FakeCalendar
+from vidya.fixtures import load_readings
+from vidya.model import OP_CREATE
+from vidya.pipeline import fake_apply, plan_run
+from vidya.selftest import t2_idempotency
 
 
 def test_selftest_t2(fixtures, tmp_path):

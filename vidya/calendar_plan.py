@@ -1,7 +1,7 @@
 """Turn confirmed changes into calendar operations with idempotency keys.
 
 The ledger maps item key -> calendar event id. Every event description also
-carries a `syllabot-key:` marker so an event can be found again even if the
+carries a `vidya-key:` marker so an event can be found again even if the
 ledger is lost. Creating an item whose key is already in the ledger becomes an
 update of the existing event, which is what makes a re-run after a crash safe.
 """
@@ -16,7 +16,7 @@ from .model import (
     OP_DELETE, OP_UPDATE, REMOVED, REWORDED, CalendarOp, DiffResult, Event,
 )
 
-MARKER = "syllabot-key:"
+MARKER = "vidya-key:"
 
 
 def build_plan(

@@ -3,7 +3,7 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "syllabot"
+name = "vidya"
 version = "0.1.0"
 description = "Deterministic engine for a Grok Bot that watches course pages for deadline changes and keeps a calendar honest: normalize, diff, guard, review, plan."
 readme = "README.md"
@@ -20,10 +20,10 @@ test = ["pytest>=7"]
 graph = ["graphiti-core>=0.10"]
 
 [project.scripts]
-syllabot = "syllabot.cli:main"
+vidya = "vidya.cli:main"
 
 [tool.setuptools.packages.find]
-include = ["syllabot*"]
+include = ["vidya*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -2,13 +2,13 @@
 through here, so each step is inspectable and re-runnable by hand.
 
 Typical night:
-  syllabot plan --readings runs/tonight/       # diff + review, prints approved ops
+  vidya plan --readings runs/tonight/       # diff + review, prints approved ops
   (bot applies each approved op through its calendar plugin, then:)
-  syllabot record <run> --key K --op create --event-id ID --status ok
-  syllabot commit <run>
+  vidya record <run> --key K --op create --event-id ID --status ok
+  vidya commit <run>
 
 Dry run without a real calendar:
-  syllabot plan --readings DIR --fake-apply
+  vidya plan --readings DIR --fake-apply
 """
 
 from __future__ import annotations
@@ -25,13 +25,13 @@ from . import __version__
 from .model import Reading
 from .store import Store
 
-DEFAULT_STATE = os.environ.get("SYLLABOT_STATE", "state")
+DEFAULT_STATE = os.environ.get("VIDYA_STATE", "state")
 
 
 def _store(args) -> Store:
     s = Store(args.state)
     if not s.exists() and getattr(args, "cmd", "") not in ("init", "selftest", "extract", "validate"):
-        sys.exit(f"no state at {s.root}; run `syllabot init --state {s.root}` first")
+        sys.exit(f"no state at {s.root}; run `vidya init --state {s.root}` first")
     return s
 
 
@@ -155,7 +155,7 @@ def cmd_plan(args) -> int:
         ok = sum(1 for r in results if r["status"] == "ok")
         print(f"fake calendar: applied {ok}/{len(results)} op(s); committed run {run['run_id']}")
     elif run["review"].approved:
-        print("\nApproved operations (apply each, then `syllabot record`, then `syllabot commit`):")
+        print("\nApproved operations (apply each, then `vidya record`, then `vidya commit`):")
         _print_json([o.to_dict() for o in run["review"].approved])
     return 0
 
@@ -189,7 +189,7 @@ def cmd_resolve_review(args) -> int:
     if store.resolve_review(args.key, args.note or "resolved by owner", _now_iso()):
         print(f"resolved {args.key}; it stays out of summaries until its source text changes")
         return 0
-    sys.exit(f"no review item with key {args.key!r}; see `syllabot status`")
+    sys.exit(f"no review item with key {args.key!r}; see `vidya status`")
 
 
 def cmd_status(args) -> int:
@@ -270,9 +270,9 @@ def cmd_selftest(args) -> int:
 # ---- parser ------------------------------------------------------------------
 
 def build_parser() -> argparse.ArgumentParser:
-    p = argparse.ArgumentParser(prog="syllabot", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("--version", action="version", version=f"syllabot {__version__}")
-    p.add_argument("--state", default=DEFAULT_STATE, help="state directory (default: $SYLLABOT_STATE or ./state)")
+    p = argparse.ArgumentParser(prog="vidya", description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p.add_argument("--version", action="version", version=f"vidya {__version__}")
+    p.add_argument("--state", default=DEFAULT_STATE, help="state directory (default: $VIDYA_STATE or ./state)")
     sub = p.add_subparsers(dest="cmd", required=True)
 
     s = sub.add_parser("init", help="create a state directory")
@@ -349,7 +349,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     s = sub.add_parser("graph", help="export a run as Graphiti episodes (JSONL)")
     s.add_argument("run_id", nargs="?")
-    s.add_argument("--group-id", default="syllabot")
+    s.add_argument("--group-id", default="vidya")
     s.add_argument("--out")
     s.set_defaults(fn=cmd_graph)
 

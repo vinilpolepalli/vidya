@@ -131,6 +131,6 @@ def extract_ical(text: str, course_id: str, source_url: str, read_at: Optional[s
 
 
 def fetch_ical(url: str, timeout: int = 30) -> str:
-    req = urllib.request.Request(url, headers={"User-Agent": "syllabot/0.1"})
+    req = urllib.request.Request(url, headers={"User-Agent": "vidya/0.1"})
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         return resp.read().decode("utf-8", errors="replace")
