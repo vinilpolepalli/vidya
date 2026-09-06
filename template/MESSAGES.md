@@ -22,7 +22,7 @@ You are going to assemble yourself from a public repository and then set yoursel
 
 2. Read ~/vidya/template/PROFILE.md. Set your own title to the Title line and your description to the quoted Description block, word for word. If you cannot edit your own profile, print both fields exactly as written so I can paste them into Edit Profile, and wait for me to say "done".
 
-3. For each file in ~/vidya/template/skills/ (there are sixteen: setup-playbook.md, read-course.md, nightly-syllabus-check.md, needs-review-triage.md, weekly-digest.md, safety-checkin.md, lecture-notes.md, assignment-coach.md, opportunity-scout.md, resume-tailor.md, project-builder.md, club-scout.md, coffee-chat-scheduler.md, cold-outreach.md, calendar-concierge.md, package-template.md), save a skill. The skill name is the H1 heading without the "Skill: " prefix (so "Setup playbook", "Read course", "Nightly syllabus check", "Needs-review triage", "Weekly digest", "Safety check-in", "Lecture notes", "Assignment coach", "Opportunity scout", "Resume tailor", "Project builder", "Club scout", "Coffee chat scheduler", "Cold outreach", "Calendar concierge", "Package template"). The skill instructions are the entire file body below the heading, verbatim. Make sure each skill is enabled for you. When done, list the sixteen skill names and confirm each is available.
+3. For each file in ~/vidya/template/skills/ (there are seventeen: setup-playbook.md, read-course.md, nightly-syllabus-check.md, needs-review-triage.md, weekly-digest.md, safety-checkin.md, lecture-notes.md, assignment-coach.md, opportunity-scout.md, resume-tailor.md, project-builder.md, club-scout.md, coffee-chat-scheduler.md, cold-outreach.md, calendar-concierge.md, fun-scout.md, package-template.md), save a skill. The skill name is the H1 heading without the "Skill: " prefix (so "Setup playbook", "Read course", "Nightly syllabus check", "Needs-review triage", "Weekly digest", "Safety check-in", "Lecture notes", "Assignment coach", "Opportunity scout", "Resume tailor", "Project builder", "Club scout", "Coffee chat scheduler", "Cold outreach", "Calendar concierge", "Fun scout", "Package template"). The skill instructions are the entire file body below the heading, verbatim. Make sure each skill is enabled for you. When done, list the seventeen skill names and confirm each is available.
 
 4. Now ask me, one question at a time: (a) which time zone my calendar should use, offering the common US ones as options (America/New_York, America/Chicago, America/Denver, America/Los_Angeles) plus "other"; (b) which LMS my school uses, offering Canvas, Brightspace, Blackboard, Moodle, Google Classroom and "other / not sure" as options. If I pick "not sure", ask me for my school's course website address and work it out from the page. Repeat both answers back to me in one line and wait for me to confirm before continuing.
 
@@ -120,13 +120,13 @@ Confirmed, the settings match. Enable the Nightly syllabus check, Weekly digest 
 ## Message 5: package and publish the template
 
 ```text
-Run your "Package template" skill. Audit your memories, skills, routines and plugins out loud, one line each. Include the sixteen skills and the two routines (Nightly syllabus check and Weekly digest), not the Safety check-in routine or any recruiting routine. Exclude every memory that mentions my courses, my school, my professors, my contacts, my family, my calendar, or me. Then search everything you plan to include for email addresses, phone numbers, course ids, calendar ids, tokens, and my school's website hostname, and tell me each hit and what you did with it. Show me the final inclusion list with one line of justification per item, and do not publish until I say go.
+Run your "Package template" skill. Audit your memories, skills, routines and plugins out loud, one line each. Include the seventeen skills and the two routines (Nightly syllabus check and Weekly digest), not the Safety check-in, Fun this week or any recruiting routine. Exclude every memory that mentions my courses, my school, my professors, my contacts, my family, my calendar, or me. Then search everything you plan to include for email addresses, phone numbers, course ids, calendar ids, tokens, and my school's website hostname, and tell me each hit and what you did with it. Show me the final inclusion list with one line of justification per item, and do not publish until I say go.
 ```
 
 Read the list against `SCRUB_CHECKLIST.md`. If it is clean:
 
 ```text
-Go. Publish as a public template and give me the link. Then open the link yourself in a fresh browser window and confirm the preview loads and shows the sixteen skills and two routines.
+Go. Publish as a public template and give me the link. Then open the link yourself in a fresh browser window and confirm the preview loads and shows the seventeen skills and two routines.
 ```
 
 ---
@@ -160,7 +160,7 @@ Re-render both images at 3600 pixels wide and post them again. Also save the Mer
 
 ## Message 7: the big update (for a Vidya that already exists)
 
-One message. Vidya pulls the new engine, installs the nine new skills, re-saves
+One message. Vidya pulls the new engine, installs the ten new skills, re-saves
 the ones that changed, then interviews you for each new module one question at
 a time. Skip anything by answering "skip". Nothing in it needs editing.
 
@@ -169,7 +169,7 @@ Update yourself from the repository and then set up everything new for me. Do ev
 
 1. Engine. On your computer: cd ~/vidya && git pull && python3 -m vidya.cli selftest && python3 -m vidya.cli --version. Expect ALL PASS. Then run vidya status with VIDYA_STATE=~/vidya-state and confirm my courses and state are intact. If anything fails, stop and show me.
 
-2. Skills. Re-save these existing skills from ~/vidya/template/skills/ because their text changed: "Setup playbook" (setup-playbook.md), "Safety check-in" (safety-checkin.md), "Package template" (package-template.md). Then save these nine new skills, name = the H1 heading without "Skill: ", instructions = the entire body verbatim: "Lecture notes" (lecture-notes.md), "Assignment coach" (assignment-coach.md), "Opportunity scout" (opportunity-scout.md), "Resume tailor" (resume-tailor.md), "Project builder" (project-builder.md), "Club scout" (club-scout.md), "Coffee chat scheduler" (coffee-chat-scheduler.md), "Cold outreach" (cold-outreach.md), "Calendar concierge" (calendar-concierge.md). Enable all of them for yourself. List all sixteen skill names and confirm each is available.
+2. Skills. Re-save these existing skills from ~/vidya/template/skills/ because their text changed: "Setup playbook" (setup-playbook.md), "Safety check-in" (safety-checkin.md), "Package template" (package-template.md). Then save these ten new skills, name = the H1 heading without "Skill: ", instructions = the entire body verbatim: "Lecture notes" (lecture-notes.md), "Assignment coach" (assignment-coach.md), "Opportunity scout" (opportunity-scout.md), "Resume tailor" (resume-tailor.md), "Project builder" (project-builder.md), "Club scout" (club-scout.md), "Coffee chat scheduler" (coffee-chat-scheduler.md), "Cold outreach" (cold-outreach.md), "Calendar concierge" (calendar-concierge.md), "Fun scout" (fun-scout.md). Enable all of them for yourself. List all seventeen skill names and confirm each is available.
 
 3. Profile. Read ~/vidya/template/PROFILE.md and replace your title and description with the Title line and the quoted Description block, word for word. If you cannot edit your own profile, print both so I can paste them, and wait for "done".
 
@@ -193,7 +193,9 @@ Update yourself from the repository and then set up everything new for me. Do ev
 
 13. Calendar concierge. Ask me for my working hours (earliest start, latest end) and protected times (sleep, practice, work shifts, anything I never want booked over), save them to the profile, then ask me for one calendar change in plain English and show me the operation list before applying it.
 
-14. Finish. Show me: skills (16), routines with next runs, sources watched with kinds, safety status, which modules are on and which I skipped, and everything that still needs me (sign-ins, plugin connections, approvals). Then re-run step 4 of your "Package template" skill only as a dry run: list what would go into the shared template and confirm nothing about my courses, contacts, resume, school or me is in it.
+14. Fun. Ask whether I want the Fun scout (yes / skip). If yes, run its setup interview one question at a time: my campus or city and radius, what I like (offer home games, concerts, comedy, campus events, Greek life / parties, club nights, cultural, free stuff), my max ticket price and monthly fun budget, which sports, and whether I am in high school (then school events, games and all-ages shows only). Ask me to sign in to Spotify in your browser and open open.spotify.com/concerts once, then ask for my school's athletics schedule and student ticket portal addresses, my campus events calendar, and any party or Greek pages I want watched (I name them; you do not go looking). Then run the weekly scan once and show me the shortlist, grouped Sports / Concerts / Campus / Parties, with a "why it fits" line per item. Do not add anything to my calendar and do not buy anything until I pick. If I pick something and say "ticket", take it to the Pay button, screenshot the cart with the total, and stop. Ask whether to create the "Fun this week" routine (Thursday 4:00 PM and Saturday 10:00 AM).
+
+15. Finish. Show me: skills (17), routines with next runs, sources watched with kinds, safety status, fun scout on or off with the budget, which modules are on and which I skipped, and everything that still needs me (sign-ins, plugin connections, approvals). Then re-run step 4 of your "Package template" skill only as a dry run: list what would go into the shared template and confirm nothing about my courses, contacts, resume, school or me is in it.
 ```
 
 If it stalls on any module, send the module number to resume:
@@ -260,4 +262,20 @@ Notes for today's CS 201 lecture (attached)
 
 ```text
 How should I approach Homework 3?
+```
+
+```text
+What's going on this weekend?
+```
+
+```text
+Ticket for the Friday show, one, cheapest
+```
+
+```text
+Pay
+```
+
+```text
+Check in later tonight
 ```

@@ -167,6 +167,20 @@ class Safety:
     def location(self) -> Optional[dict[str, Any]]:
         return self._read("location.json", None)
 
+    def add_plan_note(self, day: date, note: str) -> list[str]:
+        """The owner has plans on a given night (a game, a show, a party). The
+        check-in reminder mentions them; nothing else changes."""
+        plans = self._read("plans.json", {})
+        notes = plans.get(day.isoformat(), [])
+        if note not in notes:
+            notes.append(note)
+        plans[day.isoformat()] = notes
+        self._write("plans.json", plans)
+        return notes
+
+    def plan_notes(self, day: date) -> list[str]:
+        return list(self._read("plans.json", {}).get(day.isoformat(), []))
+
     def say(self, contact_id: str, text: str, at: Optional[datetime] = None) -> Message:
         """Queue an owner-requested message. Approved by `plan` because the
         owner is the source; still logged and idempotent."""
@@ -258,13 +272,19 @@ class Safety:
                     if not contacts:
                         out.notes.append(f"check-in missed at {grace_end.strftime('%H:%M')} but there is nobody to tell")
                 elif now >= due:
+                    plans = self.plan_notes(today)
+                    opener = (f"Quick check-in: are you good tonight? I have you down for {' and '.join(plans)}. "
+                              if plans else "Quick check-in: are you good tonight? ")
+                    tail = (" If you're still out, say \"check in later\" and I'll ask again before telling anyone."
+                            if plans else "")
                     consider(Message(
                         key=f"remind:{today}", kind=KIND_OWNER_REMINDER, to="owner", to_name="owner", to_address="",
                         subject="Check-in",
-                        body=(f"Quick check-in: are you good tonight? Reply with anything and I'll log it. "
+                        body=(f"{opener}Reply with anything and I'll log it. "
                               f"If I don't hear from you by {grace_end.strftime('%-I:%M %p')}, I'll let "
-                              f"{_names(contacts)} know I couldn't reach you."),
-                        reason=f"check-in due {due.strftime('%H:%M')}, not yet received",
+                              f"{_names(contacts)} know I couldn't reach you.{tail}"),
+                        reason=f"check-in due {due.strftime('%H:%M')}, not yet received"
+                               + (f"; plans tonight: {', '.join(plans)}" if plans else ""),
                     ))
                 else:
                     out.notes.append(f"check-in due at {due.strftime('%H:%M %Z')}")

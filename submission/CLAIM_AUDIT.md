@@ -40,6 +40,7 @@ repo; **live** = something you did on the real bot and can show if asked.
 | 29 | Resume: "every line traces to my master resume" | live | Open one `facts.md` next to the tailored PDF in the video, or soften to "designed so that" | ☐ |
 | 30 | Lecture notes into Notion, assignment coach, club fit report, coffee chats, cold outreach, calendar concierge | frame or cut | Each needs one frame (a Notion page, a coaching note, a fit report, a drafted note, an operation list). Cut any you did not record; the post already carries the deadline story | ☐ |
 | 31 | "74 tests" | test | `python3 -m pytest -q` output frame or the CI badge; update the number if it changes | ☐ |
+| 33 | Fun: "concerts by artists I actually listen to", "a ticket walked to the Pay button" | frame or cut | Frame: the Thursday shortlist with a "because you listen to" line, and one cart screenshot stopped at payment. Say "reads my Spotify" only if the Live Events page was actually used; never claim it bought anything you did not approve | ☐ |
 | 32 | "Works for high school" | wording | The engine is page-agnostic and the playbook names Schoology/Classroom/PowerSchool/counseling pages. Say "built for" unless a high school student ran it | ☐ |
 
 ## Claims to avoid unless you have the frame
@@ -51,6 +52,7 @@ repo; **live** = something you did on the real bot and can show if asked.
 - "Texts my parents" — say "emails" unless you verified the carrier gateway delivered as a text on your parent's phone.
 - "Auto-applies to jobs" — say "prepares applications I approve as a batch". Unattended submission is not what it does and would not be a feature.
 - "Builds projects for my resume" — say "helps me build" / "pair-programs". The README labels AI-assisted work and so should you.
+- "Buys tickets for me" — say "walks a ticket to the Pay button; I say pay".
 - "Knows where I am" — never. "Can tell my mom where I last was, if I share my location and only when I've gone quiet" is the true sentence.
 
 ## Sign-off

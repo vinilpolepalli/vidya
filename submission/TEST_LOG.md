@@ -1,7 +1,7 @@
 # Test log
 
 Honest record of what ran, where, and what is still on you. Statuses for the
-synthetic fixture set were produced in this repository (`python3 -m pytest`, 67
+synthetic fixture set were produced in this repository (`python3 -m pytest`, 75
 tests, and `vidya selftest`). Real-course rows need your captures.
 
 | Test | Status | Notes |
@@ -21,6 +21,8 @@ tests, and `vidya selftest`). Real-course rows need your captures.
 | Sources of any kind | **PASS (no branch)** | `add-source --kind registrar` stored and shown in `status`; the engine never reads `kind`. |
 | Location in alerts | **PASS (rules)** / real Maps read: ☐ | Recorded place is not a check-in (alert still fires); appears only when opted in; shows the time seen and age. The Google Maps sharing read itself is browser work in the skill; do one live before claiming. |
 | Skills without engine code (lecture notes, assignment coach, opportunity scout, resume tailor, project builder, club scout, coffee chats, cold outreach, calendar concierge) | ☐ | Text only; each has when / inputs / sequence / validate / return / approval. Run each once on a real input before the video and note what the Bot got wrong; fix the skill text, not the Bot. |
+| Plans in the reminder | **PASS** | `vidya safety plan-note` makes that night's reminder name the plans and offer "check in later"; other nights unchanged; contacts' alerts unchanged. |
+| Fun scout | ☐ | Text only. Run one Thursday scan with Spotify signed in; take one ticket to the Pay button and stop; record both for the video. |
 | Digest / graph | **PASS** | Digest lists next-N-days by day, changes with sources, volatility ("most volatile: CS 201 (1 move)"), pending removals, review bucket. Graph export: one text episode per change, one JSON snapshot per course, deterministic UUIDs (re-export identical). Posting to a live Graphiti server: ☐ not run here (needs your instance + key). |
 | T7 template install | **scripted: PASS** / real bot: ☐ | Every command in `template/skills/setup-playbook.md`, `read-course.md` and `nightly-syllabus-check.md` was run verbatim on a fresh clone (clone, `--version`, `selftest`, `init`, `add-course`, `extract html`, `validate`, `plan --fake-apply`, `status`, `reset --yes`, real `plan`, `record` per op, `commit`, second night with a moved midterm, `digest`, `graph`). Still yours: install your published template into a clean bot; time it; do not help. Success = first course read in under ten minutes from the playbook alone. Fix the playbook, not the bot. Better: send it to one friend at 2 PM. |
 | T8 claim audit | ☐ | `submission/CLAIM_AUDIT.md`, immediately before publishing. |

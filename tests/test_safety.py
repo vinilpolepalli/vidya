@@ -194,3 +194,16 @@ def test_shared_location_appears_only_when_opted_in_and_is_not_a_checkin(safety)
     safety.save_config(cfg)
     body = next(m for m in safety.plan(now=at("2026-09-07T22:31")).approved if m.to == "mom").body
     assert "Butler Library (seen Mon 9:52 PM" in body
+
+
+def test_reminder_mentions_the_nights_plans_only_that_night(safety):
+    from datetime import date
+    safety.add_plan_note(date(2026, 9, 11), "home opener")
+    safety.add_plan_note(date(2026, 9, 11), "Sigma Chi mixer")
+    body = safety.plan(now=at("2026-09-11T21:05")).approved[0].body
+    assert "home opener and Sigma Chi mixer" in body and "check in later" in body
+    other = safety.plan(now=at("2026-09-10T21:05")).approved[0].body
+    assert "home opener" not in other and "check in later" not in other
+    # plans never change what contacts receive
+    p = safety.plan(now=at("2026-09-11T22:31"))
+    assert [m.kind for m in p.approved] == [KIND_MISSED_CHECKIN, KIND_MISSED_CHECKIN]

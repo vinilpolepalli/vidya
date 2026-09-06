@@ -404,6 +404,11 @@ def cmd_safety(args) -> int:
         e = sf.checkin(at=_now(args.at), note=args.note or "", location=args.location or "")
         print(f"checked in at {e['at']}" + (f" ({e['note']})" if e["note"] else ""))
         return 0
+    if sub == "plan-note":
+        day = datetime.fromisoformat(args.date).date()
+        notes = sf.add_plan_note(day, args.note)
+        print(f"{day}: {'; '.join(notes)} — the check-in reminder that night will mention it")
+        return 0
     if sub == "location":
         e = sf.set_location(args.place, seen_at=_now(args.seen), source=args.source or "")
         print(f"last known place: {e['place']} (seen {e['seen_at']}); used only inside a missed-check-in alert"
@@ -592,6 +597,8 @@ def build_parser() -> argparse.ArgumentParser:
     x.add_argument("--off", action="store_true")
     x = ss.add_parser("checkin", help="the owner checked in (anything they say counts)")
     x.add_argument("--note"); x.add_argument("--location", help="only if the owner shares it"); x.add_argument("--at", help="ISO timestamp (default now)")
+    x = ss.add_parser("plan-note", help="the owner has plans that night; the check-in reminder mentions them")
+    x.add_argument("date", help="YYYY-MM-DD"); x.add_argument("note", help="short, e.g. 'home game, then the Sigma Chi mixer'")
     x = ss.add_parser("location", help="record a last-known place the owner shares (not a check-in)")
     x.add_argument("place"); x.add_argument("--seen", help="ISO timestamp it was observed (default now)"); x.add_argument("--source", help="e.g. google-maps-sharing")
     x = ss.add_parser("say", help="owner asks for a message to a contact")

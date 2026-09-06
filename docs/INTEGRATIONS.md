@@ -20,6 +20,9 @@ its own to write anywhere.
 | **GitHub** | write | repos for gap-closing projects, pushed only after the owner names the repo | owner's account; sign-in via takeover | optional |
 | **LinkedIn** (browser, human pace) | read | shortlists for outreach: at most 10 profiles per run, no automation, no scraping, no bulk actions | owner signs in via takeover | optional |
 | **Gmail plugin, send (approved messages)** | write | outreach, coffee-chat and club messages the owner has read and approved, logged in `vidya track outreach` | owner approves each message or a batch they read | optional |
+| **Spotify** (browser, Live Events page) | read | concerts near the owner ranked by their own listening; artist, venue, date, price | owner signs in to Spotify in the Bot's browser once | optional |
+| **School athletics site + student ticket portal** | read; write (browser) to the Pay button | home games with student-ticket status; a ticket added to cart and stopped at payment, completed only on the owner's "pay", logged in `vidya track tickets` with the total | owner signs in via takeover; payment method stays in the owner's account | optional |
+| **Campus events calendar; party / Greek pages the owner names** (Instagram, Partiful, Posh, Eventbrite) | read | the Thursday shortlist; never RSVP, DM or request invites | owner names the pages | optional |
 | **Graphiti** (Zep temporal graph) | write | run episodes for "how many times has this professor moved a deadline" | owner runs their own server and key; `vidya graph` exports episodes | optional |
 | **Grok Bot routines** | schedule | 11 PM nightly check, Sunday digest, evening safety window | owner confirms schedule and time zone | yes |
 | **Grok Bot cloud computer** | runtime | git, python3, browser, filesystem for state | nothing; present by default | yes |
@@ -37,6 +40,7 @@ its own to write anywhere.
 - **LinkedIn automation.** No scraping, no auto-connect, no auto-message, no
   third-party extensions; at most ten profiles opened per run.
 - **Writing the owner's assignments.** Coaching, review and planning only.
+- **Unattended purchases.** Every ticket stops at the payment step with the total and the month's remaining budget; the owner says "pay". No resale sites unless the owner names one; nothing 18+/21+ or party-related for a high-school owner.
 - **Attendance.** Same reason: no sensor, no claim.
 - **Auto-submitting anything to the LMS.** Read-only. The Bot never posts,
   submits, or replies on a course site.
