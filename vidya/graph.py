@@ -97,12 +97,22 @@ def export_episodes(store: Store, run_id: str, group_id: str = "vidya", include_
     run = store.read_run(run_id)
     names = store.course_names()
     diff = run["diff"]
-    ref = run["meta"].get("created_at") or datetime.now().astimezone().isoformat()
+    # The episode's reference time is when the pages were observed (the latest
+    # read_at in the run), not when the engine happened to run; the run's
+    # created_at is only a fallback for runs with no readings on disk.
+    read_ats: list[datetime] = []
     for r in (store.run_dir(run_id) / "readings").glob("*.json"):
         try:
-            ref = max(ref, json.loads(r.read_text(encoding="utf-8")).get("read_at", ""))
+            ra = json.loads(r.read_text(encoding="utf-8")).get("read_at")
+            if ra:
+                read_ats.append(datetime.fromisoformat(ra.replace("Z", "+00:00")))
         except (OSError, ValueError):
             pass
+    if read_ats:
+        aware = [d if d.tzinfo else d.astimezone() for d in read_ats]
+        ref = max(aware).isoformat()
+    else:
+        ref = run["meta"].get("created_at") or datetime.now().astimezone().isoformat()
     episodes: list[dict[str, Any]] = []
     for c in diff.get("changes", []):
         ep = change_episode(run_id, Change.from_dict(c), names, group_id, ref)

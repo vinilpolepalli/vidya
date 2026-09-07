@@ -464,6 +464,43 @@ def cmd_safety(args) -> int:
     sys.exit(f"unknown safety command {sub}")
 
 
+def cmd_teach(args) -> int:
+    from .teach import Mastery, build_map, render_map
+    store = _store(args)
+    if args.teach_cmd == "map":
+        topics = json.loads(Path(args.topics).read_text(encoding="utf-8"))
+        start = datetime.fromisoformat(args.start).date() if args.start else datetime.now().astimezone().date()
+        days = [d.strip() for d in args.days.split(",")] if args.days else None
+        plan = build_map(store, args.course, topics, start, per_week=args.per_week, days=days)
+        if args.out:
+            Path(args.out).parent.mkdir(parents=True, exist_ok=True)
+            Path(args.out).write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
+        print(render_map(store, plan))
+        if args.out:
+            print(f"\nplan -> {args.out}")
+        return 0
+    m = Mastery(store, args.course)
+    if args.teach_cmd == "record":
+        try:
+            e = m.record(args.concept, args.score, note=args.note or "")
+        except ValueError as err:
+            sys.exit(str(err))
+        print(f"{args.course}: {args.concept!r} = {args.score} ({len(e['history'])} attempt(s))")
+        return 0
+    if args.teach_cmd == "weak":
+        weak = m.weak()
+        if not weak:
+            print("nothing weak on record")
+        for concept, score, at in weak:
+            print(f"- {concept} (latest {score}, {at[:10]})")
+        return 0
+    if args.teach_cmd == "status":
+        s = m.summary()
+        print(f"{args.course}: {s['concepts']} concept(s) on record, {s['solid']} solid, {s['weak']} weak")
+        return 0
+    sys.exit(f"unknown teach command {args.teach_cmd}")
+
+
 def cmd_selftest(args) -> int:
     from .selftest import run_selftest
     ok, report = run_selftest(Path(args.fixtures) if args.fixtures else None,
@@ -609,6 +646,18 @@ def build_parser() -> argparse.ArgumentParser:
     x.add_argument("key"); x.add_argument("--status", default="ok", choices=["ok", "failed"]); x.add_argument("--error"); x.add_argument("--at")
     ss.add_parser("status")
     s.set_defaults(fn=cmd_safety)
+
+    s = sub.add_parser("teach", help="semester map on real dates around the believed exams; mastery ledger")
+    tt = s.add_subparsers(dest="teach_cmd", required=True)
+    x = tt.add_parser("map", help="lay ordered topics onto session days; review before each exam")
+    x.add_argument("course"); x.add_argument("--topics", required=True, help="JSON list of {title, source, exam?}")
+    x.add_argument("--start", help="YYYY-MM-DD (default today)"); x.add_argument("--per-week", type=int, default=2)
+    x.add_argument("--days", help="comma list, e.g. mon,wed"); x.add_argument("--out", help="write plan JSON here")
+    x = tt.add_parser("record", help="how a concept went: 0 confused, 1 shaky, 2 got it, 3 taught it back")
+    x.add_argument("course"); x.add_argument("concept"); x.add_argument("score", type=int); x.add_argument("--note")
+    x = tt.add_parser("weak", help="concepts to re-teach before the exam"); x.add_argument("course")
+    x = tt.add_parser("status"); x.add_argument("course")
+    s.set_defaults(fn=cmd_teach)
 
     s = sub.add_parser("selftest", help="run the fixture suite T1-T5")
     s.add_argument("--fixtures", help="fixture folder (default: the synthetic set shipped in the package)")
