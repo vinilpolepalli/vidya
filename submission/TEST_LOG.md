@@ -1,7 +1,7 @@
 # Test log
 
 Honest record of what ran, where, and what is still on you. Statuses for the
-synthetic fixture set were produced in this repository (`python3 -m pytest`, 80
+synthetic fixture set were produced in this repository (`python3 -m pytest`, 79
 tests, and `vidya selftest`). Real-course rows need your captures.
 
 | Test | Status | Notes |
