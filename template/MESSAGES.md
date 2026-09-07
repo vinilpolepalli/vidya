@@ -120,15 +120,38 @@ Confirmed, the settings match. Enable the Nightly syllabus check, Weekly digest 
 
 ## Message 5: package and publish the template
 
-```text
-Run your "Package template" skill. Audit your memories, skills, routines and plugins out loud, one line each. Include the eighteen skills and the two routines (Nightly syllabus check and Weekly digest), not the Safety check-in, Fun this week, Class today or any recruiting routine. Exclude every memory that mentions my courses, my school, my professors, my contacts, my family, my calendar, or me. Then search everything you plan to include for email addresses, phone numbers, course ids, calendar ids, tokens, and my school's website hostname, and tell me each hit and what you did with it. Show me the final inclusion list with one line of justification per item, and do not publish until I say go.
-```
-
-Read the list against `SCRUB_CHECKLIST.md`. If it is clean:
+Run this when everything works. It makes Vidya audit itself against the
+repository, scrub anything about you, show you the inclusion list, and only
+then publish. Nothing to fill in.
 
 ```text
-Go. Publish as a public template and give me the link. Then open the link yourself in a fresh browser window and confirm the preview loads and shows the eighteen skills and two routines.
+Package yourself as a public template for the Grok Bot Student Build Challenge. Work through every step in order, report after each in one line, and do not publish until I say "go".
+
+1. Verify the skills against the repository. On your computer: cd ~/vidya && git pull. For each of the eighteen skills, compare the text you have saved with the file in ~/vidya/template/skills/ (Setup playbook, Read course, Nightly syllabus check, Needs-review triage, Weekly digest, Safety check-in, Lecture notes, Assignment coach, Opportunity scout, Resume tailor, Project builder, Club scout, Coffee chat scheduler, Cold outreach, Calendar concierge, Fun scout, Course tutor, Package template). If any saved skill differs from the file, re-save it verbatim from the file. List all eighteen and confirm each matches and is enabled.
+
+2. Verify the profile. Compare your title and description with ~/vidya/template/PROFILE.md. If they differ, set them word for word from the file. Confirm the description contains nothing about my school, courses, contacts or me.
+
+3. Audit everything out loud, one line each, and sort it into Include or Exclude:
+   - Include: the profile; the eighteen skills; the two routines "Nightly syllabus check" and "Weekly digest" with their schedule text and <owner time zone> as the placeholder; the Google Calendar plugin as required and Gmail and Notion as optional.
+   - Exclude: every memory that mentions my name, my parents or any safety contact, my school, my courses, my professors, my calendar, my resume, my applications, my projects, my clubs, my location, or anything I have said in this conversation; the Safety check-in, Fun this week, Class today and Opportunity scout routines (they are created per owner after opt-in); the Builder and Recruiter teammates and anything about them; the capability document you wrote for me; every file under ~/vidya-state.
+   For each memory you keep, write the one-line justification and confirm it is a generic working preference, not a fact about me.
+
+4. Scrub. Search every field you plan to include (profile, each skill, each routine, each kept memory) for: my first and last name, my parents' names, every email address, every phone number, "NYU", "Stern", "Brightspace" as my school's hostname, course names and ids, "ou=", "/d2l/", calendar ids, event ids, "CANVAS_TOKEN", feed URLs, Notion page ids, company names from my applications, project names, GitHub repo names, Spotify, ticket confirmations, and anything from ~/vidya-state/track/, safety/, teach/, fun/ or profile/. Report every hit with the field it was in and what you did about it. Zero hits is the only acceptable result.
+
+5. Show me the final inclusion list: profile (yes/no), each skill by name, each routine by name, each kept memory with its justification, each plugin marked required or optional. Then wait for "go".
+
+6. After "go": Bot settings → Share as template. In the draft, untick anything that is not on the approved inclusion list. Publish as public. Copy the link. Open it yourself in a fresh private browser window and confirm the preview loads without a sign-in, shows the name Vidya, the description, the eighteen skills and the two routines, and shows nothing personal. Paste the link here with a one-line summary of what the preview displayed.
+
+7. Then, without me, install your own template into a brand-new Bot as a stranger would: add it from the public link, send it the first message from ~/vidya/template/FIRST_RUN.md with a made-up LMS and time zone, and time how long it takes to reach the point where it asks for the first course. Do not help it. Report the elapsed time and the first thing it got stuck on, if anything. Then delete the test Bot.
 ```
+
+If the audit finds a hit and you want it fixed rather than explained:
+
+```text
+Remove every hit, re-run step 4 until it reports zero, then show me the inclusion list again.
+```
+
+After the link arrives, the two things only you can do: paste it into `submission/POST_DRAFT.md` (both places and the first comment) and `submission/DESCRIPTION.md`, and walk `submission/CLAIM_AUDIT.md` row by row against your video.
 
 ---
 
