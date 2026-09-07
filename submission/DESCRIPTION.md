@@ -1,8 +1,39 @@
 # Written description (requirement 1)
 
-*What the Bot does and the tools it uses. Paste-ready; trim to taste. Every claim here is either a frame in the video or a test in the repo; see `CLAIM_AUDIT.md`. The first three paragraphs are the template description too.*
+*What the Bot does and the tools it uses. The block under **Challenge paste** is the one to put in the form. Every claim is a test in this repo or a frame you still need to record; see `CLAIM_AUDIT.md`.*
+
+Live bot: https://x.ai/bot/EKch7dX7qsm7wRuU4tTI2
+Repo: https://github.com/vinilpolepalli/vidya
 
 ---
+
+## Challenge paste
+
+Vidya is a Grok Bot that keeps every deadline in a student's life honest.
+
+Every night, on its own cloud computer, it re-reads the pages you asked it to watch — courses on Canvas, Brightspace, Blackboard, Moodle, Schoology or Google Classroom, plus registrar, aid, housing, clubs — and compares them to what it believed last night. Confirmed changes go onto Google Calendar (classes peacock, deadlines tomato). Every event carries a receipt: the source link, the exact words on the page, every assumption. Ask "why is Midterm 1 on the 16th?" and you get the receipt and every time that date moved.
+
+It never guesses. "TBD", "week of Oct 12", "next Friday" go to a review list, never the calendar. A failed page load never deletes anything; a removal needs the item gone on two successful reads on two different days. Re-running a night creates nothing twice, even after a crash mid-write. The decisions that could wipe a semester are standard-library Python with 79 tests, not a prompt. You get one honest message a night: what moved, from where, and what it refused to touch.
+
+The shape is the point. The supervisor Bot talks to you and holds the plugins. One cheap reader subagent per page writes a JSON reading — titles and date text verbatim. A deterministic engine (extract → normalize → diff → review gate → idempotent plan → two-phase record/commit) decides what changed, what's ambiguous, and what may be written. The Bot applies exactly those operations. Failed reads cannot delete; ambiguous dates cannot reach the calendar; a crash cannot duplicate.
+
+Same rule for the rest of student life: it prepares, you decide. Give it a syllabus and it maps numbered classes onto your real session days around the exams it already believes, then teaches one concept at a time — intro, core, examples, practice, summary — every claim labelled "from your course material" or "broader context," graded honestly, weak concepts back before the exam. Lecture notes into Notion. Assignment plans, never submissions. Internship listings from SimplifyJobs scored to your profile; applications filled to Submit and sent only as a batch you approve. Resumes with every bullet traced to your master resume. Projects you drive. Club fit reports. Coffee chats and outreach drafted for you to send. Calendar edits in plain English, shown before they happen. A Thursday shortlist of home games, Spotify-ranked concerts, campus events — tickets walk to the Pay button and stop. A ledger on its disk means nothing happens twice.
+
+Optional, off by default: a nightly "you good?" Go quiet past a grace period and the people you named, who agreed, get one email from your mailbox; answer late and they get one all-clear. Share location through Google Maps and that alert can name a last-known place and its age. It cannot see your phone. A check-in, not tracking.
+
+**Tools.** Grok Bot cloud computer (browser, filesystem, terminal), routines, and subagents; Google Calendar (write) and Gmail (read instructor email; send only approved safety or outreach from your mailbox); Notion; LMS pages plus Canvas REST and iCal; SimplifyJobs listings; GitHub; Spotify Live Events; school ticket sites (stop at Pay); LinkedIn at human pace, no automation; optional Google Maps sharing (read once, only inside a missed-check-in alert); optional Graphiti (Zep) for "how many times has this professor moved a deadline"; a stdlib Python engine (`vidya`) whose fixture suite prints ALL PASS in about a second (`vidya selftest`).
+
+Public template — one message and it builds itself, college or high school.
+
+---
+
+## If the form is tight (~120 words)
+
+Vidya watches the pages that run a student's life and keeps the calendar honest. Every night, on its own cloud computer, it re-reads courses, registrar, aid and club pages, diffs them against last night's belief, and writes only confirmed changes to Google Calendar — each event with a receipt. It never guesses, never deletes on a failed read, never duplicates; those rules are standard-library Python with 79 tests, not a prompt. Same contract everywhere else: it prepares, you decide — syllabus-to-semester tutoring, Notion notes, assignment coaching, internship applications to the Submit button, resumes that invent nothing, clubs, outreach, and tickets stopped at Pay. Optional check-in emails consented contacts if you go quiet. Tools: Grok Bot computer, routines, subagents; Calendar, Gmail, Notion; LMS + Canvas REST + iCal; SimplifyJobs; GitHub; Spotify; Maps sharing; `vidya` + `selftest`.
+
+---
+
+## Long catalog (do not paste unless they ask)
 
 Your professor moves the midterm at 11 PM. **Vidya** notices at 11:02, and your calendar is fixed before you wake up.
 
@@ -31,9 +62,3 @@ It never guesses. "TBD", "week of Oct 12", "next Friday" go to a review list you
 **Tested, not vibes.** Six synthetic course pages across two nights with five planted changes; a known-answer diff, idempotency (including a crash between apply and commit), the destructive-write guard, a ten-string adversarial date set, timezone rules, a Canvas run through the same loop with no code change, the safety rules (reminder first, one alert per contact, one all-clear, caps, opt-in location, plans mentioned in the reminder), receipts, and the dedupe ledger. `vidya selftest` prints ALL PASS on a clean computer in about a second.
 
 **Template.** One message and the Bot builds itself: it clones the engine to its own computer, runs the tests, saves its eighteen skills, and interviews you for the rest, asking one question at a time and stopping whenever you need to sign in. Works for college and high school; nothing in it is specific to a school.
-
----
-
-## Shorter variant (if the post needs room)
-
-Vidya is a Grok Bot that keeps every deadline in your student life honest and knows when you got home. Every night it reads your course, registrar, aid and club pages on its own computer, diffs them against last night, and writes confirmed changes to Google Calendar with a receipt in every event. It never guesses, never deletes on a failed read, never duplicates; the rules are Python with 79 tests. Optional nightly check-in emails the people you name if you go quiet and clears them when you answer. It also takes lecture notes into Notion, coaches assignments, scouts internships and prepares applications you approve as a batch, tailors resumes without inventing a line, builds gap-closing projects with you driving, rates clubs, sets up coffee chats and cold outreach you send, edits your own calendar in plain English, teaches your semester from the syllabus one concept at a time, and finds the games, concerts and parties worth your weekend, tickets walked to the Pay button. It prepares; you decide.
