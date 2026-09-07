@@ -1,7 +1,7 @@
 # Test log
 
 Honest record of what ran, where, and what is still on you. Statuses for the
-synthetic fixture set were produced in this repository (`python3 -m pytest`, 75
+synthetic fixture set were produced in this repository (`python3 -m pytest`, 80
 tests, and `vidya selftest`). Real-course rows need your captures.
 
 | Test | Status | Notes |
@@ -22,6 +22,7 @@ tests, and `vidya selftest`). Real-course rows need your captures.
 | Location in alerts | **PASS (rules)** / real Maps read: ☐ | Recorded place is not a check-in (alert still fires); appears only when opted in; shows the time seen and age. The Google Maps sharing read itself is browser work in the skill; do one live before claiming. |
 | Skills without engine code (lecture notes, assignment coach, opportunity scout, resume tailor, project builder, club scout, coffee chats, cold outreach, calendar concierge) | ☐ | Text only; each has when / inputs / sequence / validate / return / approval. Run each once on a real input before the video and note what the Bot got wrong; fix the skill text, not the Bot. |
 | Plans in the reminder | **PASS** | `vidya safety plan-note` makes that night's reminder name the plans and offer "check in later"; other nights unchanged; contacts' alerts unchanged. |
+| Course tutor map + mastery | **PASS** | Classes only on session days; syllabus order kept; review immediately before each believed exam; nothing after the final; tagged topics stay before their exam; no-exam fallback spans N weeks; mastery ledger weak/solid, bad scores rejected. Teaching itself is skill text: run one class on a real course before the video. |
 | Fun scout | ☐ | Text only. Run one Thursday scan with Spotify signed in; take one ticket to the Pay button and stop; record both for the video. |
 | Digest / graph | **PASS** | Digest lists next-N-days by day, changes with sources, volatility ("most volatile: CS 201 (1 move)"), pending removals, review bucket. Graph export: one text episode per change, one JSON snapshot per course, deterministic UUIDs (re-export identical). Posting to a live Graphiti server: ☐ not run here (needs your instance + key). |
 | T7 template install | **scripted: PASS** / real bot: ☐ | Every command in `template/skills/setup-playbook.md`, `read-course.md` and `nightly-syllabus-check.md` was run verbatim on a fresh clone (clone, `--version`, `selftest`, `init`, `add-course`, `extract html`, `validate`, `plan --fake-apply`, `status`, `reset --yes`, real `plan`, `record` per op, `commit`, second night with a moved midterm, `digest`, `graph`). Still yours: install your published template into a clean bot; time it; do not help. Success = first course read in under ten minutes from the playbook alone. Fix the playbook, not the bot. Better: send it to one friend at 2 PM. |
@@ -36,4 +37,5 @@ tests, and `vidya selftest`). Real-course rows need your captures.
 - **Not-read vs unreadable.** A course with no reading in a targeted run (owner resolving one item) is listed in one line as "not read", not as unreadable.
 - **Zero-install path.** The engine has no dependencies so the playbook uses `git clone` + `python3 -m vidya.cli`; pip is optional. Removes a failure mode from T7.
 - **Safety check-in instead of location.** The original plan had location and attendance; they were cut because the Bot has no sensor and the claims could not be proven. The owner asked for a way to reassure family. The honest version is a dead-man's switch: the owner checks in, or named contacts are told once that they did not, and once more when they do. Off by default; every send is approved by code and logged.
+- **Course tutor (ClassDay's offering, our shape).** ClassDay (classday.ai) turns a syllabus into scheduled, taught classes with provenance labels and rubric grading. Vidya already had the syllabus, the exam dates and the receipts, so the tutor reuses them: the engine maps the semester and keeps the mastery ledger; the model teaches with the same two labels. We do not claim their (or anyone's) learning-gain numbers.
 - **Bot name.** "Vidya" (Sanskrit: knowledge) is the Bot name and the engine name; the repository is `vinilpolepalli/vidya`. Earlier drafts used "Syllabus".

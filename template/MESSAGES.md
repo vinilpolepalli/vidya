@@ -3,7 +3,8 @@
 Every block below is one message. On GitHub, hover a block and use the copy
 button. Order: 1 build, 2 safety setup (if not done during build), 3 safety
 routine, 4 live test, 5 publish, 6 system map for the demo, 7 the big update
-for a Vidya that already exists, then everyday phrases. Nothing needs filling in: wherever the Bot needs something from you (your
+for a Vidya that already exists, 8 add the Course tutor on its own, then
+everyday phrases. Nothing needs filling in: wherever the Bot needs something from you (your
 name, your school's LMS, your parents' emails), it asks you in the chat, one
 question at a time, and you answer there. Between messages there is a short
 note on what the app will ask you to do yourself.
@@ -22,7 +23,7 @@ You are going to assemble yourself from a public repository and then set yoursel
 
 2. Read ~/vidya/template/PROFILE.md. Set your own title to the Title line and your description to the quoted Description block, word for word. If you cannot edit your own profile, print both fields exactly as written so I can paste them into Edit Profile, and wait for me to say "done".
 
-3. For each file in ~/vidya/template/skills/ (there are seventeen: setup-playbook.md, read-course.md, nightly-syllabus-check.md, needs-review-triage.md, weekly-digest.md, safety-checkin.md, lecture-notes.md, assignment-coach.md, opportunity-scout.md, resume-tailor.md, project-builder.md, club-scout.md, coffee-chat-scheduler.md, cold-outreach.md, calendar-concierge.md, fun-scout.md, package-template.md), save a skill. The skill name is the H1 heading without the "Skill: " prefix (so "Setup playbook", "Read course", "Nightly syllabus check", "Needs-review triage", "Weekly digest", "Safety check-in", "Lecture notes", "Assignment coach", "Opportunity scout", "Resume tailor", "Project builder", "Club scout", "Coffee chat scheduler", "Cold outreach", "Calendar concierge", "Fun scout", "Package template"). The skill instructions are the entire file body below the heading, verbatim. Make sure each skill is enabled for you. When done, list the seventeen skill names and confirm each is available.
+3. For each file in ~/vidya/template/skills/ (there are eighteen: setup-playbook.md, read-course.md, nightly-syllabus-check.md, needs-review-triage.md, weekly-digest.md, safety-checkin.md, lecture-notes.md, assignment-coach.md, opportunity-scout.md, resume-tailor.md, project-builder.md, club-scout.md, coffee-chat-scheduler.md, cold-outreach.md, calendar-concierge.md, fun-scout.md, course-tutor.md, package-template.md), save a skill. The skill name is the H1 heading without the "Skill: " prefix (so "Setup playbook", "Read course", "Nightly syllabus check", "Needs-review triage", "Weekly digest", "Safety check-in", "Lecture notes", "Assignment coach", "Opportunity scout", "Resume tailor", "Project builder", "Club scout", "Coffee chat scheduler", "Cold outreach", "Calendar concierge", "Fun scout", "Course tutor", "Package template"). The skill instructions are the entire file body below the heading, verbatim. Make sure each skill is enabled for you. When done, list the eighteen skill names and confirm each is available.
 
 4. Now ask me, one question at a time: (a) which time zone my calendar should use, offering the common US ones as options (America/New_York, America/Chicago, America/Denver, America/Los_Angeles) plus "other"; (b) which LMS my school uses, offering Canvas, Brightspace, Blackboard, Moodle, Google Classroom and "other / not sure" as options. If I pick "not sure", ask me for my school's course website address and work it out from the page. Repeat both answers back to me in one line and wait for me to confirm before continuing.
 
@@ -120,13 +121,13 @@ Confirmed, the settings match. Enable the Nightly syllabus check, Weekly digest 
 ## Message 5: package and publish the template
 
 ```text
-Run your "Package template" skill. Audit your memories, skills, routines and plugins out loud, one line each. Include the seventeen skills and the two routines (Nightly syllabus check and Weekly digest), not the Safety check-in, Fun this week or any recruiting routine. Exclude every memory that mentions my courses, my school, my professors, my contacts, my family, my calendar, or me. Then search everything you plan to include for email addresses, phone numbers, course ids, calendar ids, tokens, and my school's website hostname, and tell me each hit and what you did with it. Show me the final inclusion list with one line of justification per item, and do not publish until I say go.
+Run your "Package template" skill. Audit your memories, skills, routines and plugins out loud, one line each. Include the eighteen skills and the two routines (Nightly syllabus check and Weekly digest), not the Safety check-in, Fun this week, Class today or any recruiting routine. Exclude every memory that mentions my courses, my school, my professors, my contacts, my family, my calendar, or me. Then search everything you plan to include for email addresses, phone numbers, course ids, calendar ids, tokens, and my school's website hostname, and tell me each hit and what you did with it. Show me the final inclusion list with one line of justification per item, and do not publish until I say go.
 ```
 
 Read the list against `SCRUB_CHECKLIST.md`. If it is clean:
 
 ```text
-Go. Publish as a public template and give me the link. Then open the link yourself in a fresh browser window and confirm the preview loads and shows the seventeen skills and two routines.
+Go. Publish as a public template and give me the link. Then open the link yourself in a fresh browser window and confirm the preview loads and shows the eighteen skills and two routines.
 ```
 
 ---
@@ -160,7 +161,7 @@ Re-render both images at 3600 pixels wide and post them again. Also save the Mer
 
 ## Message 7: the big update (for a Vidya that already exists)
 
-One message. Vidya pulls the new engine, installs the ten new skills, re-saves
+One message. Vidya pulls the new engine, installs the eleven new skills, re-saves
 the ones that changed, then interviews you for each new module one question at
 a time. Skip anything by answering "skip". Nothing in it needs editing.
 
@@ -169,7 +170,7 @@ Update yourself from the repository and then set up everything new for me. Do ev
 
 1. Engine. On your computer: cd ~/vidya && git pull && python3 -m vidya.cli selftest && python3 -m vidya.cli --version. Expect ALL PASS. Then run vidya status with VIDYA_STATE=~/vidya-state and confirm my courses and state are intact. If anything fails, stop and show me.
 
-2. Skills. Re-save these existing skills from ~/vidya/template/skills/ because their text changed: "Setup playbook" (setup-playbook.md), "Safety check-in" (safety-checkin.md), "Package template" (package-template.md). Then save these ten new skills, name = the H1 heading without "Skill: ", instructions = the entire body verbatim: "Lecture notes" (lecture-notes.md), "Assignment coach" (assignment-coach.md), "Opportunity scout" (opportunity-scout.md), "Resume tailor" (resume-tailor.md), "Project builder" (project-builder.md), "Club scout" (club-scout.md), "Coffee chat scheduler" (coffee-chat-scheduler.md), "Cold outreach" (cold-outreach.md), "Calendar concierge" (calendar-concierge.md), "Fun scout" (fun-scout.md). Enable all of them for yourself. List all seventeen skill names and confirm each is available.
+2. Skills. Re-save these existing skills from ~/vidya/template/skills/ because their text changed: "Setup playbook" (setup-playbook.md), "Safety check-in" (safety-checkin.md), "Package template" (package-template.md). Then save these eleven new skills, name = the H1 heading without "Skill: ", instructions = the entire body verbatim: "Lecture notes" (lecture-notes.md), "Assignment coach" (assignment-coach.md), "Opportunity scout" (opportunity-scout.md), "Resume tailor" (resume-tailor.md), "Project builder" (project-builder.md), "Club scout" (club-scout.md), "Coffee chat scheduler" (coffee-chat-scheduler.md), "Cold outreach" (cold-outreach.md), "Calendar concierge" (calendar-concierge.md), "Fun scout" (fun-scout.md), "Course tutor" (course-tutor.md). Enable all of them for yourself. List all eighteen skill names and confirm each is available.
 
 3. Profile. Read ~/vidya/template/PROFILE.md and replace your title and description with the Title line and the quoted Description block, word for word. If you cannot edit your own profile, print both so I can paste them, and wait for "done".
 
@@ -195,13 +196,42 @@ Update yourself from the repository and then set up everything new for me. Do ev
 
 14. Fun. Ask whether I want the Fun scout (yes / skip). If yes, run its setup interview one question at a time: my campus or city and radius, what I like (offer home games, concerts, comedy, campus events, Greek life / parties, club nights, cultural, free stuff), my max ticket price and monthly fun budget, which sports, and whether I am in high school (then school events, games and all-ages shows only). Ask me to sign in to Spotify in your browser and open open.spotify.com/concerts once, then ask for my school's athletics schedule and student ticket portal addresses, my campus events calendar, and any party or Greek pages I want watched (I name them; you do not go looking). Then run the weekly scan once and show me the shortlist, grouped Sports / Concerts / Campus / Parties, with a "why it fits" line per item. Do not add anything to my calendar and do not buy anything until I pick. If I pick something and say "ticket", take it to the Pay button, screenshot the cart with the total, and stop. Ask whether to create the "Fun this week" routine (Thursday 4:00 PM and Saturday 10:00 AM).
 
-15. Finish. Show me: skills (17), routines with next runs, sources watched with kinds, safety status, fun scout on or off with the budget, which modules are on and which I skipped, and everything that still needs me (sign-ins, plugin connections, approvals). Then re-run step 4 of your "Package template" skill only as a dry run: list what would go into the shared template and confirm nothing about my courses, contacts, resume, school or me is in it.
+15. Course tutor. Ask whether I want a course taught this semester (yes / skip). If yes: ask which course (offer my courses from vidya status), my session days and length (offer 2 × 45 min, 3 × 30 min, daily 20 min), and my level with the subject (offer new to it, some background, strong). Then run the "Course tutor" skill's setup: extract the ordered topic list from the syllabus and material and show it to me to confirm, run vidya teach map with my days and show me the printed semester map, offer to put the classes on my calendar through the concierge, then teach the Intro and Core concept steps of Class 1 right now so I can see the two provenance labels and the four controls. Ask whether to create the "Class today" routine for this course.
+
+16. Finish. Show me: skills (18), routines with next runs, sources watched with kinds, safety status, fun scout on or off with the budget, which courses are being taught with their next class, which modules are on and which I skipped, and everything that still needs me (sign-ins, plugin connections, approvals). Then re-run step 4 of your "Package template" skill only as a dry run: list what would go into the shared template and confirm nothing about my courses, contacts, resume, school or me is in it.
 ```
 
 If it stalls on any module, send the module number to resume:
 
 ```text
 Continue from step <N>. Skip nothing else.
+```
+
+---
+
+## Message 8: add the Course tutor on its own
+
+For a Vidya that already ran Message 7 before the tutor existed, or when you
+want one more course taught. Nothing to fill in.
+
+```text
+Add the Course tutor and teach me a course. Do every step in order, report after each in one line, and whenever you need something from me ask one clear question at a time and wait.
+
+1. On your computer: cd ~/vidya && git pull && python3 -m vidya.cli selftest. Expect ALL PASS. Then save the skill "Course tutor" from ~/vidya/template/skills/course-tutor.md (name = the H1 heading without "Skill: ", instructions = the entire body verbatim) and re-save "Package template" from package-template.md and "Setup playbook" from setup-playbook.md because their text changed. Enable them. Confirm all eighteen skills are available.
+
+2. Ask me which course to teach (offer my courses from vidya status), my session days and class length (offer 2 × 45 min, 3 × 30 min, daily 20 min), and my level with the subject (offer new to it, some background, strong).
+
+3. Gather the material: the syllabus page you already saved, plus slides and readings from the course page in your browser (ask me to take over if a login appears), plus my own notes if I send any. Save copies under ~/vidya-state/teach/<course>/material/. Then write the ordered topic list to topics.json with a source reference for each topic and the exam it feeds when the syllabus says. Show me the list and wait for me to confirm or reorder.
+
+4. Run vidya teach map <course> --topics ~/vidya-state/teach/<course>/topics.json --start <next Monday> --per-week <n> --days <my days> --out ~/vidya-state/teach/<course>/plan.json and show me the printed semester map. If it notes unplaced topics or doubled classes, tell me and offer more sessions per week.
+
+5. Offer to put the classes on my calendar as "Class N: <topics> (<course>)" through the Calendar concierge, showing the operation list first. Do it only if I say yes.
+
+6. Set my level: ask me three quick questions on the first topic and record each with vidya teach record.
+
+7. Teach Class 1 now, one step per message, waiting for me between steps: Intro, Core concept (every paragraph labelled "From your course material (slide/page)" or "Broader context"), Examples, Practice (mark my answers: what I had right, the main gap, one next step; record a score), Summary. At every step offer exactly: I get it / Another example / Go deeper / I'm confused.
+
+8. Ask whether to create the "Class today" routine for this course on my session days, and whether to file class summaries in Notion if it is connected. Then show me vidya teach status <course>.
 ```
 
 ---
@@ -278,4 +308,20 @@ Pay
 
 ```text
 Check in later tonight
+```
+
+```text
+Run today's class
+```
+
+```text
+Quiz me on recursion
+```
+
+```text
+What am I weak on before the midterm?
+```
+
+```text
+I'm confused
 ```

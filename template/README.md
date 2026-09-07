@@ -32,11 +32,13 @@ is not literal.
 | `skills/coffee-chat-scheduler.md` | Skill | first note drafted, owner sends; after a yes, slots, Meet link, event, prep questions |
 | `skills/cold-outreach.md` | Skill | shortlist by what people actually work on, human-pace LinkedIn, drafts only, nobody twice |
 | `skills/calendar-concierge.md` | Skill | natural-language changes to the owner's own calendar, shown before applied; never touches managed events |
+| `skills/course-tutor.md` | Skill | give it the syllabus, get the semester taught: numbered classes on real dates around the believed exams, five-step lessons, provenance labels, honest grading, weak concepts back before the exam |
 | `skills/fun-scout.md` | Skill | Thursday shortlist: home games, Spotify-ranked concerts, campus events, parties from pages the owner named; calendar on pick, tickets to the Pay button |
 | `skills/package-template.md` | Skill | how the Bot audits and packages itself (section 7 of the plan) |
 | `routines/nightly-2300.md` | Routine | 11 PM every day, owner-local time |
 | `routines/weekly-digest.md` | Routine | Sunday 6 PM |
 | `routines/safety-checkin.md` | Routine (optional) | every 30 min in the evening window; created only if the owner enabled check-ins |
+| `routines/class-today.md` | Routine (optional, per course) | posts the Intro of today's class on session days; review offer two days before an exam |
 | `routines/fun-weekly.md` | Routine (optional) | Thursday 4 PM and Saturday 10 AM shortlist; read-only during the routine |
 | `FIRST_RUN.md` | The installer's first message | what to send the Bot after adding the template |
 | `BOOTSTRAP.md` | Your first message when building the Bot | one paste: the Bot clones the repo and assembles itself from these files |
@@ -47,7 +49,7 @@ is not literal.
 
 **Fast path:** create a new agent, name it Vidya, and paste the message in
 `BOOTSTRAP.md`. The Bot clones this repository onto its own computer and
-creates its profile text, the seventeen skills and the two routines from the files
+creates its profile text, the eighteen skills and the two routines from the files
 here, then runs the Setup playbook. You only sign in, connect Google Calendar,
 and confirm. The manual steps below are the same thing done by hand.
 
@@ -59,7 +61,7 @@ and confirm. The manual steps below are the same thing done by hand.
    triage", "Weekly digest", "Safety check-in", "Lecture notes", "Assignment
    coach", "Opportunity scout", "Resume tailor", "Project builder", "Club
    scout", "Coffee chat scheduler", "Cold outreach", "Calendar concierge",
-   "Fun scout", "Package template"; seventeen in all) and paste the body as the
+   "Fun scout", "Course tutor", "Package template"; eighteen in all) and paste the body as the
    instructions. The easiest way is to send the Bot the file contents with
    "Save this as a skill called <name>, exactly as written." Then confirm each
    skill is enabled for this Bot (Settings → Plugins → Yours) and appears when
@@ -76,7 +78,7 @@ and confirm. The manual steps below are the same thing done by hand.
 5. Run `skills/package-template.md`: ask the Bot to package itself and justify
    every inclusion. Then `SCRUB_CHECKLIST.md`.
 6. Bot settings → **Share as template**. Review the draft it prepares (it
-   should list the profile, the seventeen skills and the two routines, and no
+   should list the profile, the eighteen skills and the two routines, and no
    memories about your courses or your contacts), publish it as **public**, and copy the link.
    Team-only links cannot be opened by judges. Open the link in a private
    window to confirm it renders.

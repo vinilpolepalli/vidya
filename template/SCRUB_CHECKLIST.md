@@ -12,11 +12,12 @@ Search every included field for each pattern and remove or generalize it:
 - [ ] The owner's name, time zone as a personal fact, schedule details
 - [ ] Safety contacts: names, relationships, email addresses, phone numbers, carrier gateway addresses, check-in times, anything from `~/vidya-state/safety/`
 - [ ] Recruiting: the master resume, profile.md, any application folder, any person from outreach, anything from `~/vidya-state/track/`, Notion page ids
+- [ ] Tutor: course material, topic lists, mastery scores, anything from `~/vidya-state/teach/`
 - [ ] Fun: Spotify account, ticket confirmations, the party/Greek pages you named, your campus's event calendar address, anything from `~/vidya-state/fun/`
 - [ ] Any memory that came from a real conversation about a real course
 - [ ] Every skill clones `https://github.com/vinilpolepalli/vidya` (the public repository) and nothing else
 
-Things that are fine to include: the seventeen skills as written in `skills/`, the two
+Things that are fine to include: the eighteen skills as written in `skills/`, the two
 routines (`nightly-2300`, `weekly-digest`), the profile text, generic preferences ("list unreadable courses
 first").
 
