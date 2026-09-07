@@ -1,6 +1,6 @@
 # Written description (requirement 1)
 
-*What the Bot does and the tools it uses. The block under **Challenge paste** is the one to put in the form. Every claim is a test in this repo or a frame you still need to record; see `CLAIM_AUDIT.md`.*
+*What the Bot does and the tools it uses. The block under **Challenge paste** is the one to put in the form. The all-encompassing write-up — every skill, every prompt, every standing rule — is `docs/WHAT_VIDYA_DOES.md`. Every claim is a test in this repo or a frame you still need to record; see `CLAIM_AUDIT.md`.*
 
 Live bot: https://x.ai/bot/EKch7dX7qsm7wRuU4tTI2
 Repo: https://github.com/vinilpolepalli/vidya

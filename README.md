@@ -4,7 +4,7 @@ The deterministic middle of a Grok Bot that watches your course pages every nigh
 
 **LLM at the edges, code in the middle.** The bot's model reads pages and applies calendar operations through its plugins. Everything in between is plain Python here: normalizing items, parsing dates, diffing against last night's belief, refusing destructive writes on failed reads, gating the plan, and keeping the calendar ledger idempotent. That is the part that could wipe a semester, so it is code with a fixture suite, not a prompt.
 
-Built for the Grok Bot Student Build Challenge (`#GrokBotForStudents`). The Grok Bot template text that uses this engine lives in [`template/`](template/); the submission material in [`submission/`](submission/).
+Built for the Grok Bot Student Build Challenge (`#GrokBotForStudents`). The Grok Bot template text that uses this engine lives in [`template/`](template/); the full description of what Vidya does in [`docs/WHAT_VIDYA_DOES.md`](docs/WHAT_VIDYA_DOES.md); the submission material in [`submission/`](submission/).
 
 ## What it does
 
@@ -125,14 +125,14 @@ vidya/            engine (stdlib only)
 tests/               pytest suite: T1-T6, email/iCal merge rules, digest, graph, safety, why, track, teach
 template/            the Grok Bot template as text: profile, eighteen skills, routines, every message to send, scrub checklist
 submission/          written description, post draft, T8 claim audit, test log
-docs/                ARCHITECTURE.md, SYSTEM_MAP.md (Mermaid), INTEGRATIONS.md, GRAPHITI.md
+docs/                WHAT_VIDYA_DOES.md (full description), ARCHITECTURE.md, SYSTEM_MAP.md, INTEGRATIONS.md, GRAPHITI.md
 fixtures/            where your real T0 captures go (git-ignored)
 ```
 
 ## For the challenge
 
 - `template/README.md` explains how to assemble the Bot in the Grok Bot app from the text in `template/`; `template/skills/setup-playbook.md` is what a stranger's fresh Bot runs on its first message (T7).
-- `submission/DESCRIPTION.md` is requirement 1; `submission/POST_DRAFT.md` the post; `submission/CLAIM_AUDIT.md` is T8; `submission/TEST_LOG.md` records what ran here and what is still yours (real T0 captures, T7, T8, the video).
+- `docs/WHAT_VIDYA_DOES.md` is the all-encompassing description (every skill, prompt, standing rule, tool). `submission/DESCRIPTION.md` is the short form-field paste; `submission/POST_DRAFT.md` the post; `submission/CLAIM_AUDIT.md` is T8; `submission/TEST_LOG.md` records what ran here and what is still yours (real T0 captures, T7, T8, the video).
 - Replace `<TEMPLATE_LINK>` in the post with the public link from Publish before posting. Nothing in `template/` or `vidya/fixtures/` refers to a real school, course, or person.
 
 ## Tests

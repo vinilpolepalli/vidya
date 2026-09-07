@@ -43,6 +43,7 @@ is not literal.
 | `FIRST_RUN.md` | The installer's first message | what to send the Bot after adding the template |
 | `BOOTSTRAP.md` | Your first message when building the Bot | one paste: the Bot clones the repo and assembles itself from these files |
 | `MESSAGES.md` | Every message you send, in order | copy-paste blocks: build, safety setup, routine, live test, publish, everyday |
+| [`docs/WHAT_VIDYA_DOES.md`](../docs/WHAT_VIDYA_DOES.md) | Capability map | all-encompassing description of what Vidya does, derived from these prompts |
 | `SCRUB_CHECKLIST.md` | Before Publish → Public link | what must not be in the template |
 
 ## Assembling the template in the app
