@@ -4,7 +4,7 @@ The deterministic middle of a Grok Bot that watches your course pages every nigh
 
 **LLM at the edges, code in the middle.** The bot's model reads pages and applies calendar operations through its plugins. Everything in between is plain Python here: normalizing items, parsing dates, diffing against last night's belief, refusing destructive writes on failed reads, gating the plan, and keeping the calendar ledger idempotent. That is the part that could wipe a semester, so it is code with a fixture suite, not a prompt.
 
-Built for the Grok Bot Student Build Challenge (`#GrokBotForStudents`). The Grok Bot template text that uses this engine lives in [`template/`](template/); the full description of what Vidya does in [`docs/WHAT_VIDYA_DOES.md`](docs/WHAT_VIDYA_DOES.md); the submission material in [`submission/`](submission/).
+Built for the Grok Bot Student Build Challenge (`#GrokBotForStudents`). The Grok Bot template text that uses this engine lives in [`template/`](template/); the full description of what Vidya does in [`docs/WHAT_VIDYA_DOES.md`](docs/WHAT_VIDYA_DOES.md); the submission material in [`submission/`](submission/). A thin [eve](https://eve.dev) port of the honesty loop (workshop Free Build) lives in [`eve/`](eve/).
 
 ## What it does
 
@@ -123,6 +123,7 @@ vidya/            engine (stdlib only)
   fixtures/          synthetic T0 set: six courses, two nights, five planted changes; canvas/ical/email samples
   selftest.py        T1-T5 without pytest
 tests/               pytest suite: T1-T6, email/iCal merge rules, digest, graph, safety, why, track, teach
+eve/                 Vercel eve Free Build: fetch_page + vidya engine + approval on calendar writes
 template/            the Grok Bot template as text: profile, eighteen skills, routines, every message to send, scrub checklist
 submission/          written description, post draft, T8 claim audit, test log
 docs/                WHAT_VIDYA_DOES.md (full description), ARCHITECTURE.md, SYSTEM_MAP.md, INTEGRATIONS.md, GRAPHITI.md

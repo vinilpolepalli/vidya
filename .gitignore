@@ -22,3 +22,11 @@ fixtures/real/
 # secrets
 .env
 *.token
+
+# eve (Vercel agent runtime)
+eve/node_modules/
+eve/.eve/
+eve/.output/
+eve/.nitro/
+eve/.vercel/
+eve/.vidya-state/
